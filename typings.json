@@ -1,0 +1,7 @@
+{
+  "globalDependencies": {
+    "es6-shim": "registry:dt/es6-shim#0.31.2+20160602141504",
+    "jest": "registry:dt/jest#15.1.1+20160919141445",
+    "node-fetch": "registry:dt/node-fetch#0.0.0+20160711094047"
+  }
+}

@@ -1,0 +1,6 @@
+{
+    "search.exclude": {
+        "build": true // set this to false to include "build" folder in search results
+    },
+    "typescript.tsdk": "./node_modules/typescript/lib"
+}
