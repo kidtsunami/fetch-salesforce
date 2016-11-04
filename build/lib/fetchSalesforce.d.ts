@@ -8,7 +8,8 @@ export declare class FetchSalesforce {
     private formatApiVersion();
     refreshAccessToken(): Promise<any>;
     query(soqlQuery: string): Promise<any>;
+    private buildAuthorizedHeaders(headers?);
     insert(sobjectName: string, body: any): Promise<any>;
     private getSObjectUrl(sobjectName);
-    update(sobjectName: string, id: string, body: any): Promise<any>;
+    update(sobjectName: string, body: any): Promise<any>;
 }

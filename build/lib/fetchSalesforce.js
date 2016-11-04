@@ -43,22 +43,23 @@ var FetchSalesforce = (function () {
         var encodedQuery = '?' + querystring.stringify({ q: soqlQuery });
         var fetchUrl = urlJoin(this.baseDataURL, 'query', encodedQuery);
         var fetchOptions = {
-            headers: {
-                'Authorization': 'Authorization: Bearer ' + this.accessToken
-            },
+            headers: this.buildAuthorizedHeaders(),
             method: 'GET',
             cache: false
         };
         return fetchRequest_1.fetchJSON(fetchUrl, fetchOptions);
     };
+    FetchSalesforce.prototype.buildAuthorizedHeaders = function (headers) {
+        var authorizedHeader = {
+            'Authorization': 'Authorization: Bearer ' + this.accessToken
+        };
+        return Object.assign(authorizedHeader, headers);
+    };
     FetchSalesforce.prototype.insert = function (sobjectName, body) {
         var fetchUrl = this.getSObjectUrl(sobjectName);
         var bodyJSON = JSON.stringify(body);
         var fetchOptions = {
-            headers: {
-                'Authorization': 'Authorization: Bearer ' + this.accessToken,
-                'Content-Type': 'application/json'
-            },
+            headers: this.buildAuthorizedHeaders({ 'Content-Type': 'application/json' }),
             method: 'POST',
             body: bodyJSON
         };
@@ -67,14 +68,17 @@ var FetchSalesforce = (function () {
     FetchSalesforce.prototype.getSObjectUrl = function (sobjectName) {
         return urlJoin(this.baseDataURL, sobjectName);
     };
-    FetchSalesforce.prototype.update = function (sobjectName, id, body) {
-        var fetchUrl = urlJoin(this.getSObjectUrl(sobjectName), id);
+    FetchSalesforce.prototype.update = function (sobjectName, body) {
+        if (!body.id) {
+            throw {
+                error: 'Invalid body for update, missing id',
+                body: body
+            };
+        }
         var bodyJSON = JSON.stringify(body);
+        var fetchUrl = urlJoin(this.getSObjectUrl(sobjectName), body.id);
         var fetchOptions = {
-            headers: {
-                'Authorization': 'Authorization: Bearer ' + this.accessToken,
-                'Content-Type': 'application/json'
-            },
+            headers: this.buildAuthorizedHeaders({ 'Content-Type': 'application/json' }),
             method: 'PATCH',
             body: bodyJSON
         };

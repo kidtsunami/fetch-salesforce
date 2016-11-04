@@ -55,13 +55,18 @@ export class FetchSalesforce {
         let fetchUrl = urlJoin(this.baseDataURL, 'query', encodedQuery);
 
         let fetchOptions = {
-            headers: {
-                'Authorization': 'Authorization: Bearer ' + this.accessToken
-            },
+            headers: this.buildAuthorizedHeaders(),
             method: 'GET',
             cache: false
         };
         return fetchJSON(fetchUrl, fetchOptions);
+    }
+
+    private buildAuthorizedHeaders(headers?: any): any {
+        let authorizedHeader = {
+            'Authorization': 'Authorization: Bearer ' + this.accessToken
+        }
+        return Object.assign(authorizedHeader, headers);
     }
 
     insert(sobjectName: string, body: any): Promise<any> {
@@ -69,10 +74,7 @@ export class FetchSalesforce {
         
         let bodyJSON = JSON.stringify(body);
         let fetchOptions = {
-            headers: {
-                'Authorization': 'Authorization: Bearer ' + this.accessToken,
-                'Content-Type': 'application/json'
-            },
+            headers: this.buildAuthorizedHeaders({ 'Content-Type': 'application/json' }),
             method: 'POST',
             body: bodyJSON
         };
@@ -83,15 +85,18 @@ export class FetchSalesforce {
         return urlJoin(this.baseDataURL, sobjectName);
     }
 
-    update(sobjectName: string, id: string, body: any): Promise<any> {
-        let fetchUrl = urlJoin(this.getSObjectUrl(sobjectName), id);
-
+    update(sobjectName: string, body: any): Promise<any> {
+        if(!body.id){
+            throw {
+                error: 'Invalid body for update, missing id',
+                body: body
+            }
+        }
         let bodyJSON = JSON.stringify(body);
+        let fetchUrl = urlJoin(this.getSObjectUrl(sobjectName), body.id);
+
         let fetchOptions = {
-            headers: {
-                'Authorization': 'Authorization: Bearer ' + this.accessToken,
-                'Content-Type': 'application/json'
-            },
+            headers: this.buildAuthorizedHeaders({ 'Content-Type': 'application/json' }),
             method: 'PATCH',
             body: bodyJSON
         };
