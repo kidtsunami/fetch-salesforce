@@ -1,4 +1,4 @@
-declare module "form-urlencoded" {
-    var formUrlEncoded: any;
-    export = formUrlEncoded;
+declare module "url-join" {
+    var urlJoin: any;
+    export = urlJoin;
 } 
