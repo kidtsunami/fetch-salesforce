@@ -31,17 +31,6 @@ var FetchSalesforce = (function () {
             return response;
         });
     };
-    FetchSalesforce.prototype.getAccounts = function () {
-        var fetchUrl = this.baseURL + 'services/data/v33.0/query/?q=SELECT%20Id%2C%20Name%20FROM%20Account';
-        var fetchOptions = {
-            headers: {
-                'Authorization': 'Authorization: Bearer ' + this.accessToken
-            },
-            method: 'GET',
-            cache: false
-        };
-        return fetchRequest_1.fetchJSON(fetchUrl, fetchOptions);
-    };
     FetchSalesforce.prototype.query = function (soqlQuery) {
         var encodedQuery = querystring.stringify({ q: soqlQuery });
         var fetchUrl = this.baseURL + 'services/data/v33.0/query/?' + encodedQuery;

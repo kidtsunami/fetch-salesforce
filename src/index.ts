@@ -40,19 +40,6 @@ export class FetchSalesforce {
             });
     }
 
-    getAccounts(): Promise<any> {
-        let fetchUrl = this.baseURL + 'services/data/v33.0/query/?q=SELECT%20Id%2C%20Name%20FROM%20Account';
-
-        let fetchOptions = {
-            headers: {
-                'Authorization': 'Authorization: Bearer ' + this.accessToken
-            },
-            method: 'GET',
-            cache: false
-        };
-        return fetchJSON(fetchUrl, fetchOptions);
-    }
-
     query(soqlQuery: string): Promise<any> {
         let encodedQuery = querystring.stringify({ q: soqlQuery });
         let fetchUrl = this.baseURL + 'services/data/v33.0/query/?' + encodedQuery;
