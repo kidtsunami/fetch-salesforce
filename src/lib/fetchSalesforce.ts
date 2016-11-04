@@ -4,6 +4,7 @@ import { FetchSalesforceOptions, withDefaultFetchSalesforceOptions } from './fet
 
 import * as querystring from 'querystring';
 let urlJoin = require('url-join');
+let numeral = require('numeral');
 
 export class FetchSalesforce {
     options: FetchSalesforceOptions;
@@ -16,7 +17,11 @@ export class FetchSalesforce {
     }
 
     private initializeBaseDataURL(){
-        this.baseDataURL = urlJoin(this.options.baseURL, 'services/data', this.options.apiVersion);
+        this.baseDataURL = urlJoin(this.options.baseURL, 'services/data', this.formatApiVersion());
+    }
+
+    private formatApiVersion(){
+        return 'v' + numeral(this.options.apiVersion).format('0.0');
     }
 
     refreshAccessToken(): Promise<any> {

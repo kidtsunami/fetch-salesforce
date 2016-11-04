@@ -3,13 +3,17 @@ var fetchRequest_1 = require('./fetchRequest');
 var fetchSalesforceOptions_1 = require('./fetchSalesforceOptions');
 var querystring = require('querystring');
 var urlJoin = require('url-join');
+var numeral = require('numeral');
 var FetchSalesforce = (function () {
     function FetchSalesforce(options) {
         this.options = fetchSalesforceOptions_1.withDefaultFetchSalesforceOptions(options);
         this.initializeBaseDataURL();
     }
     FetchSalesforce.prototype.initializeBaseDataURL = function () {
-        this.baseDataURL = urlJoin(this.options.baseURL, 'services/data', this.options.apiVersion);
+        this.baseDataURL = urlJoin(this.options.baseURL, 'services/data', this.formatApiVersion());
+    };
+    FetchSalesforce.prototype.formatApiVersion = function () {
+        return 'v' + numeral(this.options.apiVersion).format('0.0');
     };
     FetchSalesforce.prototype.refreshAccessToken = function () {
         var _this = this;

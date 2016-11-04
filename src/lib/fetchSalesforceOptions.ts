@@ -2,11 +2,11 @@ export interface FetchSalesforceOptions {
     baseURL: string;
     clientID: string;
     refreshToken: string;
-    apiVersion?: string; 
+    apiVersion?: number; 
 }
 
 let defaultOptions = {
-    apiVersion: 'v33.0'
+    apiVersion: 33
 }
 
 export function withDefaultFetchSalesforceOptions(options: FetchSalesforceOptions): FetchSalesforceOptions {

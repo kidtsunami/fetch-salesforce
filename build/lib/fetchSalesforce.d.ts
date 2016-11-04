@@ -5,6 +5,7 @@ export declare class FetchSalesforce {
     accessToken: string;
     constructor(options: FetchSalesforceOptions);
     private initializeBaseDataURL();
+    private formatApiVersion();
     refreshAccessToken(): Promise<any>;
     query(soqlQuery: string): Promise<any>;
     insert(sobjectName: string, body: any): Promise<any>;

@@ -1,6 +1,6 @@
 "use strict";
 var defaultOptions = {
-    apiVersion: 'v33.0'
+    apiVersion: 33
 };
 function withDefaultFetchSalesforceOptions(options) {
     return Object.assign(defaultOptions, options);
