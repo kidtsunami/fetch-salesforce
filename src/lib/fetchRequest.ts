@@ -1,17 +1,18 @@
 let fetch = require('node-fetch');
-import { FetchOptions } from './fetchOptions';
+import { RequestOptions } from './requestOptions';
 import Promise = require('bluebird');
 fetch.Promise = Promise;
 
-export function fetchJSON(fetchURL: string, fetchOptions: FetchOptions): Promise<any>{
-    console.info('Fetching: ' + fetchURL);
-    return fetch(fetchURL, fetchOptions)
+export function fetchJSON(requestURL: string, requestOptions: RequestOptions): Promise<any>{
+    console.info('Fetching: ' + requestURL);
+    console.info(requestOptions);
+    return fetch(requestURL, requestOptions)
         .then(response => response.json())
         .then(response => {
             if(response.error){
                 let fetchJSONException = {
-                    fetchURL: fetchURL,
-                    fetchOptions: fetchOptions,
+                    fetchURL: requestURL,
+                    requestOptions: requestOptions,
                     response: response
                 }
                 console.error(fetchJSONException);

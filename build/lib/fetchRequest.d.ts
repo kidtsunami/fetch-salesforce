@@ -1,4 +1,4 @@
 /// <reference types="bluebird" />
-import { FetchOptions } from './fetchOptions';
+import { RequestOptions } from './requestOptions';
 import Promise = require('bluebird');
-export declare function fetchJSON(fetchURL: string, fetchOptions: FetchOptions): Promise<any>;
+export declare function fetchJSON(requestURL: string, requestOptions: RequestOptions): Promise<any>;
