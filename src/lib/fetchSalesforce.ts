@@ -102,4 +102,14 @@ export class FetchSalesforce {
         };
         return fetchJSON(fetchUrl, fetchOptions);
     }
+
+    delete(sobjectName: string, id: string): Promise<any> {
+        let fetchUrl = urlJoin(this.getSObjectUrl(sobjectName), id);
+
+        let fetchOptions = {
+            headers: this.buildAuthorizedHeaders(),
+            method: 'DELETE'
+        };
+        return fetchJSON(fetchUrl, fetchOptions);
+    }
 }

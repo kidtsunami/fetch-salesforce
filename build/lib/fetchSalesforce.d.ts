@@ -12,4 +12,5 @@ export declare class FetchSalesforce {
     insert(sobjectName: string, body: any): Promise<any>;
     private getSObjectUrl(sobjectName);
     update(sobjectName: string, body: any): Promise<any>;
+    delete(sobjectName: string, id: string): Promise<any>;
 }

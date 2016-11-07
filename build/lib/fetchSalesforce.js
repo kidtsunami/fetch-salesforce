@@ -84,6 +84,14 @@ var FetchSalesforce = (function () {
         };
         return fetchRequest_1.fetchJSON(fetchUrl, fetchOptions);
     };
+    FetchSalesforce.prototype.delete = function (sobjectName, id) {
+        var fetchUrl = urlJoin(this.getSObjectUrl(sobjectName), id);
+        var fetchOptions = {
+            headers: this.buildAuthorizedHeaders(),
+            method: 'DELETE'
+        };
+        return fetchRequest_1.fetchJSON(fetchUrl, fetchOptions);
+    };
     return FetchSalesforce;
 }());
 exports.FetchSalesforce = FetchSalesforce;
