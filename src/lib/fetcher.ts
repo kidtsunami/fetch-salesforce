@@ -34,11 +34,7 @@ export class Fetcher {
             return this.refreshAccessToken();
         }
     }
-
-    fuckItUp(){
-        this.accessToken = 'fucked up';
-    }
-
+    
     private refreshAccessToken(): Promise<string> {
         let requestURL = this.options.baseURL + 'services/oauth2/token';
         let accessToken: string;

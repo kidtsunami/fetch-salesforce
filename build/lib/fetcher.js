@@ -18,9 +18,6 @@ var Fetcher = (function () {
             return this.refreshAccessToken();
         }
     };
-    Fetcher.prototype.fuckItUp = function () {
-        this.accessToken = 'fucked up';
-    };
     Fetcher.prototype.refreshAccessToken = function () {
         var _this = this;
         var requestURL = this.options.baseURL + 'services/oauth2/token';

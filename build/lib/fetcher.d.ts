@@ -9,7 +9,6 @@ export declare class Fetcher {
     private accessToken;
     constructor(options: SalesforceOptions);
     getAccessToken(): Promise<string>;
-    fuckItUp(): void;
     private refreshAccessToken();
     fetchJSON(requestURL: string, requestOptions: RequestOptions): Promise<any>;
     private addAuthorizationHeaders(headers?);
