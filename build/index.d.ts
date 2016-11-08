@@ -1,3 +1,3 @@
 import { FetchSalesforce } from './lib/fetchSalesforce';
-import { FetchSalesforceOptions } from './lib/fetchSalesforceOptions';
-export { FetchSalesforce, FetchSalesforceOptions };
+import { SalesforceOptions } from './lib/salesforceOptions';
+export { FetchSalesforce, SalesforceOptions };

@@ -15,6 +15,5 @@ test('fetches content from github', function () {
         refreshToken: 'testrefreshtoken'
     };
     var fetchSalesforce = new index_1.FetchSalesforce(options);
-    return fetchSalesforce.refreshAccessToken().then(function (token) { return expect(token).toBe('hello david'); });
 });
 //# sourceMappingURL=index.js.map
