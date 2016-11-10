@@ -2,6 +2,7 @@
 import { Fetcher } from './fetcher';
 import { FetchSObject } from './fetchSObject';
 import { FetchQuery } from './fetchQuery';
+import { FetchChatter } from './fetchChatter';
 import { SalesforceOptions, withDefaults } from './salesforceOptions'
 
 let urlJoin = require('url-join');
@@ -12,11 +13,13 @@ export class FetchSalesforce {
     fetcher: Fetcher;
     fetchSObject: FetchSObject;
     fetchQuery: FetchQuery;
+    fetchChatter: FetchChatter;
 
     constructor(options: SalesforceOptions){
         this.options = withDefaults(options);
         this.fetcher = new Fetcher(this.options);
         this.fetchSObject = new FetchSObject(this.fetcher, this.options);
         this.fetchQuery = new FetchQuery(this.fetcher, this.options);
+        this.fetchChatter = new FetchChatter(this.fetcher, this.options);
     }
 }

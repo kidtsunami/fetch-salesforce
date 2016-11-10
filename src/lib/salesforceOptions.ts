@@ -4,7 +4,8 @@ export interface SalesforceOptions {
     baseURL: string;
     clientID: string;
     refreshToken: string;
-    apiVersion?: number; 
+    apiVersion?: number;
+    sfdcCommunityID?: string;
 }
 
 let defaultOptions = {
