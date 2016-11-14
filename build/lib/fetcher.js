@@ -124,7 +124,6 @@ var Fetcher = (function (_super) {
         var _this = this;
         var retryPromises = [];
         console.info("Attempting to retry " + this.pendingRequests.length + " pendingRequests");
-        console.info("Access token is now " + this.accessToken);
         for (var _i = 0, _a = this.pendingRequests; _i < _a.length; _i++) {
             var pendingRequest = _a[_i];
             retryPromises.push(this.fetchJSON(pendingRequest.requestURL, pendingRequest.requestOptions));
@@ -161,6 +160,41 @@ var Fetcher = (function (_super) {
         else {
             return response;
         }
+    };
+    Fetcher.prototype.revokeAccessToken = function () {
+        var _this = this;
+        if (!this.accessToken) {
+            throw 'No Access Token to Revoke';
+        }
+        this.emit('accessTokenRevoking');
+        var requestURL = this.options.revokeServiceURL;
+        var fetchBody = {
+            token: this.accessToken
+        };
+        var requestOptions = {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            method: 'POST',
+            body: querystring.stringify(fetchBody)
+        };
+        return fetch(requestURL, requestOptions)
+            .then(function (response) {
+            if (response.status && response.status !== 200) {
+                var revokeAccesTokenException = {
+                    requestURL: requestURL,
+                    requestOptions: requestOptions,
+                    response: response
+                };
+                console.error(revokeAccesTokenException);
+                throw revokeAccesTokenException;
+            }
+        })
+            .then(function (response) {
+            _this.accessToken = undefined;
+            console.info('Access Token revoked');
+            _this.emit('accessTokenRevoked');
+        });
     };
     return Fetcher;
 }(events.EventEmitter));

@@ -146,7 +146,6 @@ export class Fetcher extends events.EventEmitter {
     private retryPendingRequests(){
         let retryPromises: Promise<any>[] = [];
         console.info(`Attempting to retry ${ this.pendingRequests.length } pendingRequests`);
-        console.info(`Access token is now ${ this.accessToken }`);
         for(let pendingRequest of this.pendingRequests){
             retryPromises.push(this.fetchJSON(pendingRequest.requestURL, pendingRequest.requestOptions));
         }
@@ -181,5 +180,43 @@ export class Fetcher extends events.EventEmitter {
         } else {
             return response;
         }
+    }
+
+    revokeAccessToken(): Promise<any> {
+        if(!this.accessToken){
+            throw 'No Access Token to Revoke';
+        }
+
+        this.emit('accessTokenRevoking');
+        let requestURL = this.options.revokeServiceURL;
+
+        let fetchBody = {
+            token: this.accessToken
+        };
+
+        let requestOptions = {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            method: 'POST',
+            body: querystring.stringify(fetchBody)
+        };
+        return fetch(requestURL, requestOptions)
+            .then(response => {
+                if(response.status && response.status !== 200){
+                    let revokeAccesTokenException = {
+                        requestURL: requestURL,
+                        requestOptions: requestOptions,
+                        response: response
+                    }
+                    console.error(revokeAccesTokenException);
+                    throw revokeAccesTokenException;
+                }
+            })
+            .then(response => {
+                this.accessToken = undefined;
+                console.info('Access Token revoked');
+                this.emit('accessTokenRevoked');
+            });
     }
 }

@@ -18,4 +18,5 @@ export declare class Fetcher extends events.EventEmitter {
     private refreshAccessTokenAndRetryPendingRequests(fetcherRequest);
     private retryPendingRequests();
     private handleGenericErrors(requestURL, requestOptions, response);
+    revokeAccessToken(): Promise<any>;
 }
