@@ -9,7 +9,7 @@ var FetchSObject = (function () {
     }
     FetchSObject.prototype.initializeBaseDataURL = function () {
         var apiVersion = salesforceOptions_1.formatApiVersion(this.options.apiVersion);
-        this.baseDataURL = urlJoin(this.options.baseURL, 'services/data');
+        this.baseDataURL = urlJoin(this.options.baseURL, 'services/data', apiVersion);
     };
     FetchSObject.prototype.insert = function (sobjectName, body) {
         var fetchUrl = this.getSObjectUrl(sobjectName);

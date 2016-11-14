@@ -3,25 +3,37 @@ import { Fetcher } from './fetcher';
 import { SalesforceOptions, formatApiVersion } from './salesforceOptions'
 let urlJoin = require('url-join');
 
-export class FetchSObject {
+export class FetchApexREST {
     fetcher: Fetcher;
-    baseDataURL: string;
+    baseApexRESTURL: string;
     options: SalesforceOptions;
 
     constructor(fetcher: Fetcher, options: SalesforceOptions){
         this.fetcher = fetcher;
         this.options = options;
 
-        this.initializeBaseDataURL();
+        this.initializeBaseApexRESTURL();
     }
 
-    private initializeBaseDataURL(){
-        let apiVersion = formatApiVersion(this.options.apiVersion);
-        this.baseDataURL = urlJoin(this.options.baseURL, 'services/data', apiVersion);
+    private initializeBaseApexRESTURL(){
+        this.baseApexRESTURL = urlJoin(this.options.baseURL, 'apexrest');
     }
 
-    insert(sobjectName: string, body: any): Promise<any> {
-        let fetchUrl = this.getSObjectUrl(sobjectName);
+    get(endpointPath: string): Promise<any> {
+        let fetchUrl = urlJoin(this.getEndpointURL(endpointPath));
+
+        let fetchOptions = {
+            method: 'GET'
+        };
+        return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
+    }
+
+    private getEndpointURL(endpointPath: string){
+        return urlJoin(this.baseApexRESTURL, endpointPath);
+    }
+
+    post(endpointPath: string, body: any): Promise<any> {
+        let fetchUrl = this.getEndpointURL(endpointPath);
         
         let bodyJSON = JSON.stringify(body);
         let fetchOptions = {
@@ -32,19 +44,9 @@ export class FetchSObject {
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
     }
 
-    private getSObjectUrl(sobjectName: string){
-        return urlJoin(this.baseDataURL, sobjectName);
-    }
-
-    update(sobjectName: string, body: any): Promise<any> {
-        if(!body.id){
-            throw {
-                error: 'Invalid body for update, missing id',
-                body: body
-            }
-        }
+    patch(endpointPath: string, body: any): Promise<any> {
         let bodyJSON = JSON.stringify(body);
-        let fetchUrl = urlJoin(this.getSObjectUrl(sobjectName), body.id);
+        let fetchUrl = urlJoin(this.getEndpointURL(endpointPath), body.id);
 
         let fetchOptions = {
             headers: { 'Content-Type': 'application/json' },
@@ -54,8 +56,8 @@ export class FetchSObject {
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
     }
 
-    delete(sobjectName: string, id: string): Promise<any> {
-        let fetchUrl = urlJoin(this.getSObjectUrl(sobjectName), id);
+    delete(endpointPath: string): Promise<any> {
+        let fetchUrl = urlJoin(this.getEndpointURL(endpointPath));
 
         let fetchOptions = {
             method: 'DELETE'
