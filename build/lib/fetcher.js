@@ -37,6 +37,9 @@ var Fetcher = (function (_super) {
             client_id: this.options.clientID,
             format: 'json'
         };
+        if (this.options.clientSecret) {
+            fetchBody.client_secret = this.options.clientSecret;
+        }
         var requestOptions = {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'

@@ -3,7 +3,8 @@ let urlJoin = require('url-join');
 
 export interface SalesforceOptions {
     baseURL: string;
-    clientID?: string;
+    clientID: string;
+    clientSecret?: string;
     refreshToken: string;
     apiVersion?: number;
     sfdcCommunityID?: string;

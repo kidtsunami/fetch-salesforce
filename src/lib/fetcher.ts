@@ -15,6 +15,14 @@ interface FetcherRequest {
     reject: (thenableOrResult?: {} | Promise.Thenable<{}>) => void
 }
 
+interface RefreshAccessTokenBody {
+    grant_type: string,
+    refresh_token: string,
+    client_id: string,
+    format: string,
+    client_secret?: string
+}
+
 export class Fetcher extends events.EventEmitter {
     options: SalesforceOptions;
     isRefreshingAccessToken: boolean;
@@ -43,12 +51,16 @@ export class Fetcher extends events.EventEmitter {
         let requestURL = this.options.tokenServiceURL;
         let accessToken: string;
 
-        let fetchBody = {
+        let fetchBody: RefreshAccessTokenBody = {
             grant_type: 'refresh_token',
             refresh_token: this.options.refreshToken,
             client_id: this.options.clientID,
             format: 'json'
         };
+
+        if(this.options.clientSecret){
+            fetchBody.client_secret = this.options.clientSecret;
+        }
 
         let requestOptions = {
             headers: {
