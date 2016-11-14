@@ -1,10 +1,18 @@
 "use strict";
+var __extends = (this && this.__extends) || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+};
 var querystring = require('querystring');
+var events = require('events');
 var Promise = require('bluebird');
 var fetch = require('node-fetch');
 fetch.Promise = Promise;
-var Fetcher = (function () {
+var Fetcher = (function (_super) {
+    __extends(Fetcher, _super);
     function Fetcher(options) {
+        _super.call(this);
         this.options = options;
         this.accessToken = undefined;
         this.isRefreshingAccessToken = false;
@@ -20,6 +28,7 @@ var Fetcher = (function () {
     };
     Fetcher.prototype.refreshAccessToken = function () {
         var _this = this;
+        this.emit('accessTokenRefreshing');
         var requestURL = this.options.tokenServiceURL;
         var accessToken;
         var fetchBody = {
@@ -41,6 +50,7 @@ var Fetcher = (function () {
             .then(function (response) { return _this.handleGenericErrors(requestURL, requestOptions, response); })
             .then(function (response) {
             console.info("New accessToken retrieved");
+            _this.emit('accessTokenRefreshed');
             _this.accessToken = response.access_token;
             return response;
         });
@@ -150,6 +160,6 @@ var Fetcher = (function () {
         }
     };
     return Fetcher;
-}());
+}(events.EventEmitter));
 exports.Fetcher = Fetcher;
 //# sourceMappingURL=fetcher.js.map

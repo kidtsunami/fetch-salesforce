@@ -2,6 +2,8 @@ import { SalesforceOptions } from './salesforceOptions'
 import { RequestOptions } from './requestOptions';
 
 import * as querystring from 'querystring';
+import events = require('events');
+
 import Promise = require('bluebird');
 let fetch = require('node-fetch');
 fetch.Promise = Promise;
@@ -13,7 +15,7 @@ interface FetcherRequest {
     reject: (thenableOrResult?: {} | Promise.Thenable<{}>) => void
 }
 
-export class Fetcher {
+export class Fetcher extends events.EventEmitter {
     options: SalesforceOptions;
     isRefreshingAccessToken: boolean;
     
@@ -21,6 +23,7 @@ export class Fetcher {
     private accessToken: string;
 
     constructor(options: SalesforceOptions){
+        super();
         this.options = options;
         this.accessToken = undefined;
         this.isRefreshingAccessToken = false;
@@ -36,6 +39,7 @@ export class Fetcher {
     }
     
     private refreshAccessToken(): Promise<string> {
+        this.emit('accessTokenRefreshing');
         let requestURL = this.options.tokenServiceURL;
         let accessToken: string;
 
@@ -59,6 +63,7 @@ export class Fetcher {
             .then(response => this.handleGenericErrors(requestURL, requestOptions, response))
             .then((response) => {
                 console.info(`New accessToken retrieved`);
+                this.emit('accessTokenRefreshed');
                 this.accessToken = response.access_token;
                 return response;
             });

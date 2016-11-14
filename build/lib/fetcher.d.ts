@@ -1,8 +1,10 @@
+/// <reference types="node" />
 /// <reference types="bluebird" />
 import { SalesforceOptions } from './salesforceOptions';
 import { RequestOptions } from './requestOptions';
+import events = require('events');
 import Promise = require('bluebird');
-export declare class Fetcher {
+export declare class Fetcher extends events.EventEmitter {
     options: SalesforceOptions;
     isRefreshingAccessToken: boolean;
     private pendingRequests;
