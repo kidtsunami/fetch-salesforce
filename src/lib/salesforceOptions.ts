@@ -1,11 +1,16 @@
 var numeral = require('numeral');
+let urlJoin = require('url-join');
 
 export interface SalesforceOptions {
     baseURL: string;
-    clientID: string;
+    clientID?: string;
     refreshToken: string;
     apiVersion?: number;
     sfdcCommunityID?: string;
+    authorizationServiceURL?: string;
+    tokenServiceURL?: string;
+    revokeServiceURL?: string;
+    redirectUri?: string;
 }
 
 let defaultOptions = {
@@ -13,7 +18,12 @@ let defaultOptions = {
 }
 
 export function withDefaults(options: SalesforceOptions): SalesforceOptions {
-    return Object.assign(defaultOptions, options);
+    let defaultOptionsByBaseURL = Object.assign({}, defaultOptions);
+    defaultOptionsByBaseURL.authorizationServiceURL = urlJoin(options.baseURL, '/services/oauth2/authorize');
+    defaultOptionsByBaseURL.tokenServiceURL = urlJoin(options.baseURL, '/services/oauth2/token');
+    defaultOptionsByBaseURL.revokeServiceURL = urlJoin(options.baseURL, '/services/oauth2/revoke');
+    
+    return Object.assign(defaultOptionsByBaseURL, options);
 }
 
 export function formatApiVersion(apiVersion: number){

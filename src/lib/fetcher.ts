@@ -36,7 +36,7 @@ export class Fetcher {
     }
     
     private refreshAccessToken(): Promise<string> {
-        let requestURL = this.options.baseURL + 'services/oauth2/token';
+        let requestURL = this.options.tokenServiceURL;
         let accessToken: string;
 
         let fetchBody = {

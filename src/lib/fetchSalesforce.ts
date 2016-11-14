@@ -7,7 +7,12 @@ import { FetchApexREST } from './fetchApexREST';
 import { SalesforceOptions, withDefaults } from './salesforceOptions'
 
 let urlJoin = require('url-join');
-let numeral = require('numeral');
+import * as querystring from 'querystring';
+
+export interface ScopeAndState {
+    scope?: string,
+    state?: string
+}
 
 export class FetchSalesforce {
     options: SalesforceOptions;
@@ -24,5 +29,16 @@ export class FetchSalesforce {
         this.fetchQuery = new FetchQuery(this.fetcher, this.options);
         this.fetchChatter = new FetchChatter(this.fetcher, this.options);
         this.fetchApexREST = new FetchApexREST(this.fetcher, this.options);
+    }
+
+    buildAuthorizationURL(scopeAndState: ScopeAndState): string {
+        let parameters = Object.assign({
+            response_type: 'code',
+            client_id: this.options.clientID,
+            redirect_uri: this.options.redirectUri
+        }, scopeAndState);
+        let encodedQuery = '?' + querystring.stringify(parameters);
+
+        return urlJoin(this.options.authorizationServiceURL, encodedQuery);
     }
 }

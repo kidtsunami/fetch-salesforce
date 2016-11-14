@@ -20,7 +20,7 @@ var Fetcher = (function () {
     };
     Fetcher.prototype.refreshAccessToken = function () {
         var _this = this;
-        var requestURL = this.options.baseURL + 'services/oauth2/token';
+        var requestURL = this.options.tokenServiceURL;
         var accessToken;
         var fetchBody = {
             grant_type: 'refresh_token',
