@@ -1,4 +1,6 @@
+import sinon = require('sinon');
 import { FetchSalesforce, SalesforceOptions } from '../index';
+import { withValidSalesforceOptions } from './salesforceOptions';
 import Promise = require('bluebird');
 
 function mockFetch(uri: string): Promise<any> {
@@ -6,13 +8,6 @@ function mockFetch(uri: string): Promise<any> {
 };
  
 test('fetches content from github', () => {
-    let baseURL = 'testbaseurl';
-    let clientId = 'testclientid';
-    let refreshToken = 'testrefreshtoken';
-    let options: SalesforceOptions = {
-        baseURL: 'testbaseurl',
-        clientID: 'testclientid',
-        refreshToken: 'testrefreshtoken'
-    }
+    let options = withValidSalesforceOptions();
     let fetchSalesforce = new FetchSalesforce(options);
 });
