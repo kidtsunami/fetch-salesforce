@@ -1,4 +1,4 @@
-import { SalesforceOptions, withDefaults, formatApiVersion } from '../lib/salesforceOptions'
+import { SalesforceOptions, withDefaults, formatApiVersion } from '../../lib/salesforceOptions'
 
 export function withValidSalesforceOptions(): SalesforceOptions{
     let testOptions: SalesforceOptions = {

@@ -6,6 +6,9 @@ var FetchApexREST = (function () {
         this.options = options;
         this.initializeBaseApexRESTURL();
     }
+    FetchApexREST.Create = function (fetcher, options) {
+        return new FetchApexREST(fetcher, options);
+    };
     FetchApexREST.prototype.initializeBaseApexRESTURL = function () {
         this.baseApexRESTURL = urlJoin(this.options.baseURL, 'apexrest');
     };

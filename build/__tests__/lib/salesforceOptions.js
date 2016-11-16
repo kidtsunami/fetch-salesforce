@@ -1,5 +1,5 @@
 "use strict";
-var salesforceOptions_1 = require('../lib/salesforceOptions');
+var salesforceOptions_1 = require('../../lib/salesforceOptions');
 function withValidSalesforceOptions() {
     var testOptions = {
         baseURL: 'https://baseurl/test/',

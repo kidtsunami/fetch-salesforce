@@ -8,6 +8,10 @@ export class FetchApexREST {
     baseApexRESTURL: string;
     options: SalesforceOptions;
 
+    static Create(fetcher: Fetcher, options: SalesforceOptions): FetchApexREST {
+        return new FetchApexREST(fetcher, options);
+    }
+
     constructor(fetcher: Fetcher, options: SalesforceOptions){
         this.fetcher = fetcher;
         this.options = options;

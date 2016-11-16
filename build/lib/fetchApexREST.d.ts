@@ -4,6 +4,7 @@ export declare class FetchApexREST {
     fetcher: Fetcher;
     baseApexRESTURL: string;
     options: SalesforceOptions;
+    static Create(fetcher: Fetcher, options: SalesforceOptions): FetchApexREST;
     constructor(fetcher: Fetcher, options: SalesforceOptions);
     private initializeBaseApexRESTURL();
     get(endpointPath: string): Promise<any>;

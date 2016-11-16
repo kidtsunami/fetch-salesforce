@@ -10,6 +10,9 @@ var FetchChatter = (function () {
         }
         this.initializeBaseChatterURL();
     }
+    FetchChatter.Create = function (fetcher, options) {
+        return new FetchChatter(fetcher, options);
+    };
     FetchChatter.prototype.initializeBaseChatterURL = function () {
         var apiVersion = salesforceOptions_1.formatApiVersion(this.options.apiVersion);
         this.baseChatterURL = urlJoin(this.options.baseURL, 'services/data', apiVersion, 'connect/communities', this.options.sfdcCommunityID, 'chatter');

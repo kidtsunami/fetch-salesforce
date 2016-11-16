@@ -18,6 +18,9 @@ var Fetcher = (function (_super) {
         this.isRefreshingAccessToken = false;
         this.pendingRequests = [];
     }
+    Fetcher.Create = function (options) {
+        return new Fetcher(options);
+    };
     Fetcher.prototype.getAccessToken = function () {
         if (this.accessToken) {
             return Promise.resolve(this.accessToken);

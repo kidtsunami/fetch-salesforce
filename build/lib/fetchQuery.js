@@ -8,6 +8,9 @@ var FetchQuery = (function () {
         this.options = options;
         this.initializeBaseDataURL();
     }
+    FetchQuery.Create = function (fetcher, options) {
+        return new FetchQuery(fetcher, options);
+    };
     FetchQuery.prototype.initializeBaseDataURL = function () {
         var apiVersion = salesforceOptions_1.formatApiVersion(this.options.apiVersion);
         this.baseDataURL = urlJoin(this.options.baseURL, 'services/data', apiVersion);

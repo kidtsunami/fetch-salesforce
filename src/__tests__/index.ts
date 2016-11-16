@@ -1,9 +1,7 @@
-import sinon = require('sinon');
 import { FetchSalesforce, SalesforceOptions } from '../index';
-import { withValidSalesforceOptions } from './salesforceOptions';
-import Promise = require('bluebird');
+import { withRequiredSalesforceOptions } from './lib/salesforceOptions';
 
-test('fetches content from github', () => {
-    let options = withValidSalesforceOptions();
+test('exports FetchSalesforce and SalesforceOptions', () => {
+    let options: SalesforceOptions = withRequiredSalesforceOptions();
     let fetchSalesforce = new FetchSalesforce(options);
 });
