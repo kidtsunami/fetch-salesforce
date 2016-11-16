@@ -6,7 +6,7 @@ var FetchChatter = (function () {
         this.fetcher = fetcher;
         this.options = options;
         if (!this.options.sfdcCommunityID) {
-            throw 'SFDC Community ID is required to fetch Chatter';
+            console.error('SFDC Community ID is required to fetch Chatter');
         }
         this.initializeBaseChatterURL();
     }
@@ -15,6 +15,7 @@ var FetchChatter = (function () {
         this.baseChatterURL = urlJoin(this.options.baseURL, 'services/data', apiVersion, 'connect/communities', this.options.sfdcCommunityID, 'chatter');
     };
     FetchChatter.prototype.list = function () {
+        this.confirmCommunityID();
         var fetchUrl = urlJoin(this.baseChatterURL, 'feeds/news/me/feed-elements');
         var fetchOptions = {
             method: 'GET',
@@ -22,7 +23,13 @@ var FetchChatter = (function () {
         };
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
     };
+    FetchChatter.prototype.confirmCommunityID = function () {
+        if (!this.options.sfdcCommunityID) {
+            throw 'SFDC Community ID is required to fetch Chatter';
+        }
+    };
     FetchChatter.prototype.post = function (post) {
+        this.confirmCommunityID();
         var fetchUrl = urlJoin(this.baseChatterURL, 'feed-elements');
         var bodyJSON = JSON.stringify(post);
         var fetchOptions = {

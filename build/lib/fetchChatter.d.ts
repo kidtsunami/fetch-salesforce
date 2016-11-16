@@ -7,5 +7,6 @@ export declare class FetchChatter {
     constructor(fetcher: Fetcher, options: SalesforceOptions);
     private initializeBaseChatterURL();
     list(): Promise<any>;
+    private confirmCommunityID();
     post(post: any): Promise<any>;
 }
