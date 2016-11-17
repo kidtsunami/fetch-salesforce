@@ -18,7 +18,7 @@ export function withValidSalesforceOptions(): SalesforceOptions{
 }
 export function withRequiredSalesforceOptions(): SalesforceOptions{
     let testOptions: SalesforceOptions = {
-        baseURL: 'https://baseurl/test/',
+        baseURL: 'https://baseurl/requiredtest/',
         clientID: 'testclientid',
         refreshToken: 'arefreshtoken',
     }
@@ -62,9 +62,9 @@ describe('withDefaults', () => {
         it('does not override existing service URLS', () => {
             let testOptionsWithDefaults = withDefaults(testOptions);
 
-            expect(testOptionsWithDefaults.authorizationServiceURL).toBe('https://baseurl/test/services/oauth2/authorize');
-            expect(testOptionsWithDefaults.tokenServiceURL).toBe('https://baseurl/test/services/oauth2/token');
-            expect(testOptionsWithDefaults.revokeServiceURL).toBe('https://baseurl/test/services/oauth2/revoke');
+            expect(testOptionsWithDefaults.authorizationServiceURL).toBe('https://baseurl/requiredtest/services/oauth2/authorize');
+            expect(testOptionsWithDefaults.tokenServiceURL).toBe('https://baseurl/requiredtest/services/oauth2/token');
+            expect(testOptionsWithDefaults.revokeServiceURL).toBe('https://baseurl/requiredtest/services/oauth2/revoke');
         });
     });
 });

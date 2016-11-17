@@ -18,7 +18,7 @@ function withValidSalesforceOptions() {
 exports.withValidSalesforceOptions = withValidSalesforceOptions;
 function withRequiredSalesforceOptions() {
     var testOptions = {
-        baseURL: 'https://baseurl/test/',
+        baseURL: 'https://baseurl/requiredtest/',
         clientID: 'testclientid',
         refreshToken: 'arefreshtoken',
     };
@@ -52,9 +52,9 @@ describe('withDefaults', function () {
         });
         it('does not override existing service URLS', function () {
             var testOptionsWithDefaults = salesforceOptions_1.withDefaults(testOptions);
-            expect(testOptionsWithDefaults.authorizationServiceURL).toBe('https://baseurl/test/services/oauth2/authorize');
-            expect(testOptionsWithDefaults.tokenServiceURL).toBe('https://baseurl/test/services/oauth2/token');
-            expect(testOptionsWithDefaults.revokeServiceURL).toBe('https://baseurl/test/services/oauth2/revoke');
+            expect(testOptionsWithDefaults.authorizationServiceURL).toBe('https://baseurl/requiredtest/services/oauth2/authorize');
+            expect(testOptionsWithDefaults.tokenServiceURL).toBe('https://baseurl/requiredtest/services/oauth2/token');
+            expect(testOptionsWithDefaults.revokeServiceURL).toBe('https://baseurl/requiredtest/services/oauth2/revoke');
         });
     });
 });

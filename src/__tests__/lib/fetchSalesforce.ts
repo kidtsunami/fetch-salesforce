@@ -42,7 +42,7 @@ describe('fetchSalesforce', () => {
 
         it('sets options withDefaults', () => {
             expect(fetchSalesforce.options.apiVersion).toBe(33);
-            expect(fetchSalesforce.options.baseURL).toBe('https://baseurl/test/');
+            expect(fetchSalesforce.options.baseURL).toBe('https://baseurl/requiredtest/');
         });
 
         it('creates each fetcher', () => {
@@ -65,7 +65,7 @@ describe('fetchSalesforce', () => {
                 state: 'testState'
             });
 
-            expect(authorizationURL).toBe('https://baseurl/test/services/oauth2/authorize?response_type=code&client_id=testclientid&redirect_uri=&scope=testscope&state=testState');
+            expect(authorizationURL).toBe('https://baseurl/requiredtest/services/oauth2/authorize?response_type=code&client_id=testclientid&redirect_uri=&scope=testscope&state=testState');
         });
     });
 });

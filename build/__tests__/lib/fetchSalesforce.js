@@ -36,7 +36,7 @@ describe('fetchSalesforce', function () {
         });
         it('sets options withDefaults', function () {
             expect(fetchSalesforce.options.apiVersion).toBe(33);
-            expect(fetchSalesforce.options.baseURL).toBe('https://baseurl/test/');
+            expect(fetchSalesforce.options.baseURL).toBe('https://baseurl/requiredtest/');
         });
         it('creates each fetcher', function () {
             expect(fetcherCreateSpy.calledOnce).toBe(true);
@@ -55,7 +55,7 @@ describe('fetchSalesforce', function () {
                 scope: 'testscope',
                 state: 'testState'
             });
-            expect(authorizationURL).toBe('https://baseurl/test/services/oauth2/authorize?response_type=code&client_id=testclientid&redirect_uri=&scope=testscope&state=testState');
+            expect(authorizationURL).toBe('https://baseurl/requiredtest/services/oauth2/authorize?response_type=code&client_id=testclientid&redirect_uri=&scope=testscope&state=testState');
         });
     });
 });
