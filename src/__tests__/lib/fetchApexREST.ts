@@ -39,7 +39,7 @@ describe('fetchApexREST', () => {
 
     describe('get', () => {
         it('calls fetchJSON', (testDone) => {
-            let endpointPath = 'endpoint/path'
+            let endpointPath = 'endpoint/path';
             let expectedURL = 'https://baseurl/requiredtest/apexrest/endpoint/path'
             let expectedOptions = { method: 'GET' };
 
@@ -55,7 +55,7 @@ describe('fetchApexREST', () => {
 
     describe('post', () => {
         it('calls fetchJSON', (testDone) => {
-            let endpointPath = 'endpoint/postpath'
+            let endpointPath = 'endpoint/postpath';
             let body = { aNumber: 5, aString: 'teststring' };
 
             let expectedURL = 'https://baseurl/requiredtest/apexrest/endpoint/postpath'
@@ -77,7 +77,7 @@ describe('fetchApexREST', () => {
 
     describe('patch', () => {
         it('calls fetchJSON', (testDone) => {
-            let endpointPath = 'endpoint/patchpath'
+            let endpointPath = 'endpoint/patchpath';
             let body = { aNumber: 5, aString: 'teststring' };
 
             let expectedURL = 'https://baseurl/requiredtest/apexrest/endpoint/patchpath'
@@ -99,7 +99,7 @@ describe('fetchApexREST', () => {
 
     describe('delete', () => {
         it('calls fetchJSON', (testDone) => {
-            let endpointPath = 'endpoint/deletepath'
+            let endpointPath = 'endpoint/deletepath';
 
             let expectedURL = 'https://baseurl/requiredtest/apexrest/endpoint/deletepath'
             let expectedOptions = { method: 'DELETE' };
