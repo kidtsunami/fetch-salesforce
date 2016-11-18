@@ -2,7 +2,8 @@
 var numeral = require('numeral');
 let urlJoin = require('url-join');
 let defaultOptions = {
-    apiVersion: 33
+    apiVersion: 33,
+    authorizationResponseType: 'token'
 };
 function withDefaults(options) {
     let defaultOptionsByBaseURL = Object.assign({}, defaultOptions);

@@ -18,7 +18,7 @@ class FetchSalesforce {
     }
     buildAuthorizationURL(scopeAndState) {
         let parameters = Object.assign({
-            response_type: 'code',
+            response_type: this.options.authorizationResponseType,
             client_id: this.options.clientID,
             redirect_uri: this.options.redirectUri
         }, scopeAndState);

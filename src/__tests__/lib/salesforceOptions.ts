@@ -9,6 +9,7 @@ export function withValidSalesforceOptions(): SalesforceOptions{
         apiVersion: 37,
         sfdcCommunityID: 'avalidcommunityid',
         authorizationServiceURL: 'https://baseurl2/test/authorize',
+        authorizationResponseType: 'code',
         tokenServiceURL: 'https://baseurl3/test/token',
         revokeServiceURL: 'https://baseurl4/test/revoke',
         redirectUri: 'https://baseurl2/test/redirrrrect',
@@ -39,6 +40,12 @@ describe('withDefaults', () => {
             expect(testOptionsWithDefaults.apiVersion).toBe(37);
         });
 
+        it('does not override existing authorizationResponseType', () => {
+            let testOptionsWithDefaults = withDefaults(testOptions);
+
+            expect(testOptionsWithDefaults.authorizationResponseType).toBe('code');
+        });
+
         it('does not override existing service URLS', () => {
             let testOptionsWithDefaults = withDefaults(testOptions);
 
@@ -57,6 +64,12 @@ describe('withDefaults', () => {
             let testOptionsWithDefaults = withDefaults(testOptions);
 
             expect(testOptionsWithDefaults.apiVersion).toBe(33);
+        });
+
+        it('sets default authorizationResponseType', () => {
+            let testOptionsWithDefaults = withDefaults(testOptions);
+
+            expect(testOptionsWithDefaults.authorizationResponseType).toBe('token');
         });
 
         it('does not override existing service URLS', () => {

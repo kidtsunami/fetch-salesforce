@@ -6,6 +6,7 @@ export interface SalesforceOptions {
     apiVersion?: number;
     sfdcCommunityID?: string;
     authorizationServiceURL?: string;
+    authorizationResponseType?: string;
     tokenServiceURL?: string;
     revokeServiceURL?: string;
     redirectUri?: string;

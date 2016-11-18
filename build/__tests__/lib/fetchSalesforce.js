@@ -55,7 +55,7 @@ describe('fetchSalesforce', () => {
                 scope: 'testscope',
                 state: 'testState'
             });
-            expect(authorizationURL).toBe('https://baseurl/requiredtest/services/oauth2/authorize?response_type=code&client_id=testclientid&redirect_uri=&scope=testscope&state=testState');
+            expect(authorizationURL).toBe('https://baseurl/requiredtest/services/oauth2/authorize?response_type=token&client_id=testclientid&redirect_uri=&scope=testscope&state=testState');
         });
     });
 });
