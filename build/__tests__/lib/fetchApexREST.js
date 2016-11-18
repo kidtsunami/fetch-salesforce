@@ -24,10 +24,6 @@ describe('fetchApexREST', () => {
             expect(fetchApexREST.fetcher).toBe(fetcher);
             expect(fetchApexREST.options).toBe(options);
         });
-        it('sets baseApexRESTURL', () => {
-            expect(options.instanceURL).toBe('https://instanceURL/requiredtest/');
-            expect(fetchApexREST.baseApexRESTURL).toBe('https://instanceURL/requiredtest/apexrest');
-        });
     });
     describe('get', () => {
         it('calls fetchJSON', (testDone) => {

@@ -8,18 +8,17 @@ class FetchChatter {
         if (!this.options.sfdcCommunityID) {
             console.log('SFDC Community ID is required to fetch Chatter');
         }
-        this.initializeBaseChatterURL();
     }
     static Create(fetcher, options) {
         return new FetchChatter(fetcher, options);
     }
-    initializeBaseChatterURL() {
+    getBaseChatterURL() {
         let apiVersion = salesforceOptions_1.formatApiVersion(this.options.apiVersion);
-        this.baseChatterURL = urlJoin(this.options.instanceURL, 'services/data', apiVersion, 'connect/communities', this.options.sfdcCommunityID, 'chatter');
+        return urlJoin(this.options.instanceURL, 'services/data', apiVersion, 'connect/communities', this.options.sfdcCommunityID, 'chatter');
     }
     list() {
         this.confirmCommunityID();
-        let fetchUrl = urlJoin(this.baseChatterURL, 'feeds/news/me/feed-elements');
+        let fetchUrl = urlJoin(this.getBaseChatterURL(), 'feeds/news/me/feed-elements');
         let fetchOptions = {
             method: 'GET',
             cache: false
@@ -33,7 +32,7 @@ class FetchChatter {
     }
     post(post) {
         this.confirmCommunityID();
-        let fetchUrl = urlJoin(this.baseChatterURL, 'feed-elements');
+        let fetchUrl = urlJoin(this.getBaseChatterURL(), 'feed-elements');
         let bodyJSON = JSON.stringify(post);
         let fetchOptions = {
             headers: { 'Content-Type': 'application/json' },

@@ -7,7 +7,6 @@ import * as querystring from 'querystring';
 
 export class FetchUserInfo {
     fetcher: Fetcher;
-    baseUserInfoURL: string;
     options: SalesforceOptions;
 
     static Create(fetcher: Fetcher, options: SalesforceOptions): FetchUserInfo {
@@ -17,16 +16,14 @@ export class FetchUserInfo {
     constructor(fetcher: Fetcher, options: SalesforceOptions){
         this.fetcher = fetcher;
         this.options = options;
-
-        this.initializeBaseUserInfoURL();
     }
 
-    private initializeBaseUserInfoURL(){
-        this.baseUserInfoURL = urlJoin(this.options.instanceURL, 'services/oauth2/userinfo');
+    private getBaseUserInfoURL(){
+        return urlJoin(this.options.instanceURL, 'services/oauth2/userinfo');
     }
 
     get(): Promise<any> {
-        let fetchUrl = urlJoin(this.baseUserInfoURL);
+        let fetchUrl = this.getBaseUserInfoURL();
 
         let fetchOptions = {
             method: 'GET',

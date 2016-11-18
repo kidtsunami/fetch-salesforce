@@ -4,10 +4,9 @@ import Promise = require('bluebird');
 import { SalesforceOptions } from './salesforceOptions';
 export declare class FetchQuery {
     fetcher: Fetcher;
-    baseDataURL: string;
     options: SalesforceOptions;
     static Create(fetcher: Fetcher, options: SalesforceOptions): FetchQuery;
     constructor(fetcher: Fetcher, options: SalesforceOptions);
-    private initializeBaseDataURL();
+    private getBaseDataURL();
     query(soqlQuery: string): Promise<any>;
 }

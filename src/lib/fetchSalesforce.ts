@@ -31,7 +31,7 @@ export class FetchSalesforce {
         this.fetchQuery = FetchQuery.Create(this.fetcher, this.options);
         this.fetchChatter = FetchChatter.Create(this.fetcher, this.options);
         this.fetchApexREST = FetchApexREST.Create(this.fetcher, this.options);
-        this.fetchUserInfo = FetchUserInfo.Create(this.fetcher, this.options);
+        this.fetchUserInfo = FetchUserInfo.Create(this.fetcher, this.options)
     }
 
     buildAuthorizationURL(scopeAndState: ScopeAndState): string {

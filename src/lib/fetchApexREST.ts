@@ -6,7 +6,6 @@ let urlJoin = require('url-join');
 
 export class FetchApexREST {
     fetcher: Fetcher;
-    baseApexRESTURL: string;
     options: SalesforceOptions;
 
     static Create(fetcher: Fetcher, options: SalesforceOptions): FetchApexREST {
@@ -16,12 +15,10 @@ export class FetchApexREST {
     constructor(fetcher: Fetcher, options: SalesforceOptions){
         this.fetcher = fetcher;
         this.options = options;
-
-        this.initializeBaseApexRESTURL();
     }
 
-    private initializeBaseApexRESTURL(){
-        this.baseApexRESTURL = urlJoin(this.options.instanceURL, 'apexrest');
+    private getBaseApexRESTURL(){
+        return urlJoin(this.options.instanceURL, 'apexrest');
     }
 
     get(endpointPath: string): Promise<any> {
@@ -34,7 +31,7 @@ export class FetchApexREST {
     }
 
     private getEndpointURL(endpointPath: string){
-        return urlJoin(this.baseApexRESTURL, endpointPath);
+        return urlJoin(this.getBaseApexRESTURL(), endpointPath);
     }
 
     post(endpointPath: string, body: any): Promise<any> {

@@ -7,7 +7,6 @@ import * as querystring from 'querystring';
 
 export class FetchChatter {
     fetcher: Fetcher;
-    baseChatterURL: string;
     options: SalesforceOptions;
 
     static Create(fetcher: Fetcher, options: SalesforceOptions): FetchChatter {
@@ -21,20 +20,18 @@ export class FetchChatter {
         if(!this.options.sfdcCommunityID){
             console.log('SFDC Community ID is required to fetch Chatter');
         }
-
-        this.initializeBaseChatterURL();
     }
 
-    private initializeBaseChatterURL(){
+    private getBaseChatterURL(){
         let apiVersion = formatApiVersion(this.options.apiVersion);
-        this.baseChatterURL = urlJoin(this.options.instanceURL, 'services/data',
+        return urlJoin(this.options.instanceURL, 'services/data',
             apiVersion, 'connect/communities', this.options.sfdcCommunityID, 
             'chatter');
     }
 
     list(): Promise<any> {
         this.confirmCommunityID();
-        let fetchUrl = urlJoin(this.baseChatterURL, 'feeds/news/me/feed-elements');
+        let fetchUrl = urlJoin(this.getBaseChatterURL(), 'feeds/news/me/feed-elements');
 
         let fetchOptions = {
             method: 'GET',
@@ -51,7 +48,7 @@ export class FetchChatter {
 
     post(post: any): Promise<any> {
         this.confirmCommunityID();
-        let fetchUrl = urlJoin(this.baseChatterURL, 'feed-elements');
+        let fetchUrl = urlJoin(this.getBaseChatterURL(), 'feed-elements');
         
         let bodyJSON = JSON.stringify(post);
         let fetchOptions = {

@@ -30,12 +30,6 @@ describe('fetchSObject', () => {
             expect(fetchSObject.fetcher).toBe(fetcher);
             expect(fetchSObject.options).toBe(options);
         });
-
-        it('sets baseDataURL', () => {
-            expect(options.instanceURL).toBe('https://instanceURL/test/');
-            expect(options.apiVersion).toBe(37);
-            expect(fetchSObject.baseDataURL).toBe('https://instanceURL/test/services/data/v37.0')
-        });
     });
 
     describe('insert', () => {

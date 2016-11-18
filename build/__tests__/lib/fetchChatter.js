@@ -25,12 +25,6 @@ describe('fetchChatter', () => {
                 expect(fetchChatter.fetcher).toBe(fetcher);
                 expect(fetchChatter.options).toBe(options);
             });
-            it('sets baseChatterURL', () => {
-                expect(options.instanceURL).toBe('https://instanceURL/test/');
-                expect(options.apiVersion).toBe(37);
-                expect(options.sfdcCommunityID).toBe('avalidcommunityid');
-                expect(fetchChatter.baseChatterURL).toBe('https://instanceURL/test/services/data/v37.0/connect/communities/avalidcommunityid/chatter');
-            });
         });
         describe('list', () => {
             it('calls fetchJSON', () => {
@@ -80,12 +74,6 @@ describe('fetchChatter', () => {
             it('sets fetcher and options', () => {
                 expect(fetchChatter.fetcher).toBe(fetcher);
                 expect(fetchChatter.options).toBe(options);
-            });
-            it('sets baseChatterURL', () => {
-                expect(options.instanceURL).toBe('https://instanceURL/test/');
-                expect(options.apiVersion).toBe(37);
-                expect(options.sfdcCommunityID).toBe(undefined);
-                expect(fetchChatter.baseChatterURL).toBe('https://instanceURL/test/services/data/v37.0/connect/communities/chatter');
             });
         });
         describe('list', () => {

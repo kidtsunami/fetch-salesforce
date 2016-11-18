@@ -4,13 +4,12 @@ class FetchApexREST {
     constructor(fetcher, options) {
         this.fetcher = fetcher;
         this.options = options;
-        this.initializeBaseApexRESTURL();
     }
     static Create(fetcher, options) {
         return new FetchApexREST(fetcher, options);
     }
-    initializeBaseApexRESTURL() {
-        this.baseApexRESTURL = urlJoin(this.options.instanceURL, 'apexrest');
+    getBaseApexRESTURL() {
+        return urlJoin(this.options.instanceURL, 'apexrest');
     }
     get(endpointPath) {
         let fetchUrl = urlJoin(this.getEndpointURL(endpointPath));
@@ -20,7 +19,7 @@ class FetchApexREST {
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
     }
     getEndpointURL(endpointPath) {
-        return urlJoin(this.baseApexRESTURL, endpointPath);
+        return urlJoin(this.getBaseApexRESTURL(), endpointPath);
     }
     post(endpointPath, body) {
         let fetchUrl = this.getEndpointURL(endpointPath);

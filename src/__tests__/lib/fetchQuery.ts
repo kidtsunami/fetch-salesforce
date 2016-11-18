@@ -30,12 +30,6 @@ describe('fetchQuery', () => {
             expect(fetchQuery.fetcher).toBe(fetcher);
             expect(fetchQuery.options).toBe(options);
         });
-
-        it('sets baseDataURL', () => {
-            expect(options.instanceURL).toBe('https://instanceURL/test/');
-            expect(options.apiVersion).toBe(37);
-            expect(fetchQuery.baseDataURL).toBe('https://instanceURL/test/services/data/v37.0')
-        });
     });
 
     describe('query', () => {

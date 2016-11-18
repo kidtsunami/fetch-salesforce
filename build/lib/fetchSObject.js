@@ -5,14 +5,13 @@ class FetchSObject {
     constructor(fetcher, options) {
         this.fetcher = fetcher;
         this.options = options;
-        this.initializeBaseDataURL();
     }
     static Create(fetcher, options) {
         return new FetchSObject(fetcher, options);
     }
-    initializeBaseDataURL() {
+    getBaseDataURL() {
         let apiVersion = salesforceOptions_1.formatApiVersion(this.options.apiVersion);
-        this.baseDataURL = urlJoin(this.options.instanceURL, 'services/data', apiVersion);
+        return urlJoin(this.options.instanceURL, 'services/data', apiVersion);
     }
     insert(sobjectName, body) {
         let fetchUrl = this.getSObjectUrl(sobjectName);
@@ -25,7 +24,7 @@ class FetchSObject {
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
     }
     getSObjectUrl(sobjectName) {
-        return urlJoin(this.baseDataURL, sobjectName);
+        return urlJoin(this.getBaseDataURL(), sobjectName);
     }
     get(sobjectName, id) {
         let fetchUrl = urlJoin(this.getSObjectUrl(sobjectName), id);

@@ -5,7 +5,6 @@ let urlJoin = require('url-join');
 
 export class FetchSObject {
     fetcher: Fetcher;
-    baseDataURL: string;
     options: SalesforceOptions;
 
     static Create(fetcher: Fetcher, options: SalesforceOptions): FetchSObject {
@@ -15,13 +14,11 @@ export class FetchSObject {
     constructor(fetcher: Fetcher, options: SalesforceOptions){
         this.fetcher = fetcher;
         this.options = options;
-
-        this.initializeBaseDataURL();
     }
 
-    private initializeBaseDataURL(){
+    private getBaseDataURL(){
         let apiVersion = formatApiVersion(this.options.apiVersion);
-        this.baseDataURL = urlJoin(this.options.instanceURL, 'services/data', apiVersion);
+        return urlJoin(this.options.instanceURL, 'services/data', apiVersion);
     }
 
     insert(sobjectName: string, body: any): Promise<any> {
@@ -37,7 +34,7 @@ export class FetchSObject {
     }
 
     private getSObjectUrl(sobjectName: string){
-        return urlJoin(this.baseDataURL, sobjectName);
+        return urlJoin(this.getBaseDataURL(), sobjectName);
     }
 
     get(sobjectName: string, id: string): Promise<any> {

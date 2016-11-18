@@ -7,7 +7,6 @@ import * as querystring from 'querystring';
 
 export class FetchQuery {
     fetcher: Fetcher;
-    baseDataURL: string;
     options: SalesforceOptions;
 
     static Create(fetcher: Fetcher, options: SalesforceOptions): FetchQuery {
@@ -17,18 +16,16 @@ export class FetchQuery {
     constructor(fetcher: Fetcher, options: SalesforceOptions){
         this.fetcher = fetcher;
         this.options = options;
-
-        this.initializeBaseDataURL();
     }
 
-    private initializeBaseDataURL(){
+    private getBaseDataURL(){
         let apiVersion = formatApiVersion(this.options.apiVersion);
-        this.baseDataURL = urlJoin(this.options.instanceURL, 'services/data', apiVersion);
+        return urlJoin(this.options.instanceURL, 'services/data', apiVersion);
     }
 
     query(soqlQuery: string): Promise<any> {
         let encodedQuery = '?' + querystring.stringify({ q: soqlQuery });
-        let fetchUrl = urlJoin(this.baseDataURL, 'query', encodedQuery);
+        let fetchUrl = urlJoin(this.getBaseDataURL(), 'query', encodedQuery);
 
         let fetchOptions = {
             method: 'GET',

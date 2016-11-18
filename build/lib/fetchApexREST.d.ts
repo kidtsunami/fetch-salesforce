@@ -4,11 +4,10 @@ import Promise = require('bluebird');
 import { SalesforceOptions } from './salesforceOptions';
 export declare class FetchApexREST {
     fetcher: Fetcher;
-    baseApexRESTURL: string;
     options: SalesforceOptions;
     static Create(fetcher: Fetcher, options: SalesforceOptions): FetchApexREST;
     constructor(fetcher: Fetcher, options: SalesforceOptions);
-    private initializeBaseApexRESTURL();
+    private getBaseApexRESTURL();
     get(endpointPath: string): Promise<any>;
     private getEndpointURL(endpointPath);
     post(endpointPath: string, body: any): Promise<any>;
