@@ -3,6 +3,8 @@
   "version": "0.0.1",
   "description": "A client for Salesforce using React Native friendly Fetch requests.",
   "main": "build/index.js",
+  "typings": "build/index",
+  "files": ["build/"],
   "author": "David Helmer",
   "license": "MIT",
   "scripts": {
