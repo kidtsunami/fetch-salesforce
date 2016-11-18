@@ -21,7 +21,7 @@ export class FetchSObject {
 
     private initializeBaseDataURL(){
         let apiVersion = formatApiVersion(this.options.apiVersion);
-        this.baseDataURL = urlJoin(this.options.baseURL, 'services/data', apiVersion);
+        this.baseDataURL = urlJoin(this.options.instanceURL, 'services/data', apiVersion);
     }
 
     insert(sobjectName: string, body: any): Promise<any> {

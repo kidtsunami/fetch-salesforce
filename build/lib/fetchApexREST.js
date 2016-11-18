@@ -10,7 +10,7 @@ class FetchApexREST {
         return new FetchApexREST(fetcher, options);
     }
     initializeBaseApexRESTURL() {
-        this.baseApexRESTURL = urlJoin(this.options.baseURL, 'apexrest');
+        this.baseApexRESTURL = urlJoin(this.options.instanceURL, 'apexrest');
     }
     get(endpointPath) {
         let fetchUrl = urlJoin(this.getEndpointURL(endpointPath));

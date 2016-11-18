@@ -33,16 +33,16 @@ describe('fetchChatter', () => {
             });
 
             it('sets baseChatterURL', () => {
-                expect(options.baseURL).toBe('https://baseurl/test/');
+                expect(options.instanceURL).toBe('https://instanceURL/test/');
                 expect(options.apiVersion).toBe(37);
                 expect(options.sfdcCommunityID).toBe('avalidcommunityid');
-                expect(fetchChatter.baseChatterURL).toBe('https://baseurl/test/services/data/v37.0/connect/communities/avalidcommunityid/chatter')
+                expect(fetchChatter.baseChatterURL).toBe('https://instanceURL/test/services/data/v37.0/connect/communities/avalidcommunityid/chatter')
             });
         });
 
         describe('list', () => {
             it('calls fetchJSON', () => {
-                let expectedURL = 'https://baseurl/test/services/data/v37.0/connect/communities/avalidcommunityid/chatter/feeds/news/me/feed-elements';
+                let expectedURL = 'https://instanceURL/test/services/data/v37.0/connect/communities/avalidcommunityid/chatter/feeds/news/me/feed-elements';
                 let expectedOptions = { method: 'GET', cache: false };
 
                 return fetchChatter.list()
@@ -60,7 +60,7 @@ describe('fetchChatter', () => {
             it('calls fetchJSON', () => {
                 let chatterPost = { aNumber: 5, aString: 'teststring' };
 
-                let expectedURL = 'https://baseurl/test/services/data/v37.0/connect/communities/avalidcommunityid/chatter/feed-elements';
+                let expectedURL = 'https://instanceURL/test/services/data/v37.0/connect/communities/avalidcommunityid/chatter/feed-elements';
                 let expectedOptions = {
                     headers: { 'Content-Type': 'application/json' },
                     method: 'POST',
@@ -101,16 +101,16 @@ describe('fetchChatter', () => {
             });
 
             it('sets baseChatterURL', () => {
-                expect(options.baseURL).toBe('https://baseurl/test/');
+                expect(options.instanceURL).toBe('https://instanceURL/test/');
                 expect(options.apiVersion).toBe(37);
                 expect(options.sfdcCommunityID).toBe(undefined);
-                expect(fetchChatter.baseChatterURL).toBe('https://baseurl/test/services/data/v37.0/connect/communities/chatter')
+                expect(fetchChatter.baseChatterURL).toBe('https://instanceURL/test/services/data/v37.0/connect/communities/chatter')
             });
         });
 
         describe('list', () => {
             it('calls fetchJSON', () => {
-                let expectedURL = 'https://baseurl/test/services/data/v37.0/connect/communities/avalidcommunityid/chatter/feeds/news/me/feed-elements';
+                let expectedURL = 'https://instanceURL/test/services/data/v37.0/connect/communities/avalidcommunityid/chatter/feeds/news/me/feed-elements';
                 let expectedOptions = { method: 'GET', cache: false };
 
                 try {
@@ -126,7 +126,7 @@ describe('fetchChatter', () => {
             it('calls fetchJSON', () => {
                 let chatterPost = { aNumber: 5, aString: 'teststring' };
 
-                let expectedURL = 'https://baseurl/test/services/data/v37.0/connect/communities/avalidcommunityid/chatter/feed-elements';
+                let expectedURL = 'https://instanceURL/test/services/data/v37.0/connect/communities/avalidcommunityid/chatter/feed-elements';
                 let expectedOptions = {
                     headers: { 'Content-Type': 'application/json' },
                     method: 'POST',

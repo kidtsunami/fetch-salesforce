@@ -10,7 +10,7 @@ class FetchUserInfo {
         return new FetchUserInfo(fetcher, options);
     }
     initializeBaseUserInfoURL() {
-        this.baseUserInfoURL = urlJoin(this.options.baseURL, 'services/oauth2/userinfo');
+        this.baseUserInfoURL = urlJoin(this.options.instanceURL, 'services/oauth2/userinfo');
     }
     get() {
         let fetchUrl = urlJoin(this.baseUserInfoURL);

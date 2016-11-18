@@ -2,24 +2,24 @@ import { SalesforceOptions, withDefaults, formatApiVersion } from '../../lib/sal
 
 export function withValidSalesforceOptions(): SalesforceOptions{
     let testOptions: SalesforceOptions = {
-        baseURL: 'https://baseurl/test/',
+        instanceURL: 'https://instanceURL/test/',
         clientID: 'testclientid',
         clientSecret: 'testclientsecret',
         refreshToken: 'arefreshtoken',
         apiVersion: 37,
         sfdcCommunityID: 'avalidcommunityid',
-        authorizationServiceURL: 'https://baseurl2/test/authorize',
+        authorizationServiceURL: 'https://instanceURL2/test/authorize',
         authorizationResponseType: 'code',
-        tokenServiceURL: 'https://baseurl3/test/token',
-        revokeServiceURL: 'https://baseurl4/test/revoke',
-        redirectUri: 'https://baseurl2/test/redirrrrect',
+        tokenServiceURL: 'https://instanceURL3/test/token',
+        revokeServiceURL: 'https://instanceURL4/test/revoke',
+        redirectUri: 'https://instanceURL2/test/redirrrrect',
     }
 
     return testOptions;
 }
 export function withRequiredSalesforceOptions(): SalesforceOptions{
     let testOptions: SalesforceOptions = {
-        baseURL: 'https://baseurl/requiredtest/',
+        instanceURL: 'https://instanceURL/requiredtest/',
         clientID: 'testclientid',
         refreshToken: 'arefreshtoken',
     }
@@ -49,9 +49,9 @@ describe('withDefaults', () => {
         it('does not override existing service URLS', () => {
             let testOptionsWithDefaults = withDefaults(testOptions);
 
-            expect(testOptions.authorizationServiceURL).toBe('https://baseurl2/test/authorize');
-            expect(testOptions.tokenServiceURL).toBe('https://baseurl3/test/token');
-            expect(testOptions.revokeServiceURL).toBe('https://baseurl4/test/revoke');
+            expect(testOptions.authorizationServiceURL).toBe('https://instanceURL2/test/authorize');
+            expect(testOptions.tokenServiceURL).toBe('https://instanceURL3/test/token');
+            expect(testOptions.revokeServiceURL).toBe('https://instanceURL4/test/revoke');
         });
     });
 
@@ -75,9 +75,9 @@ describe('withDefaults', () => {
         it('does not override existing service URLS', () => {
             let testOptionsWithDefaults = withDefaults(testOptions);
 
-            expect(testOptionsWithDefaults.authorizationServiceURL).toBe('https://baseurl/requiredtest/services/oauth2/authorize');
-            expect(testOptionsWithDefaults.tokenServiceURL).toBe('https://baseurl/requiredtest/services/oauth2/token');
-            expect(testOptionsWithDefaults.revokeServiceURL).toBe('https://baseurl/requiredtest/services/oauth2/revoke');
+            expect(testOptionsWithDefaults.authorizationServiceURL).toBe('https://instanceURL/requiredtest/services/oauth2/authorize');
+            expect(testOptionsWithDefaults.tokenServiceURL).toBe('https://instanceURL/requiredtest/services/oauth2/token');
+            expect(testOptionsWithDefaults.revokeServiceURL).toBe('https://instanceURL/requiredtest/services/oauth2/revoke');
         });
     });
 });

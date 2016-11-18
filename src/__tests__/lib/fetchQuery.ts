@@ -32,9 +32,9 @@ describe('fetchQuery', () => {
         });
 
         it('sets baseDataURL', () => {
-            expect(options.baseURL).toBe('https://baseurl/test/');
+            expect(options.instanceURL).toBe('https://instanceURL/test/');
             expect(options.apiVersion).toBe(37);
-            expect(fetchQuery.baseDataURL).toBe('https://baseurl/test/services/data/v37.0')
+            expect(fetchQuery.baseDataURL).toBe('https://instanceURL/test/services/data/v37.0')
         });
     });
 
@@ -42,7 +42,7 @@ describe('fetchQuery', () => {
         it('calls fetchJSON', () => {
             let soqlQuery = 'SELECT Id, Name FROM Account';
 
-            let expectedURL = 'https://baseurl/test/services/data/v37.0/query?q=SELECT%20Id%2C%20Name%20FROM%20Account';
+            let expectedURL = 'https://instanceURL/test/services/data/v37.0/query?q=SELECT%20Id%2C%20Name%20FROM%20Account';
             let expectedOptions = { method: 'GET', cache: false };
 
             return fetchQuery.query(soqlQuery)

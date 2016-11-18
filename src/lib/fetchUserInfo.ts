@@ -22,7 +22,7 @@ export class FetchUserInfo {
     }
 
     private initializeBaseUserInfoURL(){
-        this.baseUserInfoURL = urlJoin(this.options.baseURL, 'services/oauth2/userinfo');
+        this.baseUserInfoURL = urlJoin(this.options.instanceURL, 'services/oauth2/userinfo');
     }
 
     get(): Promise<any> {

@@ -32,9 +32,9 @@ describe('fetchSObject', () => {
         });
 
         it('sets baseDataURL', () => {
-            expect(options.baseURL).toBe('https://baseurl/test/');
+            expect(options.instanceURL).toBe('https://instanceURL/test/');
             expect(options.apiVersion).toBe(37);
-            expect(fetchSObject.baseDataURL).toBe('https://baseurl/test/services/data/v37.0')
+            expect(fetchSObject.baseDataURL).toBe('https://instanceURL/test/services/data/v37.0')
         });
     });
 
@@ -45,7 +45,7 @@ describe('fetchSObject', () => {
                 Name: 'test name'
             };
 
-            let expectedURL = 'https://baseurl/test/services/data/v37.0/Account';
+            let expectedURL = 'https://instanceURL/test/services/data/v37.0/Account';
             let expectedOptions = {
                     headers: { 'Content-Type': 'application/json' },
                     method: 'POST',
@@ -72,7 +72,7 @@ describe('fetchSObject', () => {
         });
 
         it('calls fetchJSON', () => {
-            let expectedURL = 'https://baseurl/test/services/data/v37.0/Case/a0Ga000000awuHe';
+            let expectedURL = 'https://instanceURL/test/services/data/v37.0/Case/a0Ga000000awuHe';
             let expectedOptions = {
                 headers: { 'Content-Type': 'application/json' },
                 method: 'GET'
@@ -106,7 +106,7 @@ describe('fetchSObject', () => {
             });
 
             it('calls fetchJSON', () => {
-                let expectedURL = 'https://baseurl/test/services/data/v37.0/Case/a0Ga000000awuHe';
+                let expectedURL = 'https://instanceURL/test/services/data/v37.0/Case/a0Ga000000awuHe';
                 let expectedOptions = {
                         headers: { 'Content-Type': 'application/json' },
                         method: 'PATCH',
@@ -125,7 +125,7 @@ describe('fetchSObject', () => {
 
         describe('without id', () => {
             it('calls fetchJSON and an exception is thrown', () => {
-                let expectedURL = 'https://baseurl/test/services/data/v37.0/Case/a0Ga000000awuHe';
+                let expectedURL = 'https://instanceURL/test/services/data/v37.0/Case/a0Ga000000awuHe';
                 let expectedOptions = {
                         headers: { 'Content-Type': 'application/json' },
                         method: 'PATCH',
@@ -156,7 +156,7 @@ describe('fetchSObject', () => {
         });
 
         it('calls fetchJSON', () => {
-            let expectedURL = 'https://baseurl/test/services/data/v37.0/Case/a0Ga000000awuHe';
+            let expectedURL = 'https://instanceURL/test/services/data/v37.0/Case/a0Ga000000awuHe';
             let expectedOptions = {
                 method: 'DELETE'
             };

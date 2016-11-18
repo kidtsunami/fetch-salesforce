@@ -27,7 +27,7 @@ export class FetchChatter {
 
     private initializeBaseChatterURL(){
         let apiVersion = formatApiVersion(this.options.apiVersion);
-        this.baseChatterURL = urlJoin(this.options.baseURL, 'services/data',
+        this.baseChatterURL = urlJoin(this.options.instanceURL, 'services/data',
             apiVersion, 'connect/communities', this.options.sfdcCommunityID, 
             'chatter');
     }

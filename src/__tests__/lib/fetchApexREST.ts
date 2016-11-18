@@ -32,15 +32,15 @@ describe('fetchApexREST', () => {
         });
 
         it('sets baseApexRESTURL', () => {
-            expect(options.baseURL).toBe('https://baseurl/requiredtest/');
-            expect(fetchApexREST.baseApexRESTURL).toBe('https://baseurl/requiredtest/apexrest')
+            expect(options.instanceURL).toBe('https://instanceURL/requiredtest/');
+            expect(fetchApexREST.baseApexRESTURL).toBe('https://instanceURL/requiredtest/apexrest')
         });
     });
 
     describe('get', () => {
         it('calls fetchJSON', (testDone) => {
             let endpointPath = 'endpoint/path';
-            let expectedURL = 'https://baseurl/requiredtest/apexrest/endpoint/path'
+            let expectedURL = 'https://instanceURL/requiredtest/apexrest/endpoint/path'
             let expectedOptions = { method: 'GET' };
 
             fetchApexREST.get(endpointPath)
@@ -58,7 +58,7 @@ describe('fetchApexREST', () => {
             let endpointPath = 'endpoint/postpath';
             let body = { aNumber: 5, aString: 'teststring' };
 
-            let expectedURL = 'https://baseurl/requiredtest/apexrest/endpoint/postpath'
+            let expectedURL = 'https://instanceURL/requiredtest/apexrest/endpoint/postpath'
             let expectedOptions = {
                 headers: { 'Content-Type': 'application/json' },
                 method: 'POST',
@@ -81,7 +81,7 @@ describe('fetchApexREST', () => {
             let endpointPath = 'endpoint/patchpath';
             let body = { aNumber: 5, aString: 'teststring' };
 
-            let expectedURL = 'https://baseurl/requiredtest/apexrest/endpoint/patchpath'
+            let expectedURL = 'https://instanceURL/requiredtest/apexrest/endpoint/patchpath'
             let expectedOptions = {
                 headers: { 'Content-Type': 'application/json' },
                 method: 'PATCH',
@@ -103,7 +103,7 @@ describe('fetchApexREST', () => {
         it('calls fetchJSON', () => {
             let endpointPath = 'endpoint/deletepath';
 
-            let expectedURL = 'https://baseurl/requiredtest/apexrest/endpoint/deletepath'
+            let expectedURL = 'https://instanceURL/requiredtest/apexrest/endpoint/deletepath'
             let expectedOptions = { method: 'DELETE' };
 
             return fetchApexREST.delete(endpointPath)

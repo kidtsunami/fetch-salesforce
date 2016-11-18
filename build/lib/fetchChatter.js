@@ -15,7 +15,7 @@ class FetchChatter {
     }
     initializeBaseChatterURL() {
         let apiVersion = salesforceOptions_1.formatApiVersion(this.options.apiVersion);
-        this.baseChatterURL = urlJoin(this.options.baseURL, 'services/data', apiVersion, 'connect/communities', this.options.sfdcCommunityID, 'chatter');
+        this.baseChatterURL = urlJoin(this.options.instanceURL, 'services/data', apiVersion, 'connect/communities', this.options.sfdcCommunityID, 'chatter');
     }
     list() {
         this.confirmCommunityID();

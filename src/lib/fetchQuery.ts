@@ -23,7 +23,7 @@ export class FetchQuery {
 
     private initializeBaseDataURL(){
         let apiVersion = formatApiVersion(this.options.apiVersion);
-        this.baseDataURL = urlJoin(this.options.baseURL, 'services/data', apiVersion);
+        this.baseDataURL = urlJoin(this.options.instanceURL, 'services/data', apiVersion);
     }
 
     query(soqlQuery: string): Promise<any> {

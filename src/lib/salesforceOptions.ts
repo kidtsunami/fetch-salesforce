@@ -2,7 +2,7 @@ var numeral = require('numeral');
 let urlJoin = require('url-join');
 
 export interface SalesforceOptions {
-    baseURL: string;
+    instanceURL: string;
     clientID: string;
     clientSecret?: string;
     refreshToken: string;
@@ -22,12 +22,12 @@ let defaultOptions = {
 }
 
 export function withDefaults(options: SalesforceOptions): SalesforceOptions {
-    let defaultOptionsByBaseURL: any = Object.assign({}, defaultOptions);
-    defaultOptionsByBaseURL.authorizationServiceURL = urlJoin(options.baseURL, '/services/oauth2/authorize');
-    defaultOptionsByBaseURL.tokenServiceURL = urlJoin(options.baseURL, '/services/oauth2/token');
-    defaultOptionsByBaseURL.revokeServiceURL = urlJoin(options.baseURL, '/services/oauth2/revoke');
+    let defaultOptionsByinstanceURL: any = Object.assign({}, defaultOptions);
+    defaultOptionsByinstanceURL.authorizationServiceURL = urlJoin(options.instanceURL, '/services/oauth2/authorize');
+    defaultOptionsByinstanceURL.tokenServiceURL = urlJoin(options.instanceURL, '/services/oauth2/token');
+    defaultOptionsByinstanceURL.revokeServiceURL = urlJoin(options.instanceURL, '/services/oauth2/revoke');
     
-    return Object.assign(defaultOptionsByBaseURL, options);
+    return Object.assign(defaultOptionsByinstanceURL, options);
 }
 
 export function formatApiVersion(apiVersion: number){

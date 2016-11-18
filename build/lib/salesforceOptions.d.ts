@@ -1,5 +1,5 @@
 export interface SalesforceOptions {
-    baseURL: string;
+    instanceURL: string;
     clientID: string;
     clientSecret?: string;
     refreshToken: string;

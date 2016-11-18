@@ -12,7 +12,7 @@ class FetchSObject {
     }
     initializeBaseDataURL() {
         let apiVersion = salesforceOptions_1.formatApiVersion(this.options.apiVersion);
-        this.baseDataURL = urlJoin(this.options.baseURL, 'services/data', apiVersion);
+        this.baseDataURL = urlJoin(this.options.instanceURL, 'services/data', apiVersion);
     }
     insert(sobjectName, body) {
         let fetchUrl = this.getSObjectUrl(sobjectName);
