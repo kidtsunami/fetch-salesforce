@@ -1,12 +1,10 @@
 {
   "name": "fetch-salesforce",
-  "version": "0.0.4",
+  "version": "0.0.3",
   "description": "A client for Salesforce using React Native friendly Fetch requests.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
-  "files": [
-    "build/"
-  ],
+  "files": ["build/"],
   "author": "David Helmer",
   "license": "MIT",
   "scripts": {

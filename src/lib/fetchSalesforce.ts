@@ -6,7 +6,7 @@ import { FetchChatter } from './fetchChatter';
 import { FetchApexREST } from './fetchApexREST';
 import { SalesforceOptions, withDefaults } from './salesforceOptions'
 
-import * as urlJoin from 'url-join';
+let urlJoin = require('url-join');
 import * as querystring from 'querystring';
 
 export interface ScopeAndState {

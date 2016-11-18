@@ -1,5 +1,5 @@
 var numeral = require('numeral');
-import * as urlJoin from 'url-join';
+let urlJoin = require('url-join');
 
 export interface SalesforceOptions {
     baseURL: string;
@@ -19,7 +19,7 @@ let defaultOptions = {
 }
 
 export function withDefaults(options: SalesforceOptions): SalesforceOptions {
-    let defaultOptionsByBaseURL: any = Object.assign({}, defaultOptions);
+    let defaultOptionsByBaseURL = Object.assign({}, defaultOptions);
     defaultOptionsByBaseURL.authorizationServiceURL = urlJoin(options.baseURL, '/services/oauth2/authorize');
     defaultOptionsByBaseURL.tokenServiceURL = urlJoin(options.baseURL, '/services/oauth2/token');
     defaultOptionsByBaseURL.revokeServiceURL = urlJoin(options.baseURL, '/services/oauth2/revoke');

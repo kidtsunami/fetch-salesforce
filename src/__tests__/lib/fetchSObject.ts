@@ -1,5 +1,5 @@
-import * as sinon from 'sinon';
-import * as Promise from 'bluebird';
+import sinon = require('sinon');
+import Promise = require('bluebird');
 import { Fetcher } from '../../lib/fetcher';
 import { FetchSObject } from '../../lib/fetchSObject';
 

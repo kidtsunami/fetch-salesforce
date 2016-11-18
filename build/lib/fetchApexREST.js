@@ -1,52 +1,55 @@
-import * as urlJoin from 'url-join';
-export class FetchApexREST {
-    constructor(fetcher, options) {
+"use strict";
+var urlJoin = require('url-join');
+var FetchApexREST = (function () {
+    function FetchApexREST(fetcher, options) {
         this.fetcher = fetcher;
         this.options = options;
         this.initializeBaseApexRESTURL();
     }
-    static Create(fetcher, options) {
+    FetchApexREST.Create = function (fetcher, options) {
         return new FetchApexREST(fetcher, options);
-    }
-    initializeBaseApexRESTURL() {
+    };
+    FetchApexREST.prototype.initializeBaseApexRESTURL = function () {
         this.baseApexRESTURL = urlJoin(this.options.baseURL, 'apexrest');
-    }
-    get(endpointPath) {
-        let fetchUrl = urlJoin(this.getEndpointURL(endpointPath));
-        let fetchOptions = {
+    };
+    FetchApexREST.prototype.get = function (endpointPath) {
+        var fetchUrl = urlJoin(this.getEndpointURL(endpointPath));
+        var fetchOptions = {
             method: 'GET'
         };
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
-    }
-    getEndpointURL(endpointPath) {
+    };
+    FetchApexREST.prototype.getEndpointURL = function (endpointPath) {
         return urlJoin(this.baseApexRESTURL, endpointPath);
-    }
-    post(endpointPath, body) {
-        let fetchUrl = this.getEndpointURL(endpointPath);
-        let bodyJSON = JSON.stringify(body);
-        let fetchOptions = {
+    };
+    FetchApexREST.prototype.post = function (endpointPath, body) {
+        var fetchUrl = this.getEndpointURL(endpointPath);
+        var bodyJSON = JSON.stringify(body);
+        var fetchOptions = {
             headers: { 'Content-Type': 'application/json' },
             method: 'POST',
             body: bodyJSON
         };
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
-    }
-    patch(endpointPath, body) {
-        let bodyJSON = JSON.stringify(body);
-        let fetchUrl = this.getEndpointURL(endpointPath);
-        let fetchOptions = {
+    };
+    FetchApexREST.prototype.patch = function (endpointPath, body) {
+        var bodyJSON = JSON.stringify(body);
+        var fetchUrl = this.getEndpointURL(endpointPath);
+        var fetchOptions = {
             headers: { 'Content-Type': 'application/json' },
             method: 'PATCH',
             body: bodyJSON
         };
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
-    }
-    delete(endpointPath) {
-        let fetchUrl = this.getEndpointURL(endpointPath);
-        let fetchOptions = {
+    };
+    FetchApexREST.prototype.delete = function (endpointPath) {
+        var fetchUrl = this.getEndpointURL(endpointPath);
+        var fetchOptions = {
             method: 'DELETE'
         };
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
-    }
-}
+    };
+    return FetchApexREST;
+}());
+exports.FetchApexREST = FetchApexREST;
 //# sourceMappingURL=fetchApexREST.js.map
