@@ -1,6 +1,6 @@
 {
   "name": "fetch-salesforce",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "A client for Salesforce using React Native friendly Fetch requests.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -10,8 +10,6 @@
   "author": "David Helmer",
   "license": "MIT",
   "scripts": {
-    "preinstall": "rm -rf typings/globals",
-    "postinstall": "node node_modules/typings/dist/bin.js install",
     "prebuild": "rm -rf build",
     "build": "tsc",
     "test": "jest --coverage"
