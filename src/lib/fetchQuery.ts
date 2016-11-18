@@ -9,6 +9,10 @@ export class FetchQuery {
     baseDataURL: string;
     options: SalesforceOptions;
 
+    static Create(fetcher: Fetcher, options: SalesforceOptions): FetchQuery {
+        return new FetchQuery(fetcher, options);
+    }
+
     constructor(fetcher: Fetcher, options: SalesforceOptions){
         this.fetcher = fetcher;
         this.options = options;

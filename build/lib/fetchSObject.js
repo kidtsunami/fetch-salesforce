@@ -7,6 +7,9 @@ var FetchSObject = (function () {
         this.options = options;
         this.initializeBaseDataURL();
     }
+    FetchSObject.Create = function (fetcher, options) {
+        return new FetchSObject(fetcher, options);
+    };
     FetchSObject.prototype.initializeBaseDataURL = function () {
         var apiVersion = salesforceOptions_1.formatApiVersion(this.options.apiVersion);
         this.baseDataURL = urlJoin(this.options.baseURL, 'services/data', apiVersion);
@@ -23,6 +26,14 @@ var FetchSObject = (function () {
     };
     FetchSObject.prototype.getSObjectUrl = function (sobjectName) {
         return urlJoin(this.baseDataURL, sobjectName);
+    };
+    FetchSObject.prototype.get = function (sobjectName, id) {
+        var fetchUrl = urlJoin(this.getSObjectUrl(sobjectName), id);
+        var fetchOptions = {
+            headers: { 'Content-Type': 'application/json' },
+            method: 'GET'
+        };
+        return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
     };
     FetchSObject.prototype.update = function (sobjectName, body) {
         if (!body.id) {

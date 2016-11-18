@@ -10,11 +10,12 @@
     "postinstall": "node node_modules/typings/dist/bin.js install",
     "prebuild": "rm -rf build",
     "build": "tsc",
-    "test": "jest"
+    "test": "jest --coverage"
   },
   "dependencies": {
     "@types/bluebird": "^3.0.35",
     "@types/node": "6.0.46",
+    "@types/sinon": "^1.16.31",
     "bluebird": "^3.4.6",
     "node-fetch": "^1.6.3",
     "numeral": "^1.5.3",
@@ -22,6 +23,10 @@
     "url-join": "^1.1.0"
   },
   "devDependencies": {
-    "jest": "^16.0.2"
+    "jest": "^16.0.2",
+    "sinon": "^1.17.6"
+  },
+  "jest": {
+    "coverageDirectory": "coverage"
   }
 }

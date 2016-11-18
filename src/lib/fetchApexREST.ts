@@ -8,6 +8,10 @@ export class FetchApexREST {
     baseApexRESTURL: string;
     options: SalesforceOptions;
 
+    static Create(fetcher: Fetcher, options: SalesforceOptions): FetchApexREST {
+        return new FetchApexREST(fetcher, options);
+    }
+
     constructor(fetcher: Fetcher, options: SalesforceOptions){
         this.fetcher = fetcher;
         this.options = options;
@@ -46,7 +50,7 @@ export class FetchApexREST {
 
     patch(endpointPath: string, body: any): Promise<any> {
         let bodyJSON = JSON.stringify(body);
-        let fetchUrl = urlJoin(this.getEndpointURL(endpointPath), body.id);
+        let fetchUrl = this.getEndpointURL(endpointPath);
 
         let fetchOptions = {
             headers: { 'Content-Type': 'application/json' },
@@ -57,7 +61,7 @@ export class FetchApexREST {
     }
 
     delete(endpointPath: string): Promise<any> {
-        let fetchUrl = urlJoin(this.getEndpointURL(endpointPath));
+        let fetchUrl = this.getEndpointURL(endpointPath);
 
         let fetchOptions = {
             method: 'DELETE'

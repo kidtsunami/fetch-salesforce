@@ -10,11 +10,11 @@ var querystring = require('querystring');
 var FetchSalesforce = (function () {
     function FetchSalesforce(options) {
         this.options = salesforceOptions_1.withDefaults(options);
-        this.fetcher = new fetcher_1.Fetcher(this.options);
-        this.fetchSObject = new fetchSObject_1.FetchSObject(this.fetcher, this.options);
-        this.fetchQuery = new fetchQuery_1.FetchQuery(this.fetcher, this.options);
-        this.fetchChatter = new fetchChatter_1.FetchChatter(this.fetcher, this.options);
-        this.fetchApexREST = new fetchApexREST_1.FetchApexREST(this.fetcher, this.options);
+        this.fetcher = fetcher_1.Fetcher.Create(this.options);
+        this.fetchSObject = fetchSObject_1.FetchSObject.Create(this.fetcher, this.options);
+        this.fetchQuery = fetchQuery_1.FetchQuery.Create(this.fetcher, this.options);
+        this.fetchChatter = fetchChatter_1.FetchChatter.Create(this.fetcher, this.options);
+        this.fetchApexREST = fetchApexREST_1.FetchApexREST.Create(this.fetcher, this.options);
     }
     FetchSalesforce.prototype.buildAuthorizationURL = function (scopeAndState) {
         var parameters = Object.assign({

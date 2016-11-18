@@ -6,6 +6,9 @@ var FetchApexREST = (function () {
         this.options = options;
         this.initializeBaseApexRESTURL();
     }
+    FetchApexREST.Create = function (fetcher, options) {
+        return new FetchApexREST(fetcher, options);
+    };
     FetchApexREST.prototype.initializeBaseApexRESTURL = function () {
         this.baseApexRESTURL = urlJoin(this.options.baseURL, 'apexrest');
     };
@@ -31,7 +34,7 @@ var FetchApexREST = (function () {
     };
     FetchApexREST.prototype.patch = function (endpointPath, body) {
         var bodyJSON = JSON.stringify(body);
-        var fetchUrl = urlJoin(this.getEndpointURL(endpointPath), body.id);
+        var fetchUrl = this.getEndpointURL(endpointPath);
         var fetchOptions = {
             headers: { 'Content-Type': 'application/json' },
             method: 'PATCH',
@@ -40,7 +43,7 @@ var FetchApexREST = (function () {
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
     };
     FetchApexREST.prototype.delete = function (endpointPath) {
-        var fetchUrl = urlJoin(this.getEndpointURL(endpointPath));
+        var fetchUrl = this.getEndpointURL(endpointPath);
         var fetchOptions = {
             method: 'DELETE'
         };

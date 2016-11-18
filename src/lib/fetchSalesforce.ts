@@ -24,11 +24,11 @@ export class FetchSalesforce {
 
     constructor(options: SalesforceOptions){
         this.options = withDefaults(options);
-        this.fetcher = new Fetcher(this.options);
-        this.fetchSObject = new FetchSObject(this.fetcher, this.options);
-        this.fetchQuery = new FetchQuery(this.fetcher, this.options);
-        this.fetchChatter = new FetchChatter(this.fetcher, this.options);
-        this.fetchApexREST = new FetchApexREST(this.fetcher, this.options);
+        this.fetcher = Fetcher.Create(this.options);
+        this.fetchSObject = FetchSObject.Create(this.fetcher, this.options);
+        this.fetchQuery = FetchQuery.Create(this.fetcher, this.options);
+        this.fetchChatter = FetchChatter.Create(this.fetcher, this.options);
+        this.fetchApexREST = FetchApexREST.Create(this.fetcher, this.options);
     }
 
     buildAuthorizationURL(scopeAndState: ScopeAndState): string {

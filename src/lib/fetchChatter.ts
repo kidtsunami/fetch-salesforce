@@ -9,12 +9,16 @@ export class FetchChatter {
     baseChatterURL: string;
     options: SalesforceOptions;
 
+    static Create(fetcher: Fetcher, options: SalesforceOptions): FetchChatter {
+        return new FetchChatter(fetcher, options);
+    }
+
     constructor(fetcher: Fetcher, options: SalesforceOptions){
         this.fetcher = fetcher;
         this.options = options;
 
         if(!this.options.sfdcCommunityID){
-            throw 'SFDC Community ID is required to fetch Chatter';
+            console.error('SFDC Community ID is required to fetch Chatter');
         }
 
         this.initializeBaseChatterURL();
@@ -28,6 +32,7 @@ export class FetchChatter {
     }
 
     list(): Promise<any> {
+        this.confirmCommunityID();
         let fetchUrl = urlJoin(this.baseChatterURL, 'feeds/news/me/feed-elements');
 
         let fetchOptions = {
@@ -37,7 +42,14 @@ export class FetchChatter {
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
     }
 
+    private confirmCommunityID(){
+        if(!this.options.sfdcCommunityID){
+            throw 'SFDC Community ID is required to fetch Chatter';
+        }
+    }
+
     post(post: any): Promise<any> {
+        this.confirmCommunityID();
         let fetchUrl = urlJoin(this.baseChatterURL, 'feed-elements');
         
         let bodyJSON = JSON.stringify(post);

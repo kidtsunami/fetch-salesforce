@@ -8,6 +8,10 @@ export class FetchSObject {
     baseDataURL: string;
     options: SalesforceOptions;
 
+    static Create(fetcher: Fetcher, options: SalesforceOptions): FetchSObject {
+        return new FetchSObject(fetcher, options);
+    }
+
     constructor(fetcher: Fetcher, options: SalesforceOptions){
         this.fetcher = fetcher;
         this.options = options;
@@ -34,6 +38,16 @@ export class FetchSObject {
 
     private getSObjectUrl(sobjectName: string){
         return urlJoin(this.baseDataURL, sobjectName);
+    }
+
+    get(sobjectName: string, id: string): Promise<any> {
+        let fetchUrl = urlJoin(this.getSObjectUrl(sobjectName), id);
+
+        let fetchOptions = {
+            headers: { 'Content-Type': 'application/json' },
+            method: 'GET'
+        };
+        return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
     }
 
     update(sobjectName: string, body: any): Promise<any> {

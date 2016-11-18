@@ -30,6 +30,10 @@ export class Fetcher extends events.EventEmitter {
     private pendingRequests: FetcherRequest[];
     private accessToken: string;
 
+    static Create(options: SalesforceOptions){
+        return new Fetcher(options);
+    }
+
     constructor(options: SalesforceOptions){
         super();
         this.options = options;

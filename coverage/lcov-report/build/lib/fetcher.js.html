@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for build/lib/fetcher.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">build/lib</a> fetcher.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">27.19% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>31/114</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">16.67% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>5/30</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">18.52% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>5/27</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">25.89% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>29/112</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66
+67
+68
+69
+70
+71
+72
+73
+74
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">30x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">28x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">"use strict";
+var __extends = (this &amp;&amp; this.__extends) || function (d, b) {
+    for (var p in b) <span class="missing-if-branch" title="else path not taken" >E</span>if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    d.prototype = b === null ? <span class="branch-0 cbranch-no" title="branch not covered" >Object.create(b) </span>: (__.prototype = b.prototype, new __());
+};
+var querystring = require('querystring');
+var events = require('events');
+var Promise = require('bluebird');
+var fetch = require('node-fetch');
+fetch.Promise = Promise;
+var Fetcher = (function (_super) {
+    __extends(Fetcher, _super);
+    function Fetcher(options) {
+        _super.call(this);
+        this.options = options;
+        this.accessToken = undefined;
+        this.isRefreshingAccessToken = false;
+        this.pendingRequests = [];
+    }
+    Fetcher.Create = function (options) {
+        return new Fetcher(options);
+    };
+    Fetcher.prototype.getAccessToken = <span class="fstat-no" title="function not covered" >fu</span>nction () {
+<span class="cstat-no" title="statement not covered" >        if (this.accessToken) {</span>
+<span class="cstat-no" title="statement not covered" >            return Promise.resolve(this.accessToken);</span>
+        }
+        else {
+<span class="cstat-no" title="statement not covered" >            return this.refreshAccessToken();</span>
+        }
+    };
+    Fetcher.prototype.refreshAccessToken = <span class="fstat-no" title="function not covered" >fu</span>nction () {
+        var _this = <span class="cstat-no" title="statement not covered" >this;</span>
+<span class="cstat-no" title="statement not covered" >        this.emit('accessTokenRefreshing');</span>
+        var requestURL = <span class="cstat-no" title="statement not covered" >this.options.tokenServiceURL;</span>
+        var accessToken;
+        var fetchBody = <span class="cstat-no" title="statement not covered" >{</span>
+            grant_type: 'refresh_token',
+            refresh_token: this.options.refreshToken,
+            client_id: this.options.clientID,
+            format: 'json'
+        };
+<span class="cstat-no" title="statement not covered" >        if (this.options.clientSecret) {</span>
+<span class="cstat-no" title="statement not covered" >            fetchBody.client_secret = this.options.clientSecret;</span>
+        }
+        var requestOptions = <span class="cstat-no" title="statement not covered" >{</span>
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            method: 'POST',
+            cache: false,
+            body: querystring.stringify(fetchBody)
+        };
+<span class="cstat-no" title="statement not covered" >        return fetch(requestURL, requestOptions)</span>
+            .then(<span class="fstat-no" title="function not covered" >fu</span>nction (response) { <span class="cstat-no" title="statement not covered" >return response.json(); </span>})
+            .then(<span class="fstat-no" title="function not covered" >fu</span>nction (response) { <span class="cstat-no" title="statement not covered" >return _this.handleGenericErrors(requestURL, requestOptions, response); </span>})
+            .then(<span class="fstat-no" title="function not covered" >fu</span>nction (response) {
+<span class="cstat-no" title="statement not covered" >            console.info("New accessToken retrieved");</span>
+<span class="cstat-no" title="statement not covered" >            _this.emit('accessTokenRefreshed');</span>
+<span class="cstat-no" title="statement not covered" >            _this.accessToken = response.access_token;</span>
+<span class="cstat-no" title="statement not covered" >            return response;</span>
+        });
+    };
+    Fetcher.prototype.fetchJSON = <span class="fstat-no" title="function not covered" >fu</span>nction (requestURL, requestOptions) {
+        var _this = <span class="cstat-no" title="statement not covered" >this;</span>
+<span class="cstat-no" title="statement not covered" >        return new Promise(<span class="fstat-no" title="function not covered" >fu</span>nction (resolve, reject) {</span>
+<span class="cstat-no" title="statement not covered" >            _this.addAuthorizationHeaders(requestOptions.headers)</span>
+                .then(<span class="fstat-no" title="function not covered" >fu</span>nction (headers) {
+<span class="cstat-no" title="statement not covered" >                requestOptions.headers = headers;</span>
+                var fetcherRequest = <span class="cstat-no" title="statement not covered" >{</span>
+                    requestURL: requestURL,
+                    requestOptions: requestOptions,
+                    resolve: resolve,
+                    reject: reject
+                };
+<span class="cstat-no" title="statement not covered" >                console.info('Fetching JSON');</span>
+<span class="cstat-no" title="statement not covered" >                console.info(fetcherRequest);</span>
+<span class="cstat-no" title="statement not covered" >                fetch(requestURL, requestOptions)</span>
+                    .then(<span class="fstat-no" title="function not covered" >fu</span>nction (response) { <span class="cstat-no" title="statement not covered" >return response.json(); </span>})
+                    .then(<span class="fstat-no" title="function not covered" >fu</span>nction (response) {
+<span class="cstat-no" title="statement not covered" >                    if (_this.isInvalidSession(response)) {</span>
+<span class="cstat-no" title="statement not covered" >                        console.info(_this.accessToken + " is invalid, refreshing!");</span>
+<span class="cstat-no" title="statement not covered" >                        _this.pendingRequests.push(fetcherRequest);</span>
+<span class="cstat-no" title="statement not covered" >                        _this.refreshAccessTokenAndRetryPendingRequests(fetcherRequest);</span>
+                    }
+                    else {
+<span class="cstat-no" title="statement not covered" >                        resolve(_this.handleGenericErrors(requestURL, requestOptions, response));</span>
+                    }
+                });
+            });
+        });
+    };
+    Fetcher.prototype.addAuthorizationHeaders = <span class="fstat-no" title="function not covered" >fu</span>nction (headers) {
+        var _this = <span class="cstat-no" title="statement not covered" >this;</span>
+<span class="cstat-no" title="statement not covered" >        return this.getAccessToken()</span>
+            .then(<span class="fstat-no" title="function not covered" >fu</span>nction (accessTokenResponse) {
+<span class="cstat-no" title="statement not covered" >            if (headers === undefined) {</span>
+<span class="cstat-no" title="statement not covered" >                headers = {};</span>
+            }
+            var authorizedHeader = <span class="cstat-no" title="statement not covered" >{</span>
+                'Authorization': 'Authorization: Bearer ' + _this.accessToken
+            };
+<span class="cstat-no" title="statement not covered" >            return Object.assign(headers, authorizedHeader);</span>
+        });
+    };
+    Fetcher.prototype.isInvalidSession = <span class="fstat-no" title="function not covered" >fu</span>nction (response) {
+<span class="cstat-no" title="statement not covered" >        return Array.isArray(response)</span>
+            &amp;&amp; response.length &gt; 0
+            &amp;&amp; response[0].errorCode === 'INVALID_SESSION_ID';
+    };
+    Fetcher.prototype.refreshAccessTokenAndRetryPendingRequests = <span class="fstat-no" title="function not covered" >fu</span>nction (fetcherRequest) {
+        var _this = <span class="cstat-no" title="statement not covered" >this;</span>
+<span class="cstat-no" title="statement not covered" >        if (!this.isRefreshingAccessToken) {</span>
+<span class="cstat-no" title="statement not covered" >            this.isRefreshingAccessToken = true;</span>
+<span class="cstat-no" title="statement not covered" >            console.info('Refreshing token and retrying pending requests');</span>
+<span class="cstat-no" title="statement not covered" >            this.refreshAccessToken()</span>
+                .bind(this)
+                .then(<span class="fstat-no" title="function not covered" >fu</span>nction () {
+<span class="cstat-no" title="statement not covered" >                return _this.retryPendingRequests();</span>
+            });
+        }
+        else {
+<span class="cstat-no" title="statement not covered" >            console.info('Already refreshing token');</span>
+        }
+    };
+    Fetcher.prototype.retryPendingRequests = <span class="fstat-no" title="function not covered" >fu</span>nction () {
+        var _this = <span class="cstat-no" title="statement not covered" >this;</span>
+        var retryPromises = <span class="cstat-no" title="statement not covered" >[];</span>
+<span class="cstat-no" title="statement not covered" >        console.info("Attempting to retry " + this.pendingRequests.length + " pendingRequests");</span>
+<span class="cstat-no" title="statement not covered" >        for (var _i = 0, _a = this.pendingRequests; _i &lt; _a.length; _i++) {</span>
+            var pendingRequest = <span class="cstat-no" title="statement not covered" >_a[_i];</span>
+<span class="cstat-no" title="statement not covered" >            retryPromises.push(this.fetchJSON(pendingRequest.requestURL, pendingRequest.requestOptions));</span>
+        }
+<span class="cstat-no" title="statement not covered" >        console.log('Promising all');</span>
+<span class="cstat-no" title="statement not covered" >        Promise.all(retryPromises)</span>
+            .then(<span class="fstat-no" title="function not covered" >fu</span>nction (responses) {
+<span class="cstat-no" title="statement not covered" >            for (var requestIndex in responses) {</span>
+                var response = <span class="cstat-no" title="statement not covered" >responses[requestIndex];</span>
+                var pendingRequest = <span class="cstat-no" title="statement not covered" >_this.pendingRequests[requestIndex];</span>
+<span class="cstat-no" title="statement not covered" >                console.log('Resolving!!!!');</span>
+<span class="cstat-no" title="statement not covered" >                pendingRequest.resolve(response);</span>
+            }
+<span class="cstat-no" title="statement not covered" >            console.info('PendingRequests have been retried, cleaning pendingRequests');</span>
+<span class="cstat-no" title="statement not covered" >            _this.pendingRequests = [];</span>
+        })
+            .catch(<span class="fstat-no" title="function not covered" >fu</span>nction (error) {
+<span class="cstat-no" title="statement not covered" >            console.error("Failed to retry the pending requests");</span>
+<span class="cstat-no" title="statement not covered" >            console.error(error);</span>
+<span class="cstat-no" title="statement not covered" >            throw (error);</span>
+        });
+        ;
+    };
+    Fetcher.prototype.handleGenericErrors = <span class="fstat-no" title="function not covered" >fu</span>nction (requestURL, requestOptions, response) {
+<span class="cstat-no" title="statement not covered" >        if (!response || response.error) {</span>
+            var fetchJSONException = <span class="cstat-no" title="statement not covered" >{</span>
+                requestURL: requestURL,
+                requestOptions: requestOptions,
+                response: response
+            };
+<span class="cstat-no" title="statement not covered" >            console.error(fetchJSONException);</span>
+<span class="cstat-no" title="statement not covered" >            throw fetchJSONException;</span>
+        }
+        else {
+<span class="cstat-no" title="statement not covered" >            return response;</span>
+        }
+    };
+    Fetcher.prototype.revokeAccessToken = <span class="fstat-no" title="function not covered" >fu</span>nction () {
+        var _this = <span class="cstat-no" title="statement not covered" >this;</span>
+<span class="cstat-no" title="statement not covered" >        if (!this.accessToken) {</span>
+<span class="cstat-no" title="statement not covered" >            throw 'No Access Token to Revoke';</span>
+        }
+<span class="cstat-no" title="statement not covered" >        this.emit('accessTokenRevoking');</span>
+        var requestURL = <span class="cstat-no" title="statement not covered" >this.options.revokeServiceURL;</span>
+        var fetchBody = <span class="cstat-no" title="statement not covered" >{</span>
+            token: this.accessToken
+        };
+        var requestOptions = <span class="cstat-no" title="statement not covered" >{</span>
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            method: 'POST',
+            body: querystring.stringify(fetchBody)
+        };
+<span class="cstat-no" title="statement not covered" >        return fetch(requestURL, requestOptions)</span>
+            .then(<span class="fstat-no" title="function not covered" >fu</span>nction (response) {
+<span class="cstat-no" title="statement not covered" >            if (response.status &amp;&amp; response.status !== 200) {</span>
+                var revokeAccesTokenException = <span class="cstat-no" title="statement not covered" >{</span>
+                    requestURL: requestURL,
+                    requestOptions: requestOptions,
+                    response: response
+                };
+<span class="cstat-no" title="statement not covered" >                console.error(revokeAccesTokenException);</span>
+<span class="cstat-no" title="statement not covered" >                throw revokeAccesTokenException;</span>
+            }
+        })
+            .then(<span class="fstat-no" title="function not covered" >fu</span>nction (response) {
+<span class="cstat-no" title="statement not covered" >            _this.accessToken = undefined;</span>
+<span class="cstat-no" title="statement not covered" >            console.info('Access Token revoked');</span>
+<span class="cstat-no" title="statement not covered" >            _this.emit('accessTokenRevoked');</span>
+        });
+    };
+    return Fetcher;
+}(events.EventEmitter));
+exports.Fetcher = Fetcher;
+//# sourceMappingURL=fetcher.js.map</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Nov 17 2016 20:12:55 GMT-0500 (EST)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>
