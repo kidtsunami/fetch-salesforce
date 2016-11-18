@@ -43,7 +43,7 @@ describe('fetchApexREST', function () {
         });
     });
     describe('post', function () {
-        it('calls fetchJSON', function (testDone) {
+        it('calls fetchJSON', function () {
             var endpointPath = 'endpoint/postpath';
             var body = { aNumber: 5, aString: 'teststring' };
             var expectedURL = 'https://baseurl/requiredtest/apexrest/endpoint/postpath';
@@ -52,16 +52,17 @@ describe('fetchApexREST', function () {
                 method: 'POST',
                 body: '{"aNumber":5,"aString":"teststring"}'
             };
-            fetchApexREST.post(endpointPath, body)
+            return fetchApexREST.post(endpointPath, body)
                 .then(function (result) {
                 expect(result).toBe('success');
-                expect(fetchJSONStub.calledWithExactly(expectedURL, expectedOptions)).toBeTruthy();
-                testDone();
+                expect(fetchJSONStub.calledOnce).toBeTruthy();
+                expect(fetchJSONStub.getCall(0).args[0]).toEqual(expectedURL);
+                expect(fetchJSONStub.getCall(0).args[1]).toEqual(expectedOptions);
             });
         });
     });
     describe('patch', function () {
-        it('calls fetchJSON', function (testDone) {
+        it('calls fetchJSON', function () {
             var endpointPath = 'endpoint/patchpath';
             var body = { aNumber: 5, aString: 'teststring' };
             var expectedURL = 'https://baseurl/requiredtest/apexrest/endpoint/patchpath';
@@ -70,24 +71,24 @@ describe('fetchApexREST', function () {
                 method: 'PATCH',
                 body: '{"aNumber":5,"aString":"teststring"}'
             };
-            fetchApexREST.patch(endpointPath, body)
+            return fetchApexREST.patch(endpointPath, body)
                 .then(function (result) {
                 expect(result).toBe('success');
-                expect(fetchJSONStub.calledWithExactly(expectedURL, expectedOptions)).toBeTruthy();
-                testDone();
+                expect(fetchJSONStub.calledOnce).toBeTruthy();
+                expect(fetchJSONStub.getCall(0).args[0]).toEqual(expectedURL);
+                expect(fetchJSONStub.getCall(0).args[1]).toEqual(expectedOptions);
             });
         });
     });
     describe('delete', function () {
-        it('calls fetchJSON', function (testDone) {
+        it('calls fetchJSON', function () {
             var endpointPath = 'endpoint/deletepath';
             var expectedURL = 'https://baseurl/requiredtest/apexrest/endpoint/deletepath';
             var expectedOptions = { method: 'DELETE' };
-            fetchApexREST.delete(endpointPath)
+            return fetchApexREST.delete(endpointPath)
                 .then(function (result) {
                 expect(result).toBe('success');
                 expect(fetchJSONStub.calledWithExactly(expectedURL, expectedOptions)).toBeTruthy();
-                testDone();
             });
         });
     });

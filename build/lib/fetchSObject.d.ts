@@ -9,6 +9,7 @@ export declare class FetchSObject {
     private initializeBaseDataURL();
     insert(sobjectName: string, body: any): Promise<any>;
     private getSObjectUrl(sobjectName);
+    get(sobjectName: string, id: string): Promise<any>;
     update(sobjectName: string, body: any): Promise<any>;
     delete(sobjectName: string, id: string): Promise<any>;
 }

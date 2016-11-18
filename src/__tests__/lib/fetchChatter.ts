@@ -41,22 +41,23 @@ describe('fetchChatter', () => {
         });
 
         describe('list', () => {
-            it('calls fetchJSON', (testDone) => {
+            it('calls fetchJSON', () => {
                 let expectedURL = 'https://baseurl/test/services/data/v37.0/connect/communities/avalidcommunityid/chatter/feeds/news/me/feed-elements';
                 let expectedOptions = { method: 'GET', cache: false };
 
-                fetchChatter.list()
+                return fetchChatter.list()
                     .then((result) => {
                         expect(result).toBe('success');
 
-                        expect(fetchJSONStub.calledWithExactly(expectedURL, expectedOptions)).toBeTruthy();
-                        testDone();
+                        expect(fetchJSONStub.calledOnce).toBeTruthy();
+                        expect(fetchJSONStub.getCall(0).args[0]).toEqual(expectedURL);
+                        expect(fetchJSONStub.getCall(0).args[1]).toEqual(expectedOptions);
                     });
             });
         });
 
         describe('post', () => {
-            it('calls fetchJSON', (testDone) => {
+            it('calls fetchJSON', () => {
                 let chatterPost = { aNumber: 5, aString: 'teststring' };
 
                 let expectedURL = 'https://baseurl/test/services/data/v37.0/connect/communities/avalidcommunityid/chatter/feed-elements';
@@ -66,12 +67,13 @@ describe('fetchChatter', () => {
                     body: '{"aNumber":5,"aString":"teststring"}'
                 };
 
-                fetchChatter.post(chatterPost)
+                return fetchChatter.post(chatterPost)
                     .then((result) => {
                         expect(result).toBe('success');
 
-                        expect(fetchJSONStub.calledWithExactly(expectedURL, expectedOptions)).toBeTruthy();
-                        testDone();
+                        expect(fetchJSONStub.calledOnce).toBeTruthy();
+                        expect(fetchJSONStub.getCall(0).args[0]).toEqual(expectedURL);
+                        expect(fetchJSONStub.getCall(0).args[1]).toEqual(expectedOptions);
                     });
             });
         });
@@ -112,9 +114,8 @@ describe('fetchChatter', () => {
                 let expectedOptions = { method: 'GET', cache: false };
 
                 try {
-                    fetchChatter.list()
+                    return fetchChatter.list()
                         .then(fail);
-                    fail();
                 } catch(reason){
                     expect(reason).toBe('SFDC Community ID is required to fetch Chatter');
                 }
@@ -133,9 +134,8 @@ describe('fetchChatter', () => {
                 };
 
                 try {
-                    fetchChatter.post(chatterPost)
+                    return fetchChatter.post(chatterPost)
                         .then(fail);
-                    fail();
                 } catch(reason){
                     expect(reason).toBe('SFDC Community ID is required to fetch Chatter');
                 }

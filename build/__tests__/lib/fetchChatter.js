@@ -33,19 +33,20 @@ describe('fetchChatter', function () {
             });
         });
         describe('list', function () {
-            it('calls fetchJSON', function (testDone) {
+            it('calls fetchJSON', function () {
                 var expectedURL = 'https://baseurl/test/services/data/v37.0/connect/communities/avalidcommunityid/chatter/feeds/news/me/feed-elements';
                 var expectedOptions = { method: 'GET', cache: false };
-                fetchChatter.list()
+                return fetchChatter.list()
                     .then(function (result) {
                     expect(result).toBe('success');
-                    expect(fetchJSONStub.calledWithExactly(expectedURL, expectedOptions)).toBeTruthy();
-                    testDone();
+                    expect(fetchJSONStub.calledOnce).toBeTruthy();
+                    expect(fetchJSONStub.getCall(0).args[0]).toEqual(expectedURL);
+                    expect(fetchJSONStub.getCall(0).args[1]).toEqual(expectedOptions);
                 });
             });
         });
         describe('post', function () {
-            it('calls fetchJSON', function (testDone) {
+            it('calls fetchJSON', function () {
                 var chatterPost = { aNumber: 5, aString: 'teststring' };
                 var expectedURL = 'https://baseurl/test/services/data/v37.0/connect/communities/avalidcommunityid/chatter/feed-elements';
                 var expectedOptions = {
@@ -53,11 +54,12 @@ describe('fetchChatter', function () {
                     method: 'POST',
                     body: '{"aNumber":5,"aString":"teststring"}'
                 };
-                fetchChatter.post(chatterPost)
+                return fetchChatter.post(chatterPost)
                     .then(function (result) {
                     expect(result).toBe('success');
-                    expect(fetchJSONStub.calledWithExactly(expectedURL, expectedOptions)).toBeTruthy();
-                    testDone();
+                    expect(fetchJSONStub.calledOnce).toBeTruthy();
+                    expect(fetchJSONStub.getCall(0).args[0]).toEqual(expectedURL);
+                    expect(fetchJSONStub.getCall(0).args[1]).toEqual(expectedOptions);
                 });
             });
         });
@@ -91,9 +93,8 @@ describe('fetchChatter', function () {
                 var expectedURL = 'https://baseurl/test/services/data/v37.0/connect/communities/avalidcommunityid/chatter/feeds/news/me/feed-elements';
                 var expectedOptions = { method: 'GET', cache: false };
                 try {
-                    fetchChatter.list()
+                    return fetchChatter.list()
                         .then(fail);
-                    fail();
                 }
                 catch (reason) {
                     expect(reason).toBe('SFDC Community ID is required to fetch Chatter');
@@ -110,9 +111,8 @@ describe('fetchChatter', function () {
                     body: '{"aNumber":5,"aString":"teststring"}'
                 };
                 try {
-                    fetchChatter.post(chatterPost)
+                    return fetchChatter.post(chatterPost)
                         .then(fail);
-                    fail();
                 }
                 catch (reason) {
                     expect(reason).toBe('SFDC Community ID is required to fetch Chatter');

@@ -40,6 +40,16 @@ export class FetchSObject {
         return urlJoin(this.baseDataURL, sobjectName);
     }
 
+    get(sobjectName: string, id: string): Promise<any> {
+        let fetchUrl = urlJoin(this.getSObjectUrl(sobjectName), id);
+
+        let fetchOptions = {
+            headers: { 'Content-Type': 'application/json' },
+            method: 'GET'
+        };
+        return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
+    }
+
     update(sobjectName: string, body: any): Promise<any> {
         if(!body.id){
             throw {

@@ -54,7 +54,7 @@ describe('fetchApexREST', () => {
     });
 
     describe('post', () => {
-        it('calls fetchJSON', (testDone) => {
+        it('calls fetchJSON', () => {
             let endpointPath = 'endpoint/postpath';
             let body = { aNumber: 5, aString: 'teststring' };
 
@@ -65,18 +65,19 @@ describe('fetchApexREST', () => {
                 body: '{"aNumber":5,"aString":"teststring"}'
             };
 
-            fetchApexREST.post(endpointPath, body)
+            return fetchApexREST.post(endpointPath, body)
                 .then((result) => {
                     expect(result).toBe('success');
 
-                    expect(fetchJSONStub.calledWithExactly(expectedURL, expectedOptions)).toBeTruthy();
-                    testDone();
+                    expect(fetchJSONStub.calledOnce).toBeTruthy();
+                    expect(fetchJSONStub.getCall(0).args[0]).toEqual(expectedURL);
+                    expect(fetchJSONStub.getCall(0).args[1]).toEqual(expectedOptions);
                 });
         });
     });
 
     describe('patch', () => {
-        it('calls fetchJSON', (testDone) => {
+        it('calls fetchJSON', () => {
             let endpointPath = 'endpoint/patchpath';
             let body = { aNumber: 5, aString: 'teststring' };
 
@@ -87,29 +88,29 @@ describe('fetchApexREST', () => {
                 body: '{"aNumber":5,"aString":"teststring"}'
             };
 
-            fetchApexREST.patch(endpointPath, body)
+            return fetchApexREST.patch(endpointPath, body)
                 .then((result) => {
                     expect(result).toBe('success');
 
-                    expect(fetchJSONStub.calledWithExactly(expectedURL, expectedOptions)).toBeTruthy();
-                    testDone();
+                    expect(fetchJSONStub.calledOnce).toBeTruthy();
+                    expect(fetchJSONStub.getCall(0).args[0]).toEqual(expectedURL);
+                    expect(fetchJSONStub.getCall(0).args[1]).toEqual(expectedOptions);
                 });
         });
     });
 
     describe('delete', () => {
-        it('calls fetchJSON', (testDone) => {
+        it('calls fetchJSON', () => {
             let endpointPath = 'endpoint/deletepath';
 
             let expectedURL = 'https://baseurl/requiredtest/apexrest/endpoint/deletepath'
             let expectedOptions = { method: 'DELETE' };
 
-            fetchApexREST.delete(endpointPath)
+            return fetchApexREST.delete(endpointPath)
                 .then((result) => {
                     expect(result).toBe('success');
 
                     expect(fetchJSONStub.calledWithExactly(expectedURL, expectedOptions)).toBeTruthy();
-                    testDone();
                 });
         });
     });
