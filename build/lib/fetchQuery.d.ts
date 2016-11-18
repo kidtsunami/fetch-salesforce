@@ -1,4 +1,6 @@
+/// <reference types="bluebird" />
 import { Fetcher } from './fetcher';
+import Promise = require('bluebird');
 import { SalesforceOptions } from './salesforceOptions';
 export declare class FetchQuery {
     fetcher: Fetcher;

@@ -1,5 +1,5 @@
-
 import { Fetcher } from './fetcher';
+import Promise = require('bluebird');
 import { SalesforceOptions, formatApiVersion } from './salesforceOptions'
 let urlJoin = require('url-join');
 

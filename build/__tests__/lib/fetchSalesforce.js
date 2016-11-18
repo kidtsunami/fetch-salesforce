@@ -1,44 +1,44 @@
 "use strict";
-var sinon = require('sinon');
-var fetcher_1 = require('../../lib/fetcher');
-var fetchSObject_1 = require('../../lib/fetchSObject');
-var fetchQuery_1 = require('../../lib/fetchQuery');
-var fetchChatter_1 = require('../../lib/fetchChatter');
-var fetchApexREST_1 = require('../../lib/fetchApexREST');
-var fetchSalesforce_1 = require('../../lib/fetchSalesforce');
-var SalesforceOptions_1 = require('./SalesforceOptions');
-describe('fetchSalesforce', function () {
-    var fetcherCreateSpy;
-    var fetchSObjectCreateSpy;
-    var fetchQueryCreateSpy;
-    var fetchChatterCreateSpy;
-    var fetchApexRestCreateSpy;
-    beforeEach(function () {
+const sinon = require('sinon');
+const fetcher_1 = require('../../lib/fetcher');
+const fetchSObject_1 = require('../../lib/fetchSObject');
+const fetchQuery_1 = require('../../lib/fetchQuery');
+const fetchChatter_1 = require('../../lib/fetchChatter');
+const fetchApexREST_1 = require('../../lib/fetchApexREST');
+const fetchSalesforce_1 = require('../../lib/fetchSalesforce');
+const SalesforceOptions_1 = require('./SalesforceOptions');
+describe('fetchSalesforce', () => {
+    let fetcherCreateSpy;
+    let fetchSObjectCreateSpy;
+    let fetchQueryCreateSpy;
+    let fetchChatterCreateSpy;
+    let fetchApexRestCreateSpy;
+    beforeEach(() => {
         fetcherCreateSpy = sinon.spy(fetcher_1.Fetcher, 'Create');
         fetchSObjectCreateSpy = sinon.spy(fetchSObject_1.FetchSObject, 'Create');
         fetchQueryCreateSpy = sinon.spy(fetchQuery_1.FetchQuery, 'Create');
         fetchChatterCreateSpy = sinon.spy(fetchChatter_1.FetchChatter, 'Create');
         fetchApexRestCreateSpy = sinon.spy(fetchApexREST_1.FetchApexREST, 'Create');
     });
-    afterEach(function () {
+    afterEach(() => {
         fetcherCreateSpy.restore();
         fetchSObjectCreateSpy.restore();
         fetchQueryCreateSpy.restore();
         fetchChatterCreateSpy.restore();
         fetchApexRestCreateSpy.restore();
     });
-    describe('withRequiredOptions', function () {
-        var testOptions;
-        var fetchSalesforce;
-        beforeEach(function () {
+    describe('withRequiredOptions', () => {
+        let testOptions;
+        let fetchSalesforce;
+        beforeEach(() => {
             testOptions = SalesforceOptions_1.withRequiredSalesforceOptions();
             fetchSalesforce = new fetchSalesforce_1.FetchSalesforce(testOptions);
         });
-        it('sets options withDefaults', function () {
+        it('sets options withDefaults', () => {
             expect(fetchSalesforce.options.apiVersion).toBe(33);
             expect(fetchSalesforce.options.baseURL).toBe('https://baseurl/requiredtest/');
         });
-        it('creates each fetcher', function () {
+        it('creates each fetcher', () => {
             expect(fetcherCreateSpy.calledOnce).toBe(true);
             expect(fetchSObjectCreateSpy.calledOnce).toBe(true);
             expect(fetchQueryCreateSpy.calledOnce).toBe(true);
@@ -50,8 +50,8 @@ describe('fetchSalesforce', function () {
             expect(fetchSalesforce.fetchChatter).toBeInstanceOf(fetchChatter_1.FetchChatter);
             expect(fetchSalesforce.fetchQuery).toBeInstanceOf(fetchQuery_1.FetchQuery);
         });
-        it('builds authorization url', function () {
-            var authorizationURL = fetchSalesforce.buildAuthorizationURL({
+        it('builds authorization url', () => {
+            let authorizationURL = fetchSalesforce.buildAuthorizationURL({
                 scope: 'testscope',
                 state: 'testState'
             });

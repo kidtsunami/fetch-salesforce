@@ -22,7 +22,7 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>35/35</span>
+        <span class='fraction'>26/26</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -32,12 +32,12 @@
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>9/9</span>
+        <span class='fraction'>8/8</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>35/35</span>
+        <span class='fraction'>26/26</span>
       </div>
     </div>
   </div>
@@ -105,24 +105,23 @@
 60
 61
 62
-63
-64</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+63</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -132,18 +131,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -159,78 +158,76 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">"use strict";
-var salesforceOptions_1 = require('./salesforceOptions');
-var urlJoin = require('url-join');
-var FetchSObject = (function () {
-    function FetchSObject(fetcher, options) {
+const salesforceOptions_1 = require('./salesforceOptions');
+let urlJoin = require('url-join');
+class FetchSObject {
+    constructor(fetcher, options) {
         this.fetcher = fetcher;
         this.options = options;
         this.initializeBaseDataURL();
     }
-    FetchSObject.Create = function (fetcher, options) {
+    static Create(fetcher, options) {
         return new FetchSObject(fetcher, options);
-    };
-    FetchSObject.prototype.initializeBaseDataURL = function () {
-        var apiVersion = salesforceOptions_1.formatApiVersion(this.options.apiVersion);
+    }
+    initializeBaseDataURL() {
+        let apiVersion = salesforceOptions_1.formatApiVersion(this.options.apiVersion);
         this.baseDataURL = urlJoin(this.options.baseURL, 'services/data', apiVersion);
-    };
-    FetchSObject.prototype.insert = function (sobjectName, body) {
-        var fetchUrl = this.getSObjectUrl(sobjectName);
-        var bodyJSON = JSON.stringify(body);
-        var fetchOptions = {
+    }
+    insert(sobjectName, body) {
+        let fetchUrl = this.getSObjectUrl(sobjectName);
+        let bodyJSON = JSON.stringify(body);
+        let fetchOptions = {
             headers: { 'Content-Type': 'application/json' },
             method: 'POST',
             body: bodyJSON
         };
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
-    };
-    FetchSObject.prototype.getSObjectUrl = function (sobjectName) {
+    }
+    getSObjectUrl(sobjectName) {
         return urlJoin(this.baseDataURL, sobjectName);
-    };
-    FetchSObject.prototype.get = function (sobjectName, id) {
-        var fetchUrl = urlJoin(this.getSObjectUrl(sobjectName), id);
-        var fetchOptions = {
+    }
+    get(sobjectName, id) {
+        let fetchUrl = urlJoin(this.getSObjectUrl(sobjectName), id);
+        let fetchOptions = {
             headers: { 'Content-Type': 'application/json' },
             method: 'GET'
         };
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
-    };
-    FetchSObject.prototype.update = function (sobjectName, body) {
+    }
+    update(sobjectName, body) {
         if (!body.id) {
             throw {
                 error: 'Invalid body for update, missing id',
                 body: body
             };
         }
-        var bodyJSON = JSON.stringify(body);
-        var fetchUrl = urlJoin(this.getSObjectUrl(sobjectName), body.id);
-        var fetchOptions = {
+        let bodyJSON = JSON.stringify(body);
+        let fetchUrl = urlJoin(this.getSObjectUrl(sobjectName), body.id);
+        let fetchOptions = {
             headers: { 'Content-Type': 'application/json' },
             method: 'PATCH',
             body: bodyJSON
         };
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
-    };
-    FetchSObject.prototype.delete = function (sobjectName, id) {
-        var fetchUrl = urlJoin(this.getSObjectUrl(sobjectName), id);
-        var fetchOptions = {
+    }
+    delete(sobjectName, id) {
+        let fetchUrl = urlJoin(this.getSObjectUrl(sobjectName), id);
+        let fetchOptions = {
             method: 'DELETE'
         };
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
-    };
-    return FetchSObject;
-}());
+    }
+}
 exports.FetchSObject = FetchSObject;
 //# sourceMappingURL=fetchSObject.js.map</pre></td></tr>
 </table></pre>
@@ -238,7 +235,7 @@ exports.FetchSObject = FetchSObject;
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Nov 17 2016 20:12:55 GMT-0500 (EST)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 18 2016 11:05:33 GMT-0500 (EST)
 </div>
 </div>
 <script src="../../prettify.js"></script>

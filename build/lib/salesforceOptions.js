@@ -1,11 +1,11 @@
 "use strict";
 var numeral = require('numeral');
-var urlJoin = require('url-join');
-var defaultOptions = {
+let urlJoin = require('url-join');
+let defaultOptions = {
     apiVersion: 33
 };
 function withDefaults(options) {
-    var defaultOptionsByBaseURL = Object.assign({}, defaultOptions);
+    let defaultOptionsByBaseURL = Object.assign({}, defaultOptions);
     defaultOptionsByBaseURL.authorizationServiceURL = urlJoin(options.baseURL, '/services/oauth2/authorize');
     defaultOptionsByBaseURL.tokenServiceURL = urlJoin(options.baseURL, '/services/oauth2/token');
     defaultOptionsByBaseURL.revokeServiceURL = urlJoin(options.baseURL, '/services/oauth2/revoke');
