@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Code coverage report for build/lib/fetchQuery.js</title>
+    <title>Code coverage report for build/lib/fetchUserInfo.js</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../prettify.css" />
     <link rel="stylesheet" href="../../base.css" />
@@ -16,13 +16,13 @@
 <div class='wrapper'>
   <div class='pad1'>
     <h1>
-      <a href="../../index.html">All files</a> / <a href="index.html">build/lib</a> fetchQuery.js
+      <a href="../../index.html">All files</a> / <a href="index.html">build/lib</a> fetchUserInfo.js
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">70% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>14/14</span>
+        <span class='fraction'>7/10</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -30,18 +30,18 @@
         <span class='fraction'>0/0</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">75% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>4/4</span>
+        <span class='fraction'>3/4</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">70% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>14/14</span>
+        <span class='fraction'>7/10</span>
       </div>
     </div>
   </div>
-  <div class='status-line high'></div>
+  <div class='status-line medium'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -67,67 +67,55 @@
 22
 23
 24
-25
-26
-27
-28
-29</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
+25</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">7x</span>
-<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">"use strict";
 let urlJoin = require('url-join');
-const salesforceOptions_1 = require('./salesforceOptions');
-const querystring = require('querystring');
-class FetchQuery {
+class FetchUserInfo {
     constructor(fetcher, options) {
         this.fetcher = fetcher;
         this.options = options;
-        this.initializeBaseDataURL();
+        this.initializeBaseUserInfoURL();
     }
     static Create(fetcher, options) {
-        return new FetchQuery(fetcher, options);
+        return new FetchUserInfo(fetcher, options);
     }
-    initializeBaseDataURL() {
-        let apiVersion = salesforceOptions_1.formatApiVersion(this.options.apiVersion);
-        this.baseDataURL = urlJoin(this.options.baseURL, 'services/data', apiVersion);
+    initializeBaseUserInfoURL() {
+        this.baseUserInfoURL = urlJoin(this.options.baseURL, 'services/oauth2/userinfo');
     }
-    query(soqlQuery) {
-        let encodedQuery = '?' + querystring.stringify({ q: soqlQuery });
-        let fetchUrl = urlJoin(this.baseDataURL, 'query', encodedQuery);
-        let fetchOptions = {
+<span class="fstat-no" title="function not covered" >    ge</span>t() {
+        let fetchUrl = <span class="cstat-no" title="statement not covered" >urlJoin(this.baseUserInfoURL);</span>
+        let fetchOptions = <span class="cstat-no" title="statement not covered" >{</span>
             method: 'GET',
             cache: false
         };
-        return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
+<span class="cstat-no" title="statement not covered" >        return this.fetcher.fetchJSON(fetchUrl, fetchOptions);</span>
     }
 }
-exports.FetchQuery = FetchQuery;
-//# sourceMappingURL=fetchQuery.js.map</pre></td></tr>
+exports.FetchUserInfo = FetchUserInfo;
+//# sourceMappingURL=fetchUserInfo.js.map</pre></td></tr>
 </table></pre>
 <div class='push'></div><!-- for sticky footer -->
 </div><!-- /wrapper -->

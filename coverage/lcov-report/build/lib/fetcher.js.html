@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">13.64% </span>
+        <span class="strong">11.63% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>12/88</span>
+        <span class='fraction'>10/86</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>2/24</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">13.64% </span>
+        <span class="strong">11.63% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>12/88</span>
+        <span class='fraction'>10/86</span>
       </div>
     </div>
   </div>
@@ -231,11 +231,7 @@
 186
 187
 188
-189
-190
-191</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
+189</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-yes">6x</span>
@@ -427,13 +423,11 @@
 const querystring = require('querystring');
 const events = require('events');
 const Promise = require('bluebird');
-let fetch = require('node-fetch');
-fetch.Promise = Promise;
 class Fetcher extends events.EventEmitter {
     constructor(options) {
         super();
         this.options = options;
-        this.accessToken = undefined;
+        this.options.accessToken = undefined;
         this.isRefreshingAccessToken = false;
         this.pendingRequests = [];
     }
@@ -441,8 +435,8 @@ class Fetcher extends events.EventEmitter {
         return new Fetcher(options);
     }
 <span class="fstat-no" title="function not covered" >    ge</span>tAccessToken() {
-<span class="cstat-no" title="statement not covered" >        if (this.accessToken) {</span>
-<span class="cstat-no" title="statement not covered" >            return Promise.resolve(this.accessToken);</span>
+<span class="cstat-no" title="statement not covered" >        if (this.options.accessToken) {</span>
+<span class="cstat-no" title="statement not covered" >            return Promise.resolve(this.options.accessToken);</span>
         }
         else {
 <span class="cstat-no" title="statement not covered" >            return this.refreshAccessToken();</span>
@@ -475,7 +469,7 @@ class Fetcher extends events.EventEmitter {
             .then(<span class="fstat-no" title="function not covered" >(r</span>esponse) =&gt; {
 <span class="cstat-no" title="statement not covered" >            console.info(`New accessToken retrieved`);</span>
 <span class="cstat-no" title="statement not covered" >            this.emit('accessTokenRefreshed');</span>
-<span class="cstat-no" title="statement not covered" >            this.accessToken = response.access_token;</span>
+<span class="cstat-no" title="statement not covered" >            this.options.accessToken = response.access_token;</span>
 <span class="cstat-no" title="statement not covered" >            return response;</span>
         });
     }
@@ -496,7 +490,7 @@ class Fetcher extends events.EventEmitter {
                     .then(<span class="fstat-no" title="function not covered" >re</span>sponse =&gt; <span class="cstat-no" title="statement not covered" >response.json())</span>
                     .then(<span class="fstat-no" title="function not covered" >re</span>sponse =&gt; {
 <span class="cstat-no" title="statement not covered" >                    if (this.isInvalidSession(response)) {</span>
-<span class="cstat-no" title="statement not covered" >                        console.info(`${this.accessToken} is invalid, refreshing!`);</span>
+<span class="cstat-no" title="statement not covered" >                        console.info(`${this.options.accessToken} is invalid, refreshing!`);</span>
 <span class="cstat-no" title="statement not covered" >                        this.pendingRequests.push(fetcherRequest);</span>
 <span class="cstat-no" title="statement not covered" >                        this.refreshAccessTokenAndRetryPendingRequests(fetcherRequest);</span>
                     }
@@ -514,7 +508,7 @@ class Fetcher extends events.EventEmitter {
 <span class="cstat-no" title="statement not covered" >                headers = {};</span>
             }
             let authorizedHeader = <span class="cstat-no" title="statement not covered" >{</span>
-                'Authorization': 'Authorization: Bearer ' + this.accessToken
+                'Authorization': 'Authorization: Bearer ' + this.options.accessToken
             };
 <span class="cstat-no" title="statement not covered" >            return Object.assign(headers, authorizedHeader);</span>
         });
@@ -578,13 +572,13 @@ class Fetcher extends events.EventEmitter {
         }
     }
 <span class="fstat-no" title="function not covered" >    re</span>vokeAccessToken() {
-<span class="cstat-no" title="statement not covered" >        if (!this.accessToken) {</span>
+<span class="cstat-no" title="statement not covered" >        if (!this.options.accessToken) {</span>
 <span class="cstat-no" title="statement not covered" >            throw 'No Access Token to Revoke';</span>
         }
 <span class="cstat-no" title="statement not covered" >        this.emit('accessTokenRevoking');</span>
         let requestURL = <span class="cstat-no" title="statement not covered" >this.options.revokeServiceURL;</span>
         let fetchBody = <span class="cstat-no" title="statement not covered" >{</span>
-            token: this.accessToken
+            token: this.options.accessToken
         };
         let requestOptions = <span class="cstat-no" title="statement not covered" >{</span>
             headers: {
@@ -606,7 +600,7 @@ class Fetcher extends events.EventEmitter {
             }
         })
             .then(<span class="fstat-no" title="function not covered" >re</span>sponse =&gt; {
-<span class="cstat-no" title="statement not covered" >            this.accessToken = undefined;</span>
+<span class="cstat-no" title="statement not covered" >            this.options.accessToken = undefined;</span>
 <span class="cstat-no" title="statement not covered" >            console.info('Access Token revoked');</span>
 <span class="cstat-no" title="statement not covered" >            this.emit('accessTokenRevoked');</span>
         });
@@ -619,7 +613,7 @@ exports.Fetcher = Fetcher;
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 18 2016 11:32:29 GMT-0500 (EST)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 18 2016 12:33:13 GMT-0500 (EST)
 </div>
 </div>
 <script src="../../prettify.js"></script>
