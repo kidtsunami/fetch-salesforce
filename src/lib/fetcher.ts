@@ -2,9 +2,9 @@ import { SalesforceOptions } from './salesforceOptions'
 import { RequestOptions } from './requestOptions';
 
 import * as querystring from 'querystring';
-import events = require('events');
+import * as events from 'events';
 
-import Promise = require('bluebird');
+import * as Promise from 'bluebird';
 let fetch = require('node-fetch');
 fetch.Promise = Promise;
 

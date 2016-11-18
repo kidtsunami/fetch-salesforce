@@ -1,4 +1,3 @@
-"use strict";
-var fetchSalesforce_1 = require('./lib/fetchSalesforce');
-exports.FetchSalesforce = fetchSalesforce_1.FetchSalesforce;
+import { FetchSalesforce } from './lib/fetchSalesforce';
+export { FetchSalesforce };
 //# sourceMappingURL=index.js.map

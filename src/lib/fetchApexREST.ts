@@ -1,7 +1,7 @@
-
 import { Fetcher } from './fetcher';
+import * as Promise from 'bluebird';
 import { SalesforceOptions, formatApiVersion } from './salesforceOptions'
-let urlJoin = require('url-join');
+import * as urlJoin from 'url-join';
 
 export class FetchApexREST {
     fetcher: Fetcher;

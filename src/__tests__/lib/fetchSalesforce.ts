@@ -1,4 +1,4 @@
-import sinon = require('sinon');
+import * as sinon from 'sinon';
 import { Fetcher } from '../../lib/fetcher';
 import { FetchSObject } from '../../lib/fetchSObject';
 import { FetchQuery } from '../../lib/fetchQuery';
@@ -10,11 +10,11 @@ import { SalesforceOptions } from '../../lib/SalesforceOptions';
 import { withRequiredSalesforceOptions } from './SalesforceOptions';
 
 describe('fetchSalesforce', () => {
-    let fetcherCreateSpy: Sinon.SinonSpy;
-    let fetchSObjectCreateSpy: Sinon.SinonSpy;
-    let fetchQueryCreateSpy: Sinon.SinonSpy;
-    let fetchChatterCreateSpy: Sinon.SinonSpy;
-    let fetchApexRestCreateSpy: Sinon.SinonSpy;
+    let fetcherCreateSpy: sinon.SinonSpy;
+    let fetchSObjectCreateSpy: sinon.SinonSpy;
+    let fetchQueryCreateSpy: sinon.SinonSpy;
+    let fetchChatterCreateSpy: sinon.SinonSpy;
+    let fetchApexRestCreateSpy: sinon.SinonSpy;
 
     beforeEach(() => {
         fetcherCreateSpy = sinon.spy(Fetcher, 'Create');

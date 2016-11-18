@@ -1,8 +1,7 @@
-"use strict";
-var urlJoin = require('url-join');
-var salesforceOptions_1 = require('./salesforceOptions');
-var FetchChatter = (function () {
-    function FetchChatter(fetcher, options) {
+import * as urlJoin from 'url-join';
+import { formatApiVersion } from './salesforceOptions';
+export class FetchChatter {
+    constructor(fetcher, options) {
         this.fetcher = fetcher;
         this.options = options;
         if (!this.options.sfdcCommunityID) {
@@ -10,39 +9,37 @@ var FetchChatter = (function () {
         }
         this.initializeBaseChatterURL();
     }
-    FetchChatter.Create = function (fetcher, options) {
+    static Create(fetcher, options) {
         return new FetchChatter(fetcher, options);
-    };
-    FetchChatter.prototype.initializeBaseChatterURL = function () {
-        var apiVersion = salesforceOptions_1.formatApiVersion(this.options.apiVersion);
+    }
+    initializeBaseChatterURL() {
+        let apiVersion = formatApiVersion(this.options.apiVersion);
         this.baseChatterURL = urlJoin(this.options.baseURL, 'services/data', apiVersion, 'connect/communities', this.options.sfdcCommunityID, 'chatter');
-    };
-    FetchChatter.prototype.list = function () {
+    }
+    list() {
         this.confirmCommunityID();
-        var fetchUrl = urlJoin(this.baseChatterURL, 'feeds/news/me/feed-elements');
-        var fetchOptions = {
+        let fetchUrl = urlJoin(this.baseChatterURL, 'feeds/news/me/feed-elements');
+        let fetchOptions = {
             method: 'GET',
             cache: false
         };
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
-    };
-    FetchChatter.prototype.confirmCommunityID = function () {
+    }
+    confirmCommunityID() {
         if (!this.options.sfdcCommunityID) {
             throw 'SFDC Community ID is required to fetch Chatter';
         }
-    };
-    FetchChatter.prototype.post = function (post) {
+    }
+    post(post) {
         this.confirmCommunityID();
-        var fetchUrl = urlJoin(this.baseChatterURL, 'feed-elements');
-        var bodyJSON = JSON.stringify(post);
-        var fetchOptions = {
+        let fetchUrl = urlJoin(this.baseChatterURL, 'feed-elements');
+        let bodyJSON = JSON.stringify(post);
+        let fetchOptions = {
             headers: { 'Content-Type': 'application/json' },
             method: 'POST',
             body: bodyJSON
         };
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
-    };
-    return FetchChatter;
-}());
-exports.FetchChatter = FetchChatter;
+    }
+}
 //# sourceMappingURL=fetchChatter.js.map

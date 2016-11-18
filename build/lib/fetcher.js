@@ -1,40 +1,32 @@
-"use strict";
-var __extends = (this && this.__extends) || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-};
-var querystring = require('querystring');
-var events = require('events');
-var Promise = require('bluebird');
-var fetch = require('node-fetch');
+import * as querystring from 'querystring';
+import * as events from 'events';
+import * as Promise from 'bluebird';
+let fetch = require('node-fetch');
 fetch.Promise = Promise;
-var Fetcher = (function (_super) {
-    __extends(Fetcher, _super);
-    function Fetcher(options) {
-        _super.call(this);
+export class Fetcher extends events.EventEmitter {
+    constructor(options) {
+        super();
         this.options = options;
         this.accessToken = undefined;
         this.isRefreshingAccessToken = false;
         this.pendingRequests = [];
     }
-    Fetcher.Create = function (options) {
+    static Create(options) {
         return new Fetcher(options);
-    };
-    Fetcher.prototype.getAccessToken = function () {
+    }
+    getAccessToken() {
         if (this.accessToken) {
             return Promise.resolve(this.accessToken);
         }
         else {
             return this.refreshAccessToken();
         }
-    };
-    Fetcher.prototype.refreshAccessToken = function () {
-        var _this = this;
+    }
+    refreshAccessToken() {
         this.emit('accessTokenRefreshing');
-        var requestURL = this.options.tokenServiceURL;
-        var accessToken;
-        var fetchBody = {
+        let requestURL = this.options.tokenServiceURL;
+        let accessToken;
+        let fetchBody = {
             grant_type: 'refresh_token',
             refresh_token: this.options.refreshToken,
             client_id: this.options.clientID,
@@ -43,7 +35,7 @@ var Fetcher = (function (_super) {
         if (this.options.clientSecret) {
             fetchBody.client_secret = this.options.clientSecret;
         }
-        var requestOptions = {
+        let requestOptions = {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
@@ -52,22 +44,21 @@ var Fetcher = (function (_super) {
             body: querystring.stringify(fetchBody)
         };
         return fetch(requestURL, requestOptions)
-            .then(function (response) { return response.json(); })
-            .then(function (response) { return _this.handleGenericErrors(requestURL, requestOptions, response); })
-            .then(function (response) {
-            console.info("New accessToken retrieved");
-            _this.emit('accessTokenRefreshed');
-            _this.accessToken = response.access_token;
+            .then(response => response.json())
+            .then(response => this.handleGenericErrors(requestURL, requestOptions, response))
+            .then((response) => {
+            console.info(`New accessToken retrieved`);
+            this.emit('accessTokenRefreshed');
+            this.accessToken = response.access_token;
             return response;
         });
-    };
-    Fetcher.prototype.fetchJSON = function (requestURL, requestOptions) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            _this.addAuthorizationHeaders(requestOptions.headers)
-                .then(function (headers) {
+    }
+    fetchJSON(requestURL, requestOptions) {
+        return new Promise((resolve, reject) => {
+            this.addAuthorizationHeaders(requestOptions.headers)
+                .then(headers => {
                 requestOptions.headers = headers;
-                var fetcherRequest = {
+                let fetcherRequest = {
                     requestURL: requestURL,
                     requestOptions: requestOptions,
                     resolve: resolve,
@@ -76,83 +67,79 @@ var Fetcher = (function (_super) {
                 console.info('Fetching JSON');
                 console.info(fetcherRequest);
                 fetch(requestURL, requestOptions)
-                    .then(function (response) { return response.json(); })
-                    .then(function (response) {
-                    if (_this.isInvalidSession(response)) {
-                        console.info(_this.accessToken + " is invalid, refreshing!");
-                        _this.pendingRequests.push(fetcherRequest);
-                        _this.refreshAccessTokenAndRetryPendingRequests(fetcherRequest);
+                    .then(response => response.json())
+                    .then(response => {
+                    if (this.isInvalidSession(response)) {
+                        console.info(`${this.accessToken} is invalid, refreshing!`);
+                        this.pendingRequests.push(fetcherRequest);
+                        this.refreshAccessTokenAndRetryPendingRequests(fetcherRequest);
                     }
                     else {
-                        resolve(_this.handleGenericErrors(requestURL, requestOptions, response));
+                        resolve(this.handleGenericErrors(requestURL, requestOptions, response));
                     }
                 });
             });
         });
-    };
-    Fetcher.prototype.addAuthorizationHeaders = function (headers) {
-        var _this = this;
+    }
+    addAuthorizationHeaders(headers) {
         return this.getAccessToken()
-            .then(function (accessTokenResponse) {
+            .then((accessTokenResponse) => {
             if (headers === undefined) {
                 headers = {};
             }
-            var authorizedHeader = {
-                'Authorization': 'Authorization: Bearer ' + _this.accessToken
+            let authorizedHeader = {
+                'Authorization': 'Authorization: Bearer ' + this.accessToken
             };
             return Object.assign(headers, authorizedHeader);
         });
-    };
-    Fetcher.prototype.isInvalidSession = function (response) {
+    }
+    isInvalidSession(response) {
         return Array.isArray(response)
             && response.length > 0
             && response[0].errorCode === 'INVALID_SESSION_ID';
-    };
-    Fetcher.prototype.refreshAccessTokenAndRetryPendingRequests = function (fetcherRequest) {
-        var _this = this;
+    }
+    refreshAccessTokenAndRetryPendingRequests(fetcherRequest) {
         if (!this.isRefreshingAccessToken) {
             this.isRefreshingAccessToken = true;
             console.info('Refreshing token and retrying pending requests');
             this.refreshAccessToken()
                 .bind(this)
-                .then(function () {
-                return _this.retryPendingRequests();
+                .then(() => {
+                return this.retryPendingRequests();
             });
         }
         else {
             console.info('Already refreshing token');
         }
-    };
-    Fetcher.prototype.retryPendingRequests = function () {
-        var _this = this;
-        var retryPromises = [];
-        console.info("Attempting to retry " + this.pendingRequests.length + " pendingRequests");
-        for (var _i = 0, _a = this.pendingRequests; _i < _a.length; _i++) {
-            var pendingRequest = _a[_i];
+    }
+    retryPendingRequests() {
+        let retryPromises = [];
+        console.info(`Attempting to retry ${this.pendingRequests.length} pendingRequests`);
+        for (let pendingRequest of this.pendingRequests) {
             retryPromises.push(this.fetchJSON(pendingRequest.requestURL, pendingRequest.requestOptions));
         }
         console.log('Promising all');
         Promise.all(retryPromises)
-            .then(function (responses) {
-            for (var requestIndex in responses) {
-                var response = responses[requestIndex];
-                var pendingRequest = _this.pendingRequests[requestIndex];
+            .then(responses => {
+            for (let requestIndex in responses) {
+                let response = responses[requestIndex];
+                let pendingRequest = this.pendingRequests[requestIndex];
                 console.log('Resolving!!!!');
                 pendingRequest.resolve(response);
             }
             console.info('PendingRequests have been retried, cleaning pendingRequests');
-            _this.pendingRequests = [];
+            this.pendingRequests = [];
         })
-            .catch(function (error) {
-            console.error("Failed to retry the pending requests");
+            .catch(error => {
+            console.error(`Failed to retry the pending requests`);
             console.error(error);
             throw (error);
         });
         ;
-    };
-    Fetcher.prototype.handleGenericErrors = function (requestURL, requestOptions, response) {
+    }
+    handleGenericErrors(requestURL, requestOptions, response) {
         if (!response || response.error) {
-            var fetchJSONException = {
+            let fetchJSONException = {
                 requestURL: requestURL,
                 requestOptions: requestOptions,
                 response: response
@@ -163,18 +150,17 @@ var Fetcher = (function (_super) {
         else {
             return response;
         }
-    };
-    Fetcher.prototype.revokeAccessToken = function () {
-        var _this = this;
+    }
+    revokeAccessToken() {
         if (!this.accessToken) {
             throw 'No Access Token to Revoke';
         }
         this.emit('accessTokenRevoking');
-        var requestURL = this.options.revokeServiceURL;
-        var fetchBody = {
+        let requestURL = this.options.revokeServiceURL;
+        let fetchBody = {
             token: this.accessToken
         };
-        var requestOptions = {
+        let requestOptions = {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
@@ -182,9 +168,9 @@ var Fetcher = (function (_super) {
             body: querystring.stringify(fetchBody)
         };
         return fetch(requestURL, requestOptions)
-            .then(function (response) {
+            .then(response => {
             if (response.status && response.status !== 200) {
-                var revokeAccesTokenException = {
+                let revokeAccesTokenException = {
                     requestURL: requestURL,
                     requestOptions: requestOptions,
                     response: response
@@ -193,13 +179,11 @@ var Fetcher = (function (_super) {
                 throw revokeAccesTokenException;
             }
         })
-            .then(function (response) {
-            _this.accessToken = undefined;
+            .then(response => {
+            this.accessToken = undefined;
             console.info('Access Token revoked');
-            _this.emit('accessTokenRevoked');
+            this.emit('accessTokenRevoked');
         });
-    };
-    return Fetcher;
-}(events.EventEmitter));
-exports.Fetcher = Fetcher;
+    }
+}
 //# sourceMappingURL=fetcher.js.map

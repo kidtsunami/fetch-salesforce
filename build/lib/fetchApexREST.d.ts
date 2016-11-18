@@ -1,4 +1,5 @@
 import { Fetcher } from './fetcher';
+import * as Promise from 'bluebird';
 import { SalesforceOptions } from './salesforceOptions';
 export declare class FetchApexREST {
     fetcher: Fetcher;
