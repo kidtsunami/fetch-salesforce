@@ -3,6 +3,7 @@ export interface SalesforceOptions {
     clientID: string;
     clientSecret?: string;
     refreshToken: string;
+    accessToken?: string;
     apiVersion?: number;
     sfdcCommunityID?: string;
     authorizationServiceURL?: string;

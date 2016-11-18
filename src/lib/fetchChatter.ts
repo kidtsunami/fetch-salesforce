@@ -19,7 +19,7 @@ export class FetchChatter {
         this.options = options;
 
         if(!this.options.sfdcCommunityID){
-            console.error('SFDC Community ID is required to fetch Chatter');
+            console.log('SFDC Community ID is required to fetch Chatter');
         }
 
         this.initializeBaseChatterURL();

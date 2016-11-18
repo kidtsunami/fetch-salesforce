@@ -6,7 +6,7 @@ class Fetcher extends events.EventEmitter {
     constructor(options) {
         super();
         this.options = options;
-        this.accessToken = undefined;
+        this.options.accessToken = undefined;
         this.isRefreshingAccessToken = false;
         this.pendingRequests = [];
     }
@@ -14,8 +14,8 @@ class Fetcher extends events.EventEmitter {
         return new Fetcher(options);
     }
     getAccessToken() {
-        if (this.accessToken) {
-            return Promise.resolve(this.accessToken);
+        if (this.options.accessToken) {
+            return Promise.resolve(this.options.accessToken);
         }
         else {
             return this.refreshAccessToken();
@@ -48,7 +48,7 @@ class Fetcher extends events.EventEmitter {
             .then((response) => {
             console.info(`New accessToken retrieved`);
             this.emit('accessTokenRefreshed');
-            this.accessToken = response.access_token;
+            this.options.accessToken = response.access_token;
             return response;
         });
     }
@@ -69,7 +69,7 @@ class Fetcher extends events.EventEmitter {
                     .then(response => response.json())
                     .then(response => {
                     if (this.isInvalidSession(response)) {
-                        console.info(`${this.accessToken} is invalid, refreshing!`);
+                        console.info(`${this.options.accessToken} is invalid, refreshing!`);
                         this.pendingRequests.push(fetcherRequest);
                         this.refreshAccessTokenAndRetryPendingRequests(fetcherRequest);
                     }
@@ -87,7 +87,7 @@ class Fetcher extends events.EventEmitter {
                 headers = {};
             }
             let authorizedHeader = {
-                'Authorization': 'Authorization: Bearer ' + this.accessToken
+                'Authorization': 'Authorization: Bearer ' + this.options.accessToken
             };
             return Object.assign(headers, authorizedHeader);
         });
@@ -151,13 +151,13 @@ class Fetcher extends events.EventEmitter {
         }
     }
     revokeAccessToken() {
-        if (!this.accessToken) {
+        if (!this.options.accessToken) {
             throw 'No Access Token to Revoke';
         }
         this.emit('accessTokenRevoking');
         let requestURL = this.options.revokeServiceURL;
         let fetchBody = {
-            token: this.accessToken
+            token: this.options.accessToken
         };
         let requestOptions = {
             headers: {
@@ -179,7 +179,7 @@ class Fetcher extends events.EventEmitter {
             }
         })
             .then(response => {
-            this.accessToken = undefined;
+            this.options.accessToken = undefined;
             console.info('Access Token revoked');
             this.emit('accessTokenRevoked');
         });

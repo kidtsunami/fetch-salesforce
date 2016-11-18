@@ -8,7 +8,6 @@ export declare class Fetcher extends events.EventEmitter {
     options: SalesforceOptions;
     isRefreshingAccessToken: boolean;
     private pendingRequests;
-    private accessToken;
     static Create(options: SalesforceOptions): Fetcher;
     constructor(options: SalesforceOptions);
     getAccessToken(): Promise<string>;
