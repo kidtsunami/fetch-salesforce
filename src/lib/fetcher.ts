@@ -5,8 +5,6 @@ import * as querystring from 'querystring';
 import events = require('events');
 
 import Promise = require('bluebird');
-let fetch = require('node-fetch');
-fetch.Promise = Promise;
 
 interface FetcherRequest {
     requestURL: string,

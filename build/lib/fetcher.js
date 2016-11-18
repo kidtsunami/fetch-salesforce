@@ -2,8 +2,6 @@
 const querystring = require('querystring');
 const events = require('events');
 const Promise = require('bluebird');
-let fetch = require('node-fetch');
-fetch.Promise = Promise;
 class Fetcher extends events.EventEmitter {
     constructor(options) {
         super();
