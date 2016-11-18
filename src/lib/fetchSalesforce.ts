@@ -4,6 +4,7 @@ import { FetchSObject } from './fetchSObject';
 import { FetchQuery } from './fetchQuery';
 import { FetchChatter } from './fetchChatter';
 import { FetchApexREST } from './fetchApexREST';
+import { FetchUserInfo } from './fetchUserInfo';
 import { SalesforceOptions, withDefaults } from './salesforceOptions'
 
 let urlJoin = require('url-join');
@@ -21,6 +22,7 @@ export class FetchSalesforce {
     fetchQuery: FetchQuery;
     fetchChatter: FetchChatter;
     fetchApexREST: FetchApexREST;
+    fetchUserInfo: FetchUserInfo;
 
     constructor(options: SalesforceOptions){
         this.options = withDefaults(options);
@@ -29,6 +31,7 @@ export class FetchSalesforce {
         this.fetchQuery = FetchQuery.Create(this.fetcher, this.options);
         this.fetchChatter = FetchChatter.Create(this.fetcher, this.options);
         this.fetchApexREST = FetchApexREST.Create(this.fetcher, this.options);
+        this.fetchUserInfo = FetchUserInfo.Create(this.fetcher, this.options);
     }
 
     buildAuthorizationURL(scopeAndState: ScopeAndState): string {

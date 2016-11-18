@@ -3,6 +3,7 @@ import { FetchSObject } from './fetchSObject';
 import { FetchQuery } from './fetchQuery';
 import { FetchChatter } from './fetchChatter';
 import { FetchApexREST } from './fetchApexREST';
+import { FetchUserInfo } from './fetchUserInfo';
 import { SalesforceOptions } from './salesforceOptions';
 export interface ScopeAndState {
     scope?: string;
@@ -15,6 +16,7 @@ export declare class FetchSalesforce {
     fetchQuery: FetchQuery;
     fetchChatter: FetchChatter;
     fetchApexREST: FetchApexREST;
+    fetchUserInfo: FetchUserInfo;
     constructor(options: SalesforceOptions);
     buildAuthorizationURL(scopeAndState: ScopeAndState): string;
 }

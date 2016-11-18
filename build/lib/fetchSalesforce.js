@@ -4,6 +4,7 @@ const fetchSObject_1 = require('./fetchSObject');
 const fetchQuery_1 = require('./fetchQuery');
 const fetchChatter_1 = require('./fetchChatter');
 const fetchApexREST_1 = require('./fetchApexREST');
+const fetchUserInfo_1 = require('./fetchUserInfo');
 const salesforceOptions_1 = require('./salesforceOptions');
 let urlJoin = require('url-join');
 const querystring = require('querystring');
@@ -15,6 +16,7 @@ class FetchSalesforce {
         this.fetchQuery = fetchQuery_1.FetchQuery.Create(this.fetcher, this.options);
         this.fetchChatter = fetchChatter_1.FetchChatter.Create(this.fetcher, this.options);
         this.fetchApexREST = fetchApexREST_1.FetchApexREST.Create(this.fetcher, this.options);
+        this.fetchUserInfo = fetchUserInfo_1.FetchUserInfo.Create(this.fetcher, this.options);
     }
     buildAuthorizationURL(scopeAndState) {
         let parameters = Object.assign({
