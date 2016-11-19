@@ -40,30 +40,20 @@ describe('withDefaults', () => {
             let testOptionsWithDefaults = salesforceOptions_1.withDefaults(testOptions);
             expect(testOptionsWithDefaults.authorizationResponseType).toBe('code');
         });
-        it('does not override existing service URLS', () => {
-            let testOptionsWithDefaults = salesforceOptions_1.withDefaults(testOptions);
-            expect(testOptions.authorizationServiceURL).toBe('https://instanceURL2/test/authorize');
-            expect(testOptions.tokenServiceURL).toBe('https://instanceURL3/test/token');
-            expect(testOptions.revokeServiceURL).toBe('https://instanceURL4/test/revoke');
-        });
     });
     describe('withRequiredOptions', () => {
         beforeEach(() => {
             testOptions = withRequiredSalesforceOptions();
+            expect(testOptions.apiVersion).toBeUndefined();
         });
         it('sets default api version', () => {
+            expect(testOptions.apiVersion).toBeUndefined();
             let testOptionsWithDefaults = salesforceOptions_1.withDefaults(testOptions);
             expect(testOptionsWithDefaults.apiVersion).toBe(33);
         });
         it('sets default authorizationResponseType', () => {
             let testOptionsWithDefaults = salesforceOptions_1.withDefaults(testOptions);
             expect(testOptionsWithDefaults.authorizationResponseType).toBe('token');
-        });
-        it('does not override existing service URLS', () => {
-            let testOptionsWithDefaults = salesforceOptions_1.withDefaults(testOptions);
-            expect(testOptionsWithDefaults.authorizationServiceURL).toBe('https://instanceURL/requiredtest/services/oauth2/authorize');
-            expect(testOptionsWithDefaults.tokenServiceURL).toBe('https://instanceURL/requiredtest/services/oauth2/token');
-            expect(testOptionsWithDefaults.revokeServiceURL).toBe('https://instanceURL/requiredtest/services/oauth2/revoke');
         });
     });
 });

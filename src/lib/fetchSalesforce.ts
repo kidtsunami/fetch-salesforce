@@ -42,6 +42,14 @@ export class FetchSalesforce {
         }, scopeAndState);
         let encodedQuery = '?' + querystring.stringify(parameters);
 
-        return urlJoin(this.options.authorizationServiceURL, encodedQuery);
+        return urlJoin(this.getAuthorizationServiceURL(), encodedQuery);
+    }
+
+    private getAuthorizationServiceURL(){
+        let authorizationServiceURL = this.options.authorizationServiceURL;
+        if(!authorizationServiceURL){
+            authorizationServiceURL = urlJoin(this.options.instanceURL, '/services/oauth2/authorize');
+        }
+        return authorizationServiceURL;
     }
 }

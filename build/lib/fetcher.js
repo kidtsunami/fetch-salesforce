@@ -1,6 +1,7 @@
 "use strict";
 const querystring = require('querystring');
 const events = require('events');
+const urlJoin = require('url-join');
 const fetch = require('isomorphic-fetch');
 const Promise = require('bluebird');
 class Fetcher extends events.EventEmitter {
@@ -24,7 +25,7 @@ class Fetcher extends events.EventEmitter {
     }
     refreshAccessToken() {
         this.emit('accessTokenRefreshing');
-        let requestURL = this.options.tokenServiceURL;
+        let requestURL = this.getTokenServiceURL();
         let accessToken;
         let fetchBody = {
             grant_type: 'refresh_token',
@@ -53,6 +54,13 @@ class Fetcher extends events.EventEmitter {
             this.options.accessToken = response.access_token;
             return response;
         });
+    }
+    getTokenServiceURL() {
+        let tokenServiceURL = this.options.tokenServiceURL;
+        if (!tokenServiceURL) {
+            tokenServiceURL = urlJoin(this.options.instanceURL, '/services/oauth2/token');
+        }
+        return tokenServiceURL;
     }
     fetchJSON(requestURL, requestOptions) {
         return new Promise((resolve, reject) => {
@@ -105,7 +113,6 @@ class Fetcher extends events.EventEmitter {
             this.isRefreshingAccessToken = true;
             console.info('Refreshing token and retrying pending requests');
             this.refreshAccessToken()
-                .bind(this)
                 .then(() => {
                 return this.retryPendingRequests();
             });
@@ -158,7 +165,7 @@ class Fetcher extends events.EventEmitter {
             throw 'No Access Token to Revoke';
         }
         this.emit('accessTokenRevoking');
-        let requestURL = this.options.revokeServiceURL;
+        let requestURL = this.getRevokeServiceURL();
         let fetchBody = {
             token: this.options.accessToken
         };
@@ -187,6 +194,13 @@ class Fetcher extends events.EventEmitter {
             console.info('Access Token revoked');
             this.emit('accessTokenRevoked');
         });
+    }
+    getRevokeServiceURL() {
+        let revokeServiceURL = this.options.revokeServiceURL;
+        if (!revokeServiceURL) {
+            revokeServiceURL = urlJoin(this.options.instanceURL, '/services/oauth2/revoke');
+        }
+        return revokeServiceURL;
     }
 }
 exports.Fetcher = Fetcher;

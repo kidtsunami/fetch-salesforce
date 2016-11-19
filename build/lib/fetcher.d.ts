@@ -12,6 +12,7 @@ export declare class Fetcher extends events.EventEmitter {
     constructor(options: SalesforceOptions);
     getAccessToken(): Promise<string>;
     private refreshAccessToken();
+    private getTokenServiceURL();
     fetchJSON(requestURL: string, requestOptions: RequestOptions): Promise<any>;
     private addAuthorizationHeaders(headers?);
     private isInvalidSession(response);
@@ -19,4 +20,5 @@ export declare class Fetcher extends events.EventEmitter {
     private retryPendingRequests();
     private handleGenericErrors(requestURL, requestOptions, response);
     revokeAccessToken(): Promise<any>;
+    private getRevokeServiceURL();
 }

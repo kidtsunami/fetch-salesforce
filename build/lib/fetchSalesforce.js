@@ -25,7 +25,14 @@ class FetchSalesforce {
             redirect_uri: this.options.redirectUri
         }, scopeAndState);
         let encodedQuery = '?' + querystring.stringify(parameters);
-        return urlJoin(this.options.authorizationServiceURL, encodedQuery);
+        return urlJoin(this.getAuthorizationServiceURL(), encodedQuery);
+    }
+    getAuthorizationServiceURL() {
+        let authorizationServiceURL = this.options.authorizationServiceURL;
+        if (!authorizationServiceURL) {
+            authorizationServiceURL = urlJoin(this.options.instanceURL, '/services/oauth2/authorize');
+        }
+        return authorizationServiceURL;
     }
 }
 exports.FetchSalesforce = FetchSalesforce;

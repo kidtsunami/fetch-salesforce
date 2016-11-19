@@ -6,11 +6,8 @@ let defaultOptions = {
     authorizationResponseType: 'token'
 };
 function withDefaults(options) {
-    let defaultOptionsByinstanceURL = Object.assign({}, defaultOptions);
-    defaultOptionsByinstanceURL.authorizationServiceURL = urlJoin(options.instanceURL, '/services/oauth2/authorize');
-    defaultOptionsByinstanceURL.tokenServiceURL = urlJoin(options.instanceURL, '/services/oauth2/token');
-    defaultOptionsByinstanceURL.revokeServiceURL = urlJoin(options.instanceURL, '/services/oauth2/revoke');
-    return Object.assign(defaultOptionsByinstanceURL, options);
+    let defaultOptionsCopy = Object.assign({}, defaultOptions);
+    return Object.assign(defaultOptionsCopy, options);
 }
 exports.withDefaults = withDefaults;
 function formatApiVersion(apiVersion) {

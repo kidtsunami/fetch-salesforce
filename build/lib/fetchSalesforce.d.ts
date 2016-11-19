@@ -19,4 +19,5 @@ export declare class FetchSalesforce {
     fetchUserInfo: FetchUserInfo;
     constructor(options: SalesforceOptions);
     buildAuthorizationURL(scopeAndState: ScopeAndState): string;
+    private getAuthorizationServiceURL();
 }
