@@ -1,0 +1,1 @@
+{"version":3,"file":"fetchOverride.js","sourceRoot":"/Users/davidhelmer/Work/NodeJS/fetch-salesforce/src/","sources":["lib/fetchOverride.ts"],"names":[],"mappings":";AAAA,EAAE,CAAA,CAAC,KAAK,KAAK,SAAS,CAAC,CAAA,CAAC;IACpB,OAAO,CAAC,GAAG,CAAC,mDAAmD,CAAC,CAAC;IACjE,KAAK,GAAG,OAAO,CAAC,YAAY,CAAC,CAAC;AAClC,CAAC;AAED;kBAAe,KAAK,CAAC"}

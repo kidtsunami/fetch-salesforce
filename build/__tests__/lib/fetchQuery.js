@@ -29,7 +29,7 @@ describe('fetchQuery', () => {
         it('calls fetchJSON', () => {
             let soqlQuery = 'SELECT Id, Name FROM Account';
             let expectedURL = 'https://instanceURL/test/services/data/v37.0/query?q=SELECT%20Id%2C%20Name%20FROM%20Account';
-            let expectedOptions = { method: 'GET', cache: false };
+            let expectedOptions = { method: 'GET', cache: 'no-cache' };
             return fetchQuery.query(soqlQuery)
                 .then((result) => {
                 expect(result).toBe('success');

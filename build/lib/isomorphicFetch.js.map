@@ -1,0 +1,1 @@
+{"version":3,"file":"isomorphicFetch.js","sourceRoot":"/Users/davidhelmer/Work/NodeJS/fetch-salesforce/src/","sources":["lib/isomorphicFetch.ts"],"names":[],"mappings":";AAAA,EAAE,CAAA,CAAC,MAAM,CAAC,KAAK,KAAK,SAAS,CAAC,CAAA,CAAC;IAC3B,OAAO,CAAC,GAAG,CAAC,mDAAmD,CAAC,CAAC;IACjE,KAAK,GAAG,OAAO,CAAC,YAAY,CAAC,CAAC;AAClC,CAAC;AAED;kBAAe,KAAK,CAAC"}

@@ -21,7 +21,7 @@ class FetchChatter {
         let fetchUrl = urlJoin(this.getBaseChatterURL(), 'feeds/news/me/feed-elements');
         let fetchOptions = {
             method: 'GET',
-            cache: false
+            cache: 'no-cache'
         };
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
     }

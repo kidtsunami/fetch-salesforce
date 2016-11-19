@@ -19,7 +19,7 @@ class FetchQuery {
         let fetchUrl = urlJoin(this.getBaseDataURL(), 'query', encodedQuery);
         let fetchOptions = {
             method: 'GET',
-            cache: false
+            cache: 'no-cache'
         };
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
     }

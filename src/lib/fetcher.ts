@@ -4,6 +4,7 @@ import { RequestOptions } from './requestOptions';
 import * as querystring from 'querystring';
 import events = require('events');
 
+import fetch = require('isomorphic-fetch');
 import Promise = require('bluebird');
 
 interface FetcherRequest {
@@ -63,15 +64,18 @@ export class Fetcher extends events.EventEmitter {
             fetchBody.client_secret = this.options.clientSecret;
         }
 
-        let requestOptions = {
+        let requestOptions: RequestOptions = {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             method: 'POST',
-            cache: false,
+            cache: 'no-cache',
             body: querystring.stringify(fetchBody)
         };
-        return fetch(requestURL, requestOptions)
+
+        let fetchPromise = fetch(requestURL, requestOptions);
+
+        return Promise.resolve(fetchPromise)
             .then(response => response.json())
             .then(response => this.handleGenericErrors(requestURL, requestOptions, response))
             .then((response) => {
@@ -95,7 +99,9 @@ export class Fetcher extends events.EventEmitter {
                     };
                     console.info('Fetching JSON');
                     console.info(fetcherRequest);
-                    fetch(requestURL, requestOptions)
+                    let fetchPromise = fetch(requestURL, requestOptions);
+
+                    Promise.resolve(fetchPromise)
                         .then(response => response.json())
                         .then(response => {
                             if(this.isInvalidSession(response)){
@@ -195,14 +201,16 @@ export class Fetcher extends events.EventEmitter {
             token: this.options.accessToken
         };
 
-        let requestOptions = {
+        let requestOptions: RequestOptions = {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             method: 'POST',
             body: querystring.stringify(fetchBody)
         };
-        return fetch(requestURL, requestOptions)
+
+        let fetchPromise = fetch(requestURL, requestOptions); 
+        return Promise.resolve(fetchPromise)
             .then(response => {
                 if(response.status && response.status !== 200){
                     let revokeAccesTokenException = {

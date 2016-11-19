@@ -2,6 +2,7 @@ import { Fetcher } from './fetcher';
 import Promise = require('bluebird');
 let urlJoin = require('url-join');
 import { SalesforceOptions, formatApiVersion } from './salesforceOptions'
+import { RequestOptions } from './requestOptions';
 import * as querystring from 'querystring';
 
 
@@ -25,9 +26,9 @@ export class FetchUserInfo {
     get(): Promise<any> {
         let fetchUrl = this.getBaseUserInfoURL();
 
-        let fetchOptions = {
+        let fetchOptions: RequestOptions = {
             method: 'GET',
-            cache: false
+            cache: 'no-cache'
         };
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
     }

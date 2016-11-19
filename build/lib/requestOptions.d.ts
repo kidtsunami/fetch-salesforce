@@ -1,6 +1,7 @@
+/// <reference types="isomorphic-fetch" />
 export interface RequestOptions {
     headers?: any;
     method: string;
-    cache?: boolean;
+    cache?: RequestCache;
     body?: any;
 }

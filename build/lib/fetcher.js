@@ -1,6 +1,7 @@
 "use strict";
 const querystring = require('querystring');
 const events = require('events');
+const fetch = require('isomorphic-fetch');
 const Promise = require('bluebird');
 class Fetcher extends events.EventEmitter {
     constructor(options) {
@@ -39,10 +40,11 @@ class Fetcher extends events.EventEmitter {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             method: 'POST',
-            cache: false,
+            cache: 'no-cache',
             body: querystring.stringify(fetchBody)
         };
-        return fetch(requestURL, requestOptions)
+        let fetchPromise = fetch(requestURL, requestOptions);
+        return Promise.resolve(fetchPromise)
             .then(response => response.json())
             .then(response => this.handleGenericErrors(requestURL, requestOptions, response))
             .then((response) => {
@@ -65,7 +67,8 @@ class Fetcher extends events.EventEmitter {
                 };
                 console.info('Fetching JSON');
                 console.info(fetcherRequest);
-                fetch(requestURL, requestOptions)
+                let fetchPromise = fetch(requestURL, requestOptions);
+                Promise.resolve(fetchPromise)
                     .then(response => response.json())
                     .then(response => {
                     if (this.isInvalidSession(response)) {
@@ -166,7 +169,8 @@ class Fetcher extends events.EventEmitter {
             method: 'POST',
             body: querystring.stringify(fetchBody)
         };
-        return fetch(requestURL, requestOptions)
+        let fetchPromise = fetch(requestURL, requestOptions);
+        return Promise.resolve(fetchPromise)
             .then(response => {
             if (response.status && response.status !== 200) {
                 let revokeAccesTokenException = {

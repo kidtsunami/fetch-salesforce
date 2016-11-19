@@ -1,6 +1,6 @@
 export interface RequestOptions {
     headers?: any,
     method: string,
-    cache?: boolean,
+    cache?: RequestCache,
     body?: any
 }

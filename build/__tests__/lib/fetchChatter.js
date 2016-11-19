@@ -29,7 +29,7 @@ describe('fetchChatter', () => {
         describe('list', () => {
             it('calls fetchJSON', () => {
                 let expectedURL = 'https://instanceURL/test/services/data/v37.0/connect/communities/avalidcommunityid/chatter/feeds/news/me/feed-elements';
-                let expectedOptions = { method: 'GET', cache: false };
+                let expectedOptions = { method: 'GET', cache: 'no-cache' };
                 return fetchChatter.list()
                     .then((result) => {
                     expect(result).toBe('success');
@@ -79,7 +79,7 @@ describe('fetchChatter', () => {
         describe('list', () => {
             it('calls fetchJSON', () => {
                 let expectedURL = 'https://instanceURL/test/services/data/v37.0/connect/communities/avalidcommunityid/chatter/feeds/news/me/feed-elements';
-                let expectedOptions = { method: 'GET', cache: false };
+                let expectedOptions = { method: 'GET', cache: 'no-cache' };
                 try {
                     return fetchChatter.list()
                         .then(fail);

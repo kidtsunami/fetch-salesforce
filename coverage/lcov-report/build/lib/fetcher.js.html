@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">11.63% </span>
+        <span class="strong">12.22% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>10/86</span>
+        <span class='fraction'>11/90</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">0% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>2/24</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">11.63% </span>
+        <span class="strong">12.22% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>10/86</span>
+        <span class='fraction'>11/90</span>
       </div>
     </div>
   </div>
@@ -231,20 +231,25 @@
 186
 187
 188
-189</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
-<span class="cline-any cline-yes">6x</span>
+189
+190
+191
+192
+193</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">23x</span>
-<span class="cline-any cline-yes">23x</span>
-<span class="cline-any cline-yes">23x</span>
-<span class="cline-any cline-yes">23x</span>
-<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-yes">24x</span>
+<span class="cline-any cline-yes">24x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">23x</span>
+<span class="cline-any cline-yes">24x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -278,6 +283,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -300,6 +306,7 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -399,6 +406,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -418,10 +426,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">"use strict";
 const querystring = require('querystring');
 const events = require('events');
+const fetch = require('isomorphic-fetch');
 const Promise = require('bluebird');
 class Fetcher extends events.EventEmitter {
     constructor(options) {
@@ -460,10 +469,11 @@ class Fetcher extends events.EventEmitter {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
             method: 'POST',
-            cache: false,
+            cache: 'no-cache',
             body: querystring.stringify(fetchBody)
         };
-<span class="cstat-no" title="statement not covered" >        return fetch(requestURL, requestOptions)</span>
+        let fetchPromise = <span class="cstat-no" title="statement not covered" >fetch(requestURL, requestOptions);</span>
+<span class="cstat-no" title="statement not covered" >        return Promise.resolve(fetchPromise)</span>
             .then(<span class="fstat-no" title="function not covered" >re</span>sponse =&gt; <span class="cstat-no" title="statement not covered" >response.json())</span>
             .then(<span class="fstat-no" title="function not covered" >re</span>sponse =&gt; <span class="cstat-no" title="statement not covered" >this.handleGenericErrors(requestURL, requestOptions, response))</span>
             .then(<span class="fstat-no" title="function not covered" >(r</span>esponse) =&gt; {
@@ -486,7 +496,8 @@ class Fetcher extends events.EventEmitter {
                 };
 <span class="cstat-no" title="statement not covered" >                console.info('Fetching JSON');</span>
 <span class="cstat-no" title="statement not covered" >                console.info(fetcherRequest);</span>
-<span class="cstat-no" title="statement not covered" >                fetch(requestURL, requestOptions)</span>
+                let fetchPromise = <span class="cstat-no" title="statement not covered" >fetch(requestURL, requestOptions);</span>
+<span class="cstat-no" title="statement not covered" >                Promise.resolve(fetchPromise)</span>
                     .then(<span class="fstat-no" title="function not covered" >re</span>sponse =&gt; <span class="cstat-no" title="statement not covered" >response.json())</span>
                     .then(<span class="fstat-no" title="function not covered" >re</span>sponse =&gt; {
 <span class="cstat-no" title="statement not covered" >                    if (this.isInvalidSession(response)) {</span>
@@ -587,7 +598,8 @@ class Fetcher extends events.EventEmitter {
             method: 'POST',
             body: querystring.stringify(fetchBody)
         };
-<span class="cstat-no" title="statement not covered" >        return fetch(requestURL, requestOptions)</span>
+        let fetchPromise = <span class="cstat-no" title="statement not covered" >fetch(requestURL, requestOptions);</span>
+<span class="cstat-no" title="statement not covered" >        return Promise.resolve(fetchPromise)</span>
             .then(<span class="fstat-no" title="function not covered" >re</span>sponse =&gt; {
 <span class="cstat-no" title="statement not covered" >            if (response.status &amp;&amp; response.status !== 200) {</span>
                 let revokeAccesTokenException = <span class="cstat-no" title="statement not covered" >{</span>
@@ -613,7 +625,7 @@ exports.Fetcher = Fetcher;
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Fri Nov 18 2016 14:51:45 GMT-0500 (EST)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sat Nov 19 2016 11:21:53 GMT-0500 (EST)
 </div>
 </div>
 <script src="../../prettify.js"></script>
