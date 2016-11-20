@@ -2,7 +2,9 @@
 const querystring = require('querystring');
 const events = require('events');
 const urlJoin = require('url-join');
-const fetch = require('isomorphic-fetch');
+if (navigator.product !== 'ReactNative') {
+    const fetch = require('isomorphic-fetch');
+}
 const Promise = require('bluebird');
 class Fetcher extends events.EventEmitter {
     constructor(options) {
