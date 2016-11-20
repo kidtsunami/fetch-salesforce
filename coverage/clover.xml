@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1479574548216" clover="3.2.0">
-  <project timestamp="1479574548216" name="All files">
-    <metrics statements="222" coveredstatements="131" conditionals="35" coveredconditionals="7" methods="61" coveredmethods="35" elements="318" coveredelements="173" complexity="0" loc="222" ncloc="222" packages="2" files="9" classes="9">
+<coverage generated="1479658405781" clover="3.2.0">
+  <project timestamp="1479658405781" name="All files">
+    <metrics statements="231" coveredstatements="135" conditionals="35" coveredconditionals="7" methods="63" coveredmethods="36" elements="329" coveredelements="178" complexity="0" loc="231" ncloc="231" packages="2" files="9" classes="9">
       <package name="build">
         <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <file name="index.js" path="/Users/davidhelmer/Work/NodeJS/fetch-salesforce/build/index.js">
+        <file name="index.js" path="/Users/josephferraro/Development/Github/fetch-salesforce-fork/build/index.js">
           <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
           <line num="2" count="1" type="stmt"/>
           <line num="3" count="1" type="stmt"/>
         </file>
       </package>
       <package name="build.lib">
-        <metrics statements="220" coveredstatements="129" conditionals="35" coveredconditionals="7" methods="61" coveredmethods="35"/>
-        <file name="fetchApexREST.js" path="/Users/davidhelmer/Work/NodeJS/fetch-salesforce/build/lib/fetchApexREST.js">
+        <metrics statements="229" coveredstatements="133" conditionals="35" coveredconditionals="7" methods="63" coveredmethods="36"/>
+        <file name="fetchApexREST.js" path="/Users/josephferraro/Development/Github/fetch-salesforce-fork/build/lib/fetchApexREST.js">
           <metrics statements="21" coveredstatements="21" conditionals="0" coveredconditionals="0" methods="8" coveredmethods="8"/>
           <line num="2" count="3" type="stmt"/>
           <line num="5" count="9" type="stmt"/>
@@ -36,31 +36,40 @@
           <line num="49" count="1" type="stmt"/>
           <line num="52" count="3" type="stmt"/>
         </file>
-        <file name="fetchChatter.js" path="/Users/davidhelmer/Work/NodeJS/fetch-salesforce/build/lib/fetchChatter.js">
-          <metrics statements="21" coveredstatements="21" conditionals="4" coveredconditionals="4" methods="6" coveredmethods="6"/>
+        <file name="fetchChatter.js" path="/Users/josephferraro/Development/Github/fetch-salesforce-fork/build/lib/fetchChatter.js">
+          <metrics statements="30" coveredstatements="25" conditionals="4" coveredconditionals="4" methods="8" coveredmethods="7"/>
           <line num="2" count="3" type="stmt"/>
           <line num="3" count="3" type="stmt"/>
-          <line num="6" count="10" type="stmt"/>
-          <line num="7" count="10" type="stmt"/>
-          <line num="8" count="10" type="stmt"/>
+          <line num="6" count="11" type="stmt"/>
+          <line num="7" count="11" type="stmt"/>
+          <line num="8" count="11" type="stmt"/>
           <line num="9" count="7" type="stmt"/>
-          <line num="13" count="10" type="stmt"/>
-          <line num="16" count="2" type="stmt"/>
-          <line num="17" count="2" type="stmt"/>
+          <line num="13" count="11" type="stmt"/>
+          <line num="16" count="3" type="stmt"/>
+          <line num="17" count="3" type="stmt"/>
           <line num="20" count="2" type="stmt"/>
           <line num="21" count="1" type="stmt"/>
           <line num="22" count="1" type="stmt"/>
           <line num="26" count="1" type="stmt"/>
-          <line num="29" count="4" type="stmt"/>
-          <line num="30" count="2" type="stmt"/>
-          <line num="34" count="2" type="stmt"/>
-          <line num="35" count="1" type="stmt"/>
-          <line num="36" count="1" type="stmt"/>
+          <line num="29" count="2" type="stmt"/>
+          <line num="30" count="1" type="stmt"/>
+          <line num="31" count="1" type="stmt"/>
+          <line num="32" count="1" type="stmt"/>
           <line num="37" count="1" type="stmt"/>
-          <line num="42" count="1" type="stmt"/>
-          <line num="45" count="3" type="stmt"/>
+          <line num="40" count="0" type="stmt"/>
+          <line num="41" count="0" type="stmt"/>
+          <line num="42" count="0" type="stmt"/>
+          <line num="43" count="0" type="stmt"/>
+          <line num="48" count="0" type="stmt"/>
+          <line num="51" count="1" type="stmt"/>
+          <line num="52" count="1" type="stmt"/>
+          <line num="53" count="1" type="stmt"/>
+          <line num="57" count="1" type="stmt"/>
+          <line num="60" count="5" type="stmt"/>
+          <line num="61" count="2" type="stmt"/>
+          <line num="65" count="3" type="stmt"/>
         </file>
-        <file name="fetchQuery.js" path="/Users/davidhelmer/Work/NodeJS/fetch-salesforce/build/lib/fetchQuery.js">
+        <file name="fetchQuery.js" path="/Users/josephferraro/Development/Github/fetch-salesforce-fork/build/lib/fetchQuery.js">
           <metrics statements="13" coveredstatements="13" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="4"/>
           <line num="2" count="3" type="stmt"/>
           <line num="3" count="3" type="stmt"/>
@@ -76,7 +85,7 @@
           <line num="24" count="1" type="stmt"/>
           <line num="27" count="3" type="stmt"/>
         </file>
-        <file name="fetchSObject.js" path="/Users/davidhelmer/Work/NodeJS/fetch-salesforce/build/lib/fetchSObject.js">
+        <file name="fetchSObject.js" path="/Users/josephferraro/Development/Github/fetch-salesforce-fork/build/lib/fetchSObject.js">
           <metrics statements="25" coveredstatements="25" conditionals="2" coveredconditionals="2" methods="8" coveredmethods="8"/>
           <line num="2" count="3" type="stmt"/>
           <line num="3" count="3" type="stmt"/>
@@ -104,7 +113,7 @@
           <line num="58" count="1" type="stmt"/>
           <line num="61" count="3" type="stmt"/>
         </file>
-        <file name="fetchSalesforce.js" path="/Users/davidhelmer/Work/NodeJS/fetch-salesforce/build/lib/fetchSalesforce.js">
+        <file name="fetchSalesforce.js" path="/Users/josephferraro/Development/Github/fetch-salesforce-fork/build/lib/fetchSalesforce.js">
           <metrics statements="24" coveredstatements="24" conditionals="2" coveredconditionals="1" methods="3" coveredmethods="3"/>
           <line num="2" count="2" type="stmt"/>
           <line num="3" count="2" type="stmt"/>
@@ -131,7 +140,7 @@
           <line num="35" count="1" type="stmt"/>
           <line num="38" count="2" type="stmt"/>
         </file>
-        <file name="fetchUserInfo.js" path="/Users/davidhelmer/Work/NodeJS/fetch-salesforce/build/lib/fetchUserInfo.js">
+        <file name="fetchUserInfo.js" path="/Users/josephferraro/Development/Github/fetch-salesforce-fork/build/lib/fetchUserInfo.js">
           <metrics statements="9" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="2"/>
           <line num="2" count="2" type="stmt"/>
           <line num="5" count="4" type="stmt"/>
@@ -143,19 +152,19 @@
           <line num="20" count="0" type="stmt"/>
           <line num="23" count="2" type="stmt"/>
         </file>
-        <file name="fetcher.js" path="/Users/davidhelmer/Work/NodeJS/fetch-salesforce/build/lib/fetcher.js">
+        <file name="fetcher.js" path="/Users/josephferraro/Development/Github/fetch-salesforce-fork/build/lib/fetcher.js">
           <metrics statements="99" coveredstatements="12" conditionals="27" coveredconditionals="0" methods="26" coveredmethods="2"/>
           <line num="2" count="7" type="stmt"/>
           <line num="3" count="7" type="stmt"/>
           <line num="4" count="7" type="stmt"/>
           <line num="5" count="7" type="stmt"/>
           <line num="6" count="7" type="stmt"/>
-          <line num="9" count="24" type="stmt"/>
-          <line num="10" count="24" type="stmt"/>
-          <line num="11" count="24" type="stmt"/>
-          <line num="12" count="24" type="stmt"/>
-          <line num="13" count="24" type="stmt"/>
-          <line num="16" count="24" type="stmt"/>
+          <line num="9" count="25" type="stmt"/>
+          <line num="10" count="25" type="stmt"/>
+          <line num="11" count="25" type="stmt"/>
+          <line num="12" count="25" type="stmt"/>
+          <line num="13" count="25" type="stmt"/>
+          <line num="16" count="25" type="stmt"/>
           <line num="19" count="0" type="stmt"/>
           <line num="20" count="0" type="stmt"/>
           <line num="23" count="0" type="stmt"/>
@@ -245,7 +254,7 @@
           <line num="203" count="0" type="stmt"/>
           <line num="206" count="7" type="stmt"/>
         </file>
-        <file name="salesforceOptions.js" path="/Users/davidhelmer/Work/NodeJS/fetch-salesforce/build/lib/salesforceOptions.js">
+        <file name="salesforceOptions.js" path="/Users/josephferraro/Development/Github/fetch-salesforce-fork/build/lib/salesforceOptions.js">
           <metrics statements="8" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
           <line num="2" count="8" type="stmt"/>
           <line num="3" count="8" type="stmt"/>
@@ -253,7 +262,7 @@
           <line num="9" count="36" type="stmt"/>
           <line num="10" count="36" type="stmt"/>
           <line num="12" count="8" type="stmt"/>
-          <line num="14" count="15" type="stmt"/>
+          <line num="14" count="16" type="stmt"/>
           <line num="16" count="8" type="stmt"/>
         </file>
       </package>

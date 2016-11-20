@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">83.33% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>21/21</span>
+        <span class='fraction'>25/30</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -30,14 +30,14 @@
         <span class='fraction'>4/4</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">87.5% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>6/6</span>
+        <span class='fraction'>7/8</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">83.33% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>21/21</span>
+        <span class='fraction'>25/30</span>
       </div>
     </div>
   </div>
@@ -88,23 +88,43 @@
 43
 44
 45
-46</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61
+62
+63
+64
+65
+66</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">10x</span>
-<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-yes">7x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">11x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
@@ -114,11 +134,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
@@ -130,6 +145,31 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
@@ -151,12 +191,43 @@ class FetchChatter {
         let apiVersion = salesforceOptions_1.formatApiVersion(this.options.apiVersion);
         return urlJoin(this.options.instanceURL, 'services/data', apiVersion, 'connect/communities', this.options.sfdcCommunityID, 'chatter');
     }
-    list() {
+    retrieve(resource) {
         this.confirmCommunityID();
-        let fetchUrl = urlJoin(this.getBaseChatterURL(), 'feeds/news/me/feed-elements');
+        let fetchUrl = urlJoin(this.getBaseChatterURL(), resource);
         let fetchOptions = {
             method: 'GET',
             cache: 'no-cache'
+        };
+        return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
+    }
+    create(resource, body) {
+        this.confirmCommunityID();
+        let fetchUrl = urlJoin(this.getBaseChatterURL(), resource);
+        let bodyJSON = JSON.stringify(body);
+        let fetchOptions = {
+            headers: { 'Content-Type': 'application/json' },
+            method: 'POST',
+            body: bodyJSON
+        };
+        return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
+    }
+<span class="fstat-no" title="function not covered" >    up</span>date(resource, body) {
+<span class="cstat-no" title="statement not covered" >        this.confirmCommunityID();</span>
+        let fetchUrl = <span class="cstat-no" title="statement not covered" >urlJoin(this.getBaseChatterURL(), resource);</span>
+        let bodyJSON = <span class="cstat-no" title="statement not covered" >JSON.stringify(body);</span>
+        let fetchOptions = <span class="cstat-no" title="statement not covered" >{</span>
+            headers: { 'Content-Type': 'application/json' },
+            method: 'POST',
+            body: bodyJSON
+        };
+<span class="cstat-no" title="statement not covered" >        return this.fetcher.fetchJSON(fetchUrl, fetchOptions);</span>
+    }
+    delete(resource) {
+        this.confirmCommunityID();
+        let fetchUrl = urlJoin(this.getBaseChatterURL(), resource);
+        let fetchOptions = {
+            headers: { 'Content-Type': 'application/json' },
+            method: 'DELETE'
         };
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
     }
@@ -164,17 +235,6 @@ class FetchChatter {
         if (!this.options.sfdcCommunityID) {
             throw 'SFDC Community ID is required to fetch Chatter';
         }
-    }
-    post(post) {
-        this.confirmCommunityID();
-        let fetchUrl = urlJoin(this.getBaseChatterURL(), 'feed-elements');
-        let bodyJSON = JSON.stringify(post);
-        let fetchOptions = {
-            headers: { 'Content-Type': 'application/json' },
-            method: 'POST',
-            body: bodyJSON
-        };
-        return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
     }
 }
 exports.FetchChatter = FetchChatter;
@@ -184,7 +244,7 @@ exports.FetchChatter = FetchChatter;
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sat Nov 19 2016 11:55:48 GMT-0500 (EST)
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Nov 20 2016 11:13:25 GMT-0500 (EST)
 </div>
 </div>
 <script src="../../prettify.js"></script>

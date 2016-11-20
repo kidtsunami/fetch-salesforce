@@ -16,12 +16,43 @@ class FetchChatter {
         let apiVersion = salesforceOptions_1.formatApiVersion(this.options.apiVersion);
         return urlJoin(this.options.instanceURL, 'services/data', apiVersion, 'connect/communities', this.options.sfdcCommunityID, 'chatter');
     }
-    list() {
+    retrieve(resource) {
         this.confirmCommunityID();
-        let fetchUrl = urlJoin(this.getBaseChatterURL(), 'feeds/news/me/feed-elements');
+        let fetchUrl = urlJoin(this.getBaseChatterURL(), resource);
         let fetchOptions = {
             method: 'GET',
             cache: 'no-cache'
+        };
+        return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
+    }
+    create(resource, body) {
+        this.confirmCommunityID();
+        let fetchUrl = urlJoin(this.getBaseChatterURL(), resource);
+        let bodyJSON = JSON.stringify(body);
+        let fetchOptions = {
+            headers: { 'Content-Type': 'application/json' },
+            method: 'POST',
+            body: bodyJSON
+        };
+        return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
+    }
+    update(resource, body) {
+        this.confirmCommunityID();
+        let fetchUrl = urlJoin(this.getBaseChatterURL(), resource);
+        let bodyJSON = JSON.stringify(body);
+        let fetchOptions = {
+            headers: { 'Content-Type': 'application/json' },
+            method: 'POST',
+            body: bodyJSON
+        };
+        return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
+    }
+    delete(resource) {
+        this.confirmCommunityID();
+        let fetchUrl = urlJoin(this.getBaseChatterURL(), resource);
+        let fetchOptions = {
+            headers: { 'Content-Type': 'application/json' },
+            method: 'DELETE'
         };
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
     }
@@ -29,17 +60,6 @@ class FetchChatter {
         if (!this.options.sfdcCommunityID) {
             throw 'SFDC Community ID is required to fetch Chatter';
         }
-    }
-    post(post) {
-        this.confirmCommunityID();
-        let fetchUrl = urlJoin(this.getBaseChatterURL(), 'feed-elements');
-        let bodyJSON = JSON.stringify(post);
-        let fetchOptions = {
-            headers: { 'Content-Type': 'application/json' },
-            method: 'POST',
-            body: bodyJSON
-        };
-        return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
     }
 }
 exports.FetchChatter = FetchChatter;
