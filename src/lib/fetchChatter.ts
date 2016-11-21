@@ -30,9 +30,9 @@ export class FetchChatter {
             'chatter');
     }
 
-    list(): Promise<any> {
+    retrieve(resource:string): Promise<any> {
         this.confirmCommunityID();
-        let fetchUrl = urlJoin(this.getBaseChatterURL(), 'feeds/news/me/feed-elements');
+        let fetchUrl = urlJoin(this.getBaseChatterURL(), resource);
 
         let fetchOptions: RequestOptions = {
             method: 'GET',
@@ -41,22 +41,46 @@ export class FetchChatter {
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
     }
 
-    private confirmCommunityID(){
-        if(!this.options.sfdcCommunityID){
-            throw 'SFDC Community ID is required to fetch Chatter';
-        }
-    }
-
-    post(post: any): Promise<any> {
+    create(resource:string, body:any): Promise<any> {
         this.confirmCommunityID();
-        let fetchUrl = urlJoin(this.getBaseChatterURL(), 'feed-elements');
-        
-        let bodyJSON = JSON.stringify(post);
+        let fetchUrl = urlJoin(this.getBaseChatterURL(), resource);
+
+        let bodyJSON = JSON.stringify(body);
         let fetchOptions = {
             headers: { 'Content-Type': 'application/json' },
             method: 'POST',
             body: bodyJSON
         };
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
+    }
+
+    update(resource:string, body:any): Promise<any> {
+        this.confirmCommunityID();
+        let fetchUrl = urlJoin(this.getBaseChatterURL(), resource);
+
+        let bodyJSON = JSON.stringify(body);
+        let fetchOptions = {
+            headers: { 'Content-Type': 'application/json' },
+            method: 'POST',
+            body: bodyJSON
+        };
+        return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
+    }
+
+    delete(resource:string): Promise<any> {
+        this.confirmCommunityID();
+        let fetchUrl = urlJoin(this.getBaseChatterURL(), resource);
+
+        let fetchOptions = {
+            headers: { 'Content-Type': 'application/json' },
+            method: 'DELETE'
+        };
+        return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
+    }
+    
+    private confirmCommunityID(){
+        if(!this.options.sfdcCommunityID){
+            throw 'SFDC Community ID is required to fetch Chatter';
+        }
     }
 }
