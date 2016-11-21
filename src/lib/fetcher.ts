@@ -5,7 +5,7 @@ import * as querystring from 'querystring';
 import events = require('events');
 import urlJoin = require('url-join');
 if (global['fetch'] === undefined) {
-    var fetch = require('node-fetch');
+    var fetch = require('isomorphic-fetch');
 }
 import Promise = require('bluebird');
 
