@@ -40,6 +40,12 @@ export class FetchChatter {
         };
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
     }
+    
+    private confirmCommunityID(){
+        if(!this.options.sfdcCommunityID){
+            throw 'SFDC Community ID is required to fetch Chatter';
+        }
+    }
 
     create(resource:string, body:any): Promise<any> {
         this.confirmCommunityID();
@@ -76,11 +82,5 @@ export class FetchChatter {
             method: 'DELETE'
         };
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
-    }
-    
-    private confirmCommunityID(){
-        if(!this.options.sfdcCommunityID){
-            throw 'SFDC Community ID is required to fetch Chatter';
-        }
     }
 }
