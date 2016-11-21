@@ -1,6 +1,6 @@
 {
   "name": "fetch-salesforce",
-  "version": "0.0.21",
+  "version": "0.0.23",
   "description": "A client for Salesforce using React Native friendly Fetch requests.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -20,7 +20,6 @@
     "bluebird": "^3.4.6",
     "events": "^1.1.1",
     "isomorphic-fetch": "^2.2.1",
-    "node-fetch": "^1.6.3",
     "numeral": "^1.5.3",
     "querystring": "^0.2.0",
     "typings": "^1.5.0",

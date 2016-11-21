@@ -4,8 +4,10 @@ import { RequestOptions } from './requestOptions';
 import * as querystring from 'querystring';
 import events = require('events');
 import urlJoin = require('url-join');
-if (global['fetch'] === undefined) {
-    var fetch = require('isomorphic-fetch');
+
+let fetch = global['fetch']; 
+if (fetch === undefined) {
+    fetch = require('isomorphic-fetch');
 }
 import Promise = require('bluebird');
 
