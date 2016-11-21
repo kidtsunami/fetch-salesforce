@@ -62,20 +62,26 @@ export class FetchChatter {
 
     update(resource:string, body:any): Promise<any> {
         this.confirmCommunityID();
-        let fetchUrl = urlJoin(this.getBaseChatterURL(), resource);
+        if(!body.id){
+            throw {
+                error: 'Invalid body for update, missing id',
+                body: body
+            }
+        }
+        let fetchUrl = urlJoin(this.getBaseChatterURL(), resource, body.id);
 
         let bodyJSON = JSON.stringify(body);
         let fetchOptions = {
             headers: { 'Content-Type': 'application/json' },
-            method: 'POST',
+            method: 'PATCH',
             body: bodyJSON
         };
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
     }
 
-    delete(resource:string): Promise<any> {
+    delete(resource:string, id: string): Promise<any> {
         this.confirmCommunityID();
-        let fetchUrl = urlJoin(this.getBaseChatterURL(), resource);
+        let fetchUrl = urlJoin(this.getBaseChatterURL(), resource, id);
 
         let fetchOptions = {
             headers: { 'Content-Type': 'application/json' },
