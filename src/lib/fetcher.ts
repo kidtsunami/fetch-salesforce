@@ -4,8 +4,8 @@ import { RequestOptions } from './requestOptions';
 import * as querystring from 'querystring';
 import events = require('events');
 import urlJoin = require('url-join');
-if (navigator.product !== 'ReactNative') {
-    const fetch = require('isomorphic-fetch');
+if (global['fetch'] === undefined) {
+    var fetch = require('node-fetch');
 }
 import Promise = require('bluebird');
 
