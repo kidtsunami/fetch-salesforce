@@ -73,16 +73,17 @@ describe('fetchChatter', () => {
 
         describe('update', () => {
             it('calls fetchJSON', () => {
-                let chatterPost = { id: '1092310298', aNumber: 5, aString: 'teststring' };
+                let id: string =  '1092310298';
+                let chatterPost = { aNumber: 5, aString: 'teststring' };
 
                 let expectedURL = 'https://instanceURL/test/services/data/v37.0/connect/communities/avalidcommunityid/chatter/feed-elements/1092310298';
                 let expectedOptions = {
                     headers: { 'Content-Type': 'application/json' },
                     method: 'PATCH',
-                    body: '{"id":"1092310298","aNumber":5,"aString":"teststring"}'
+                    body: '{"aNumber":5,"aString":"teststring"}'
                 }; 
 
-                return fetchChatter.update('feed-elements', chatterPost)
+                return fetchChatter.update('feed-elements', id, chatterPost)
                     .then((result) => {
                         expect(result).toBe('success');
 

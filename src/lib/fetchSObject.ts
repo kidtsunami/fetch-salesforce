@@ -47,15 +47,12 @@ export class FetchSObject {
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
     }
 
-    update(sobjectName: string, body: any): Promise<any> {
-        if(!body.id){
-            throw {
-                error: 'Invalid body for update, missing id',
-                body: body
-            }
+    update(sobjectName: string, id: string, body: any): Promise<any> {
+        if(!id){
+            throw 'Invalid body for update, missing id'
         }
         let bodyJSON = JSON.stringify(body);
-        let fetchUrl = urlJoin(this.getSObjectUrl(sobjectName), body.id);
+        let fetchUrl = urlJoin(this.getSObjectUrl(sobjectName), id);
 
         let fetchOptions = {
             headers: { 'Content-Type': 'application/json' },

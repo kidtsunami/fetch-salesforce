@@ -60,15 +60,12 @@ export class FetchChatter {
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
     }
 
-    update(resource:string, body:any): Promise<any> {
+    update(resource:string, id: string, body:any): Promise<any> {
         this.confirmCommunityID();
-        if(!body.id){
-            throw {
-                error: 'Invalid body for update, missing id',
-                body: body
-            }
+        if(!id){
+            throw 'Invalid body for update, missing id'
         }
-        let fetchUrl = urlJoin(this.getBaseChatterURL(), resource, body.id);
+        let fetchUrl = urlJoin(this.getBaseChatterURL(), resource, id);
 
         let bodyJSON = JSON.stringify(body);
         let fetchOptions = {

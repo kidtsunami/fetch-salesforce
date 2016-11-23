@@ -85,6 +85,7 @@ describe('fetchSObject', () => {
     describe('update', () => {
         let sObjectName: string;
         let sObjectBody: any;
+        let id: string;
 
         beforeEach(() => {
             sObjectName = 'Case';
@@ -96,7 +97,7 @@ describe('fetchSObject', () => {
 
         describe('with id', () => {
             beforeEach(() => {
-                sObjectBody.id = 'a0Ga000000awuHe';
+                id = 'a0Ga000000awuHe';
             });
 
             it('calls fetchJSON', () => {
@@ -104,10 +105,10 @@ describe('fetchSObject', () => {
                 let expectedOptions = {
                         headers: { 'Content-Type': 'application/json' },
                         method: 'PATCH',
-                        body: '{"Name":"test case name","Subject":"what","id":"a0Ga000000awuHe"}'
+                        body: '{"Name":"test case name","Subject":"what"}'
                     };
 
-                return fetchSObject.update(sObjectName, sObjectBody)
+                return fetchSObject.update(sObjectName, id, sObjectBody)
                     .then((result) => {
                         expect(result).toBe('success');
                         expect(fetchJSONStub.calledOnce).toBeTruthy();
@@ -127,7 +128,7 @@ describe('fetchSObject', () => {
                     };
 
                 try {
-                    fetchSObject.update(sObjectName, sObjectBody)
+                    fetchSObject.update(sObjectName, id, sObjectBody)
                         .then(fail);
                 } catch(reason) {
                     let expectedReason = {
