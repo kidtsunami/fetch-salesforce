@@ -39,7 +39,7 @@ describe('fetchSObject', () => {
                 Name: 'test name'
             };
 
-            let expectedURL = 'https://instanceURL/test/services/data/v37.0/Account';
+            let expectedURL = 'https://instanceURL/test/services/data/v37.0/sobjects/Account';
             let expectedOptions = {
                     headers: { 'Content-Type': 'application/json' },
                     method: 'POST',
@@ -66,7 +66,7 @@ describe('fetchSObject', () => {
         });
 
         it('calls fetchJSON', () => {
-            let expectedURL = 'https://instanceURL/test/services/data/v37.0/Case/a0Ga000000awuHe';
+            let expectedURL = 'https://instanceURL/test/services/data/v37.0/sobjects/Case/a0Ga000000awuHe';
             let expectedOptions = {
                 headers: { 'Content-Type': 'application/json' },
                 method: 'GET'
@@ -100,7 +100,7 @@ describe('fetchSObject', () => {
             });
 
             it('calls fetchJSON', () => {
-                let expectedURL = 'https://instanceURL/test/services/data/v37.0/Case/a0Ga000000awuHe';
+                let expectedURL = 'https://instanceURL/test/services/data/v37.0/sobjects/Case/a0Ga000000awuHe';
                 let expectedOptions = {
                         headers: { 'Content-Type': 'application/json' },
                         method: 'PATCH',
@@ -119,7 +119,7 @@ describe('fetchSObject', () => {
 
         describe('without id', () => {
             it('calls fetchJSON and an exception is thrown', () => {
-                let expectedURL = 'https://instanceURL/test/services/data/v37.0/Case/a0Ga000000awuHe';
+                let expectedURL = 'https://instanceURL/test/services/data/v37.0/sobjects/Case/a0Ga000000awuHe';
                 let expectedOptions = {
                         headers: { 'Content-Type': 'application/json' },
                         method: 'PATCH',
@@ -150,7 +150,7 @@ describe('fetchSObject', () => {
         });
 
         it('calls fetchJSON', () => {
-            let expectedURL = 'https://instanceURL/test/services/data/v37.0/Case/a0Ga000000awuHe';
+            let expectedURL = 'https://instanceURL/test/services/data/v37.0/sobjects/Case/a0Ga000000awuHe';
             let expectedOptions = {
                 method: 'DELETE'
             };

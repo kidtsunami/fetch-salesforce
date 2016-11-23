@@ -34,7 +34,7 @@ export class FetchSObject {
     }
 
     private getSObjectUrl(sobjectName: string){
-        return urlJoin(this.getBaseDataURL(), sobjectName, 'sobjects');
+        return urlJoin(this.getBaseDataURL(), 'sobjects', sobjectName);
     }
 
     get(sobjectName: string, id: string): Promise<any> {
