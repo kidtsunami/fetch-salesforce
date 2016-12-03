@@ -48,7 +48,10 @@ export class Fetcher extends events.EventEmitter {
         if(this.options.accessToken){
             return Promise.resolve(this.options.accessToken);
         } else {
-            return this.refreshAccessToken();
+            return this.refreshAccessToken()
+                .then((response) => {
+                    return this.options.accessToken;
+                });
         }
     }
     
@@ -98,6 +101,20 @@ export class Fetcher extends events.EventEmitter {
         return tokenServiceURL;
     }
 
+    private handleGenericErrors(requestURL: string, requestOptions: RequestOptions, response: any): any{
+        if(!response || response.error){
+            let fetchJSONException = {
+                requestURL: requestURL,
+                requestOptions: requestOptions,
+                response: response
+            }
+            console.error(fetchJSONException);
+            throw fetchJSONException;
+        } else {
+            return response;
+        }
+    }
+
     fetchJSON(requestURL: string, requestOptions: RequestOptions): Promise<any>{
         return new Promise((resolve, reject) => {
             this.addAuthorizationHeaders(requestOptions.headers)
@@ -114,7 +131,13 @@ export class Fetcher extends events.EventEmitter {
                     let fetchPromise = fetch(requestURL, requestOptions);
 
                     Promise.resolve(fetchPromise)
-                        .then(response => response.json())
+                        .then(response => {
+                            if(response.status !== 204){
+                                return response.json()
+                            } else {
+                                return response;
+                            }
+                        })
                         .then(response => {
                             if(this.isInvalidSession(response)){
                                 console.info(`${ this.options.accessToken } is invalid, refreshing!`);
@@ -184,20 +207,6 @@ export class Fetcher extends events.EventEmitter {
                 console.error(error);
                 throw(error);
             });;
-    }
-
-    private handleGenericErrors(requestURL: string, requestOptions: RequestOptions, response: any): any{
-        if(!response || response.error){
-            let fetchJSONException = {
-                requestURL: requestURL,
-                requestOptions: requestOptions,
-                response: response
-            }
-            console.error(fetchJSONException);
-            throw fetchJSONException;
-        } else {
-            return response;
-        }
     }
 
     revokeAccessToken(): Promise<any> {
