@@ -5,12 +5,31 @@ import { SalesforceOptions } from '../../lib/salesforceOptions';
 
 describe('fetcher', () => {
     let options: SalesforceOptions = withRequiredSalesforceOptions();
-    let fetcher: Fetcher; 
-    beforeEach(() => {
-         fetcher = Fetcher.Create(options);
+    let fetcher: Fetcher;
+
+    describe('withRequiredSalesforceOptions', () => {
+        beforeEach(() => {
+            fetcher = Fetcher.Create(options);
+        });
+
+        it('initializes', () => {
+            expect(fetcher).toBeDefined();
+            expect(fetcher.options).toEqual(options);
+            expect(fetcher.isRefreshingAccessToken).toBe(false);
+        })
     });
 
-    it('initializes', () => {
-        expect(fetcher).toBeDefined();
-    })
+    describe('withRequiredSalesforceOptions and prepopulated accessToken', () => {
+        beforeEach(() => {
+            options.accessToken = 'populated accessToken';
+            fetcher = Fetcher.Create(options);
+        });
+
+        it('initializes with undefined accessToken', () => {
+            expect(fetcher).toBeDefined();
+            expect(fetcher.options).toBeDefined();
+            expect(fetcher.options.accessToken).toBeUndefined();
+            expect(fetcher.isRefreshingAccessToken).toBe(false);
+        })
+    });
 });
