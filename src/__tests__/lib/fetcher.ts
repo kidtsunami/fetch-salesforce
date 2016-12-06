@@ -7,29 +7,48 @@ describe('fetcher', () => {
     let options: SalesforceOptions = withRequiredSalesforceOptions();
     let fetcher: Fetcher;
 
-    describe('withRequiredSalesforceOptions', () => {
+    describe('constructor', () => {
+        describe('withRequiredSalesforceOptions', () => {
+            beforeEach(() => {
+                fetcher = Fetcher.Create(options);
+            });
+
+            it('initializes', () => {
+                expect(fetcher).toBeDefined();
+                expect(fetcher.options).toEqual(options);
+                expect(fetcher.isRefreshingAccessToken).toBe(false);
+            })
+        });
+
+        describe('withRequiredSalesforceOptions and prepopulated accessToken', () => {
+            beforeEach(() => {
+                options.accessToken = 'populated accessToken';
+                fetcher = Fetcher.Create(options);
+            });
+
+            it('initializes with undefined accessToken', () => {
+                expect(fetcher).toBeDefined();
+                expect(fetcher.options).toBeDefined();
+                expect(fetcher.options.accessToken).toBeUndefined();
+                expect(fetcher.isRefreshingAccessToken).toBe(false);
+            });
+        });
+    });
+
+    describe('getAccessToken', () => {
         beforeEach(() => {
             fetcher = Fetcher.Create(options);
         });
 
-        it('initializes', () => {
-            expect(fetcher).toBeDefined();
-            expect(fetcher.options).toEqual(options);
-            expect(fetcher.isRefreshingAccessToken).toBe(false);
-        })
-    });
+        it('returns accessToken if there', () => {
+            let expectedAccessToken = 'existingAccessToken';
+            fetcher.options.accessToken = expectedAccessToken;
 
-    describe('withRequiredSalesforceOptions and prepopulated accessToken', () => {
-        beforeEach(() => {
-            options.accessToken = 'populated accessToken';
-            fetcher = Fetcher.Create(options);
+            return fetcher.getAccessToken()
+                .then((actualAccessToken) => {
+                    expect(actualAccessToken).toEqual(expectedAccessToken);
+                });
         });
-
-        it('initializes with undefined accessToken', () => {
-            expect(fetcher).toBeDefined();
-            expect(fetcher.options).toBeDefined();
-            expect(fetcher.options.accessToken).toBeUndefined();
-            expect(fetcher.isRefreshingAccessToken).toBe(false);
-        })
     });
+
 });
