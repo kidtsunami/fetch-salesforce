@@ -4,6 +4,12 @@
   version "3.0.35"
   resolved "https://registry.yarnpkg.com/@types/bluebird/-/bluebird-3.0.35.tgz#e6e2d375a7b7a0a22f155ce74eb28d0da303740c"
 
+"@types/fetch-mock":
+  version "5.0.5"
+  resolved "https://registry.yarnpkg.com/@types/fetch-mock/-/fetch-mock-5.0.5.tgz#df0f95d36a8dc67fd79f4384887e52c8281fcf0f"
+  dependencies:
+    "@types/whatwg-fetch" "*"
+
 "@types/node":
   version "6.0.46"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.46.tgz#8d9e48572831f05b11cc4c793754d43437219d62"
@@ -11,6 +17,16 @@
 "@types/sinon":
   version "1.16.31"
   resolved "https://registry.yarnpkg.com/@types/sinon/-/sinon-1.16.31.tgz#421deb2160e732171fc9ff558892ac15cb0fdef3"
+
+"@types/whatwg-fetch@*":
+  version "0.0.32"
+  resolved "https://registry.yarnpkg.com/@types/whatwg-fetch/-/whatwg-fetch-0.0.32.tgz#ded91dbae1e6ffb826f14b171a67e7f7e508d0c5"
+  dependencies:
+    "@types/whatwg-streams" "*"
+
+"@types/whatwg-streams@*":
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/@types/whatwg-streams/-/whatwg-streams-0.0.1.tgz#b9d8f23d8320939bea12dc7a48e530fdb21009b3"
 
 abab@^1.0.0:
   version "1.0.3"
@@ -725,6 +741,12 @@ fb-watchman@^1.8.0, fb-watchman@^1.9.0:
   resolved "https://registry.yarnpkg.com/fb-watchman/-/fb-watchman-1.9.0.tgz#6f268f1f347a6b3c875d1e89da7e1ed79adfc0ec"
   dependencies:
     bser "^1.0.2"
+
+fetch-mock:
+  version "5.5.0"
+  resolved "https://registry.yarnpkg.com/fetch-mock/-/fetch-mock-5.5.0.tgz#798bc07c088b3727fbf05a757e76b4f96e77a5d5"
+  dependencies:
+    node-fetch "^1.3.3"
 
 filename-regex@^2.0.0:
   version "2.0.0"
@@ -1796,7 +1818,7 @@ node-emoji@^1.4.1:
   dependencies:
     string.prototype.codepointat "^0.2.0"
 
-node-fetch@^1.0.1:
+node-fetch@^1.0.1, node-fetch@^1.3.3:
   version "1.6.3"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-1.6.3.tgz#dc234edd6489982d58e8f0db4f695029abcd8c04"
   dependencies:

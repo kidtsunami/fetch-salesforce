@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@types/bluebird": "^3.0.35",
+    "@types/fetch-mock": "^5.0.5",
     "@types/node": "6.0.46",
     "bluebird": "^3.4.6",
     "events": "^1.1.1",
@@ -27,6 +28,7 @@
   },
   "devDependencies": {
     "@types/sinon": "^1.16.31",
+    "fetch-mock": "^5.5.0",
     "jest": "^16.0.2",
     "sinon": "^1.17.6"
   },
