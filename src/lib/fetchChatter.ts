@@ -34,7 +34,7 @@ export class FetchChatter {
         this.confirmCommunityID();
         let fetchUrl = urlJoin(this.getBaseChatterURL(), resource);
 
-        let fetchOptions: RequestOptions = {
+        let fetchOptions: RequestInit = {
             method: 'GET',
             cache: 'no-cache'
         };

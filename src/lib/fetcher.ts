@@ -5,15 +5,14 @@ import * as querystring from 'querystring';
 import events = require('events');
 import urlJoin = require('url-join');
 
-let fetch = global['fetch']; 
-if (fetch === undefined) {
+if (global['fetch'] === undefined) {
     fetch = require('isomorphic-fetch');
 }
 import Promise = require('bluebird');
 
 interface FetcherRequest {
     requestURL: string,
-    requestOptions: RequestOptions,
+    requestOptions: RequestInit,
     resolve: (thenableOrResult?: {} | Promise.Thenable<{}>) => void,
     reject: (thenableOrResult?: {} | Promise.Thenable<{}>) => void
 }
@@ -48,6 +47,7 @@ export class Fetcher extends events.EventEmitter {
         if(this.options.accessToken){
             return Promise.resolve(this.options.accessToken);
         } else {
+            console.info('No AccessToken, Refreshing Access Token');
             return this.refreshAccessToken()
                 .then((response) => {
                     return this.options.accessToken;
@@ -71,7 +71,7 @@ export class Fetcher extends events.EventEmitter {
             fetchBody.client_secret = this.options.clientSecret;
         }
 
-        let requestOptions: RequestOptions = {
+        let requestOptions: RequestInit = {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },
@@ -101,7 +101,7 @@ export class Fetcher extends events.EventEmitter {
         return tokenServiceURL;
     }
 
-    private handleGenericErrors(requestURL: string, requestOptions: RequestOptions, response: any): any{
+    private handleGenericErrors(requestURL: string, requestOptions: RequestInit, response: any): any{
         if(!response || response.error){
             let fetchJSONException = {
                 requestURL: requestURL,
@@ -115,7 +115,7 @@ export class Fetcher extends events.EventEmitter {
         }
     }
 
-    fetchJSON(requestURL: string, requestOptions: RequestOptions): Promise<any>{
+    fetchJSON(requestURL: string, requestOptions: RequestInit): Promise<any>{
         return new Promise((resolve, reject) => {
             this.addAuthorizationHeaders(requestOptions.headers)
                 .then(headers => {
@@ -221,7 +221,7 @@ export class Fetcher extends events.EventEmitter {
             token: this.options.accessToken
         };
 
-        let requestOptions: RequestOptions = {
+        let requestOptions: RequestInit = {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             },

@@ -26,7 +26,7 @@ export class FetchUserInfo {
     get(): Promise<any> {
         let fetchUrl = this.getBaseUserInfoURL();
 
-        let fetchOptions: RequestOptions = {
+        let fetchOptions: RequestInit = {
             method: 'GET',
             cache: 'no-cache'
         };

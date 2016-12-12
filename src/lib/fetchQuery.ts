@@ -28,7 +28,7 @@ export class FetchQuery {
         let encodedQuery = '?' + querystring.stringify({ q: soqlQuery });
         let fetchUrl = urlJoin(this.getBaseDataURL(), 'query', encodedQuery);
 
-        let fetchOptions: RequestOptions = {
+        let fetchOptions: RequestInit = {
             method: 'GET',
             cache: 'no-cache'
         };
