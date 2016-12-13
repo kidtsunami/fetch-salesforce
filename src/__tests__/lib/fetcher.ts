@@ -155,6 +155,7 @@ describe('fetcher', () => {
                 .then((parsedResonse) => {
                     expect(parsedResonse.allGoodWithNoExisting).toBeTruthy();
                     expect(fetchMock.called(validRequestWithNoExistingHeaders)).toBeTruthy();
+                    expect(fetchMock.called(validRequestWithHeaders)).toBeFalsy();
                 });
         });
     });
