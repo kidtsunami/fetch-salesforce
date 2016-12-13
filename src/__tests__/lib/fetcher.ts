@@ -86,8 +86,10 @@ describe('fetcher', () => {
             }
         }
         let validRequestURL = 'https://validURL/testPath/toRequest';
+        let valid204RequestURL = 'https://validURL/testPath/toRequesta204';
         let validRequestWithHeaders = 'validRequestWithHeaders';
         let validRequestWithNoExistingHeaders = 'validRequestWithNoExistingHeaders';
+        let validRequestWith204Response = 'validRequestWithNoExistingHeaders';
 
         beforeEach(() => {
             fetcher = Fetcher.Create(options);
@@ -95,6 +97,7 @@ describe('fetcher', () => {
 
             mockValidRequestWithHeaders();
             mockValidRequestWithNoExistingHeaders();
+            mockValidRequestWith204Response();
         });
 
         function mockValidRequestWithHeaders(){
@@ -122,6 +125,20 @@ describe('fetcher', () => {
             fetchMock.mock(validRequestURL, {
                     allGoodWithNoExisting: true
                 }, mockOptions);
+        }
+
+        function mockValidRequestWith204Response(){
+            let mockOptions = {
+                name: validRequestWith204Response,
+                headers: {
+                    'Authorization': 'Authorization: Bearer authorizedToken'
+                },
+                method: 'POST'
+            }
+            let response = {
+                status: 204
+            };
+            fetchMock.mock(valid204RequestURL, response, mockOptions);
         }
 
         afterEach(() => {
@@ -156,6 +173,21 @@ describe('fetcher', () => {
                     expect(parsedResonse.allGoodWithNoExisting).toBeTruthy();
                     expect(fetchMock.called(validRequestWithNoExistingHeaders)).toBeTruthy();
                     expect(fetchMock.called(validRequestWithHeaders)).toBeFalsy();
+                });
+        });
+
+        it('does not parse a 204', () => {
+            let requestURL = valid204RequestURL;
+            let existingOptions = {
+                method: 'POST'
+            }
+           
+            return fetcher.fetchJSON(requestURL, existingOptions)
+                .then((response) => {
+                    expect(response.bodyUsed).toBeFalsy();
+                    expect(response.status).toBe(204);
+                    expect(fetchMock.calls().matched.length).toBe(1);
+                    expect(fetchMock.called(validRequestWith204Response)).toBeTruthy();
                 });
         });
     });
