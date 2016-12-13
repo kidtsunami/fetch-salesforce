@@ -5,21 +5,15 @@ import fetchMock = require('fetch-mock');
 import { Fetcher } from '../../lib/fetcher';
 import { SalesforceOptions } from '../../lib/salesforceOptions';
 
-
-let refreshAccessTokenResponse = {
-    json: () =>  {
-        return {
-            access_token: 'refreshedAccessToken'
-        };
-    }
-}
 describe('fetcher', () => {
     let options: SalesforceOptions;
     let fetcher: Fetcher;
 
     beforeEach(() => {
         options = withRequiredSalesforceOptions();
-        fetchMock.mock('https://instanceURL/requiredtest/services/oauth2/token', refreshAccessTokenResponse);
+        fetchMock.mock('https://instanceURL/requiredtest/services/oauth2/token', {
+            access_token: 'refreshedAccessToken'
+        });
     });
 
     afterEach(() => {
@@ -92,39 +86,75 @@ describe('fetcher', () => {
             }
         }
         let validRequestURL = 'https://validURL/testPath/toRequest';
-        let validRequestOptions = {
-            headers: {
-                'Authorization': 'Bearer authorizedToken',
-                'Content-Type': 'application/json'
-            },
-            method: 'PATCH'
-        }
-
+        let validRequestWithHeaders = 'validRequestWithHeaders';
+        let validRequestWithNoExistingHeaders = 'validRequestWithNoExistingHeaders';
 
         beforeEach(() => {
             fetcher = Fetcher.Create(options);
             fetcher.options.accessToken = 'authorizedToken';
 
-            fetchMock.mock('https://validURL/testPath/toRequest', { allGood: true }, { name: 'validRequest' });
+            mockValidRequestWithHeaders();
+            mockValidRequestWithNoExistingHeaders();
         });
+
+        function mockValidRequestWithHeaders(){
+            let mockOptions = {
+                name: validRequestWithHeaders,
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Authorization: Bearer authorizedToken'
+                },
+                method: 'PATCH'
+            }
+            fetchMock.mock(validRequestURL, {
+                    allGood: true
+                }, mockOptions);
+        }
+
+        function mockValidRequestWithNoExistingHeaders(){
+            let mockOptions = {
+                name: validRequestWithNoExistingHeaders,
+                headers: {
+                    'Authorization': 'Authorization: Bearer authorizedToken'
+                },
+                method: 'POST'
+            }
+            fetchMock.mock(validRequestURL, {
+                    allGoodWithNoExisting: true
+                }, mockOptions);
+        }
 
         afterEach(() => {
         });
 
-        it('requestOptions has authorizationHeaders', () => {
+        it('requestOptions adds authorizationHeaders for existing headers', () => {
             let requestURL = validRequestURL;
             let existingOptions = {
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 method: 'PATCH'
-            }
+            };
            
 
             return fetcher.fetchJSON(requestURL, existingOptions)
                 .then((parsedResonse) => {
                     expect(parsedResonse.allGood).toBeTruthy();
-                    expect(fetchMock.called('validRequest')).toBeTruthy();
+                    expect(fetchMock.called(validRequestWithHeaders)).toBeTruthy();
+                    expect(fetchMock.called(validRequestWithNoExistingHeaders)).toBeFalsy();
+                });
+        });
+
+        it('requestOptions adds authorizationHeaders for no headers', () => {
+            let requestURL = validRequestURL;
+            let existingOptions = {
+                method: 'POST'
+            }
+           
+            return fetcher.fetchJSON(requestURL, existingOptions)
+                .then((parsedResonse) => {
+                    expect(parsedResonse.allGoodWithNoExisting).toBeTruthy();
+                    expect(fetchMock.called(validRequestWithNoExistingHeaders)).toBeTruthy();
                 });
         });
     });
