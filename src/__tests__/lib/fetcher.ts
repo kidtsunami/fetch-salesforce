@@ -192,4 +192,42 @@ describe('fetcher', () => {
         });
     });
 
+    describe('revokeAccessToken', () => {
+        let validRevokeURL = 'https://instanceURL/requiredtest/services/oauth2/revoke';
+        let validRevokeRequest = 'validRevokeRequest';
+        let validRevokeBody = 'token=authorizedToken';
+        let validRevokeOptions = {
+            name: validRevokeRequest,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            method: 'POST'
+        }
+
+        function validateAndRespond(url, options): any{
+            if(options.body == validRevokeBody){
+                return {
+                    status: 200
+                }
+            } else {
+                return {
+                    throws: `{ options.body } did not equal expect: { options.body }`
+                }
+            }
+        }
+
+        beforeEach(() => {
+            fetcher = Fetcher.Create(options);
+            fetcher.options.accessToken = 'authorizedToken';
+            fetchMock.mock(validRevokeURL, validateAndRespond, validRevokeOptions);
+        });
+
+        it('makes valid request', () => {
+            return fetcher.revokeAccessToken()
+                .then(() => {
+                    expect(fetchMock.calls().matched.length).toBe(1);
+                    expect(fetchMock.called(validRevokeRequest)).toBeTruthy();
+                });
+        });
+    });
 });
