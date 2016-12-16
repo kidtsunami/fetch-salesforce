@@ -1,6 +1,7 @@
 import sinon = require('sinon');
 import { withRequiredSalesforceOptions } from './salesforceOptions';
 import fetchMock = require('fetch-mock');
+import Promise = require('bluebird');
 
 import { Fetcher } from '../../lib/fetcher';
 import { SalesforceOptions } from '../../lib/salesforceOptions';
@@ -203,12 +204,15 @@ describe('fetcher', () => {
             },
             method: 'POST'
         }
+        let lastEmittedStatus: string;
         describe('with valid response', () => {
             function validateExpectedBody(url, options): any{
                 if(options.body == validRevokeBody){
-                    return {
-                        status: 200
-                    }
+                    return Promise.delay(300).then(() => {
+                        return {
+                            status: 200
+                        }
+                    });
                 } else {
                     return {
                         throws: `{ options.body } did not equal expect: { options.body }`
@@ -220,6 +224,9 @@ describe('fetcher', () => {
                 fetcher = Fetcher.Create(options);
                 fetcher.options.accessToken = 'authorizedToken';
                 fetchMock.mock(validRevokeURL, validateExpectedBody, validRevokeOptions);
+                lastEmittedStatus = null;
+                fetcher.on('accessTokenRevoking', () => { lastEmittedStatus = 'accessTokenRevoking'; });
+                fetcher.on('accessTokenRevoked', () => { lastEmittedStatus = 'accessTokenRevoked'; });
             });
 
             it('makes valid request', () => {
@@ -228,6 +235,15 @@ describe('fetcher', () => {
                         expect(fetchMock.calls().matched.length).toBe(1);
                         expect(fetchMock.called(validRevokeRequest)).toBeTruthy();
                     });
+            });
+
+            it('emits events', () =>{
+                expect(lastEmittedStatus).toBeNull();
+                fetcher.revokeAccessToken()
+                    .then(() => {
+                        expect(lastEmittedStatus).toEqual('accessTokenRevoked');
+                    });
+                expect(lastEmittedStatus).toEqual('accessTokenRevoking');
             });
         });
             
