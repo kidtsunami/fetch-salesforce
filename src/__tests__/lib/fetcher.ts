@@ -203,31 +203,59 @@ describe('fetcher', () => {
             },
             method: 'POST'
         }
-
-        function validateAndRespond(url, options): any{
-            if(options.body == validRevokeBody){
-                return {
-                    status: 200
-                }
-            } else {
-                return {
-                    throws: `{ options.body } did not equal expect: { options.body }`
+        describe('with valid response', () => {
+            function validateExpectedBody(url, options): any{
+                if(options.body == validRevokeBody){
+                    return {
+                        status: 200
+                    }
+                } else {
+                    return {
+                        throws: `{ options.body } did not equal expect: { options.body }`
+                    }
                 }
             }
-        }
 
-        beforeEach(() => {
-            fetcher = Fetcher.Create(options);
-            fetcher.options.accessToken = 'authorizedToken';
-            fetchMock.mock(validRevokeURL, validateAndRespond, validRevokeOptions);
-        });
+            beforeEach(() => {
+                fetcher = Fetcher.Create(options);
+                fetcher.options.accessToken = 'authorizedToken';
+                fetchMock.mock(validRevokeURL, validateExpectedBody, validRevokeOptions);
+            });
 
-        it('makes valid request', () => {
-            return fetcher.revokeAccessToken()
-                .then(() => {
-                    expect(fetchMock.calls().matched.length).toBe(1);
-                    expect(fetchMock.called(validRevokeRequest)).toBeTruthy();
-                });
+            it('makes valid request', () => {
+                return fetcher.revokeAccessToken()
+                    .then(() => {
+                        expect(fetchMock.calls().matched.length).toBe(1);
+                        expect(fetchMock.called(validRevokeRequest)).toBeTruthy();
+                    });
+            });
         });
+            
+        describe('with missing accessToken', () => {
+            it('throws error', () => {
+                fetcher.options.accessToken = null;
+                expect(() => fetcher.revokeAccessToken()).toThrowError('No Access Token to Revoke');
+            });
+        });
+        
+        describe('with non-200 response', () => {
+            beforeEach(() => {
+                fetcher = Fetcher.Create(options);
+                fetcher.options.accessToken = 'authorizedToken';
+                fetchMock.mock(validRevokeURL, { status: 404 }, '404request');
+            });
+
+            it('throws error', () => {
+                return fetcher.revokeAccessToken()
+                    .then(() => {
+                        throw 'expected to throw an error'
+                    })
+                    .catch((caughtError) => {
+                        expect(caughtError.requestURL).toEqual(validRevokeURL);
+                        expect(caughtError.requestOptions.body).toEqual(validRevokeBody);
+                        expect(caughtError.response.status).toBe(404);
+                    });
+            });
+        })
     });
 });
