@@ -126,8 +126,6 @@ export class Fetcher extends events.EventEmitter {
                         resolve: resolve, 
                         reject: reject
                     };
-                    console.info('Fetching JSON');
-                    console.info(fetcherRequest);
                     let fetchPromise = fetch(requestURL, requestOptions);
 
                     Promise.resolve(fetchPromise)
@@ -146,6 +144,12 @@ export class Fetcher extends events.EventEmitter {
                             } else {
                                 resolve(this.handleGenericErrors(requestURL, requestOptions, response));
                             }
+                        })
+                        .catch((error) => {
+                            console.error('fetchJSON:\n\tWith:\n\t\trequestURL: ', requestURL, 
+                                '\n\t\trequestOptions: ', requestOptions,
+                                '\n\n\tHad Error: ', error);
+                            return Promise.reject(error);
                         });
                 });
 
