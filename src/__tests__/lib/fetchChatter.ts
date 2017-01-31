@@ -47,6 +47,43 @@ describe('fetchChatter', () => {
                         expect(fetchJSONStub.getCall(0).args[1]).toEqual(expectedOptions);
                     });
             });
+            
+            describe('with connectBearerUrls false', () => {
+                it('calls fetchJSON without headers', () => {
+                    let expectedURL = 'https://instanceURL/test/services/data/v37.0/connect/communities/avalidcommunityid/chatter/feeds/news/me/feed-elements';
+                    let expectedOptions = { method: 'GET', cache: 'no-cache' };
+
+                    return fetchChatter.retrieve('feeds/news/me/feed-elements', false)
+                        .then((result) => {
+                            expect(result).toBe('success');
+
+                            expect(fetchJSONStub.calledOnce).toBeTruthy();
+                            expect(fetchJSONStub.getCall(0).args[0]).toEqual(expectedURL);
+                            expect(fetchJSONStub.getCall(0).args[1]).toEqual(expectedOptions);
+                        });
+                });
+            });
+            
+            describe('with connectBearerUrls true', () => {
+                it('calls fetchJSON with headers', () => {
+                    let expectedURL = 'https://instanceURL/test/services/data/v37.0/connect/communities/avalidcommunityid/chatter/feeds/news/me/feed-elements';
+                    let expectedOptions = {
+                        headers: { 'X-Connect-Bearer-Urls': 'true' },
+                        method: 'GET',
+                        cache: 'no-cache'
+                    };
+
+                    return fetchChatter.retrieve('feeds/news/me/feed-elements', true)
+                        .then((result) => {
+                            expect(result).toBe('success');
+
+                            expect(fetchJSONStub.calledOnce).toBeTruthy();
+                            expect(fetchJSONStub.getCall(0).args[0]).toEqual(expectedURL);
+                            expect(fetchJSONStub.getCall(0).args[1]).toEqual(expectedOptions);
+                        });
+                });
+            });
+                
         });
 
         describe('create', () => {

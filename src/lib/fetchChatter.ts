@@ -30,7 +30,7 @@ export class FetchChatter {
             'chatter');
     }
 
-    retrieve(resource:string): Promise<any> {
+    retrieve(resource:string, connectBearerUrls?: boolean): Promise<any> {
         this.confirmCommunityID();
         let fetchUrl = urlJoin(this.getBaseChatterURL(), resource);
 
@@ -38,6 +38,13 @@ export class FetchChatter {
             method: 'GET',
             cache: 'no-cache'
         };
+
+        if(connectBearerUrls){
+            fetchOptions.headers = {
+                'X-Connect-Bearer-Urls': 'true'
+            };
+        }
+
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
     }
     
