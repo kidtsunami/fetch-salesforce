@@ -52,8 +52,9 @@ describe('fetchChatter', () => {
                 it('calls fetchJSON without headers', () => {
                     let expectedURL = 'https://instanceURL/test/services/data/v37.0/connect/communities/avalidcommunityid/chatter/feeds/news/me/feed-elements';
                     let expectedOptions = { method: 'GET', cache: 'no-cache' };
+                    let connectBearerUrls = false;
 
-                    return fetchChatter.retrieve('feeds/news/me/feed-elements', false)
+                    return fetchChatter.retrieve('feeds/news/me/feed-elements', connectBearerUrls)
                         .then((result) => {
                             expect(result).toBe('success');
 
@@ -72,8 +73,9 @@ describe('fetchChatter', () => {
                         method: 'GET',
                         cache: 'no-cache'
                     };
+                    let connectBearerUrls = true;
 
-                    return fetchChatter.retrieve('feeds/news/me/feed-elements', true)
+                    return fetchChatter.retrieve('feeds/news/me/feed-elements', connectBearerUrls)
                         .then((result) => {
                             expect(result).toBe('success');
 
