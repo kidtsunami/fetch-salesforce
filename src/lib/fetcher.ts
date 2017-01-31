@@ -87,8 +87,8 @@ export class Fetcher extends events.EventEmitter {
             .then(response => this.handleGenericErrors(requestURL, requestOptions, response))
             .then((response) => {
                 console.info(`New accessToken retrieved`);
-                this.emit('accessTokenRefreshed');
                 this.options.accessToken = response.access_token;
+                this.emit('accessTokenRefreshed', response.access_token);
                 return response;
             });
     }
