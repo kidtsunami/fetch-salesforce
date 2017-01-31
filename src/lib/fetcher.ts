@@ -128,7 +128,7 @@ export class Fetcher extends events.EventEmitter {
                     };
                     let fetchPromise = fetch(requestURL, requestOptions);
 
-                    Promise.resolve(fetchPromise)
+                    return Promise.resolve(fetchPromise)
                         .then(response => {
                             if(response.status !== 204){
                                 return response.json()
