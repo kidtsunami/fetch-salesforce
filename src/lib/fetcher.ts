@@ -208,8 +208,9 @@ export class Fetcher extends events.EventEmitter {
             .catch(error => {
                 console.error(`Failed to retry the pending requests`);
                 console.error(error);
+                throw error;
             })
-            .then(() => {
+            .finally(() => {
                 console.info('Re-initializing pendingRequests and isRefreshingAccessToken');
                 this.isRefreshingAccessToken = false;
                 this.pendingRequests = [];
