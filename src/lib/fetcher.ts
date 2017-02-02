@@ -182,6 +182,11 @@ export class Fetcher extends events.EventEmitter {
             return this.refreshAccessToken()
                 .then(() => {
                     return this.retryPendingRequests()
+                })
+                .catch((error) => {
+                    console.error(`Failed to refreshAccessToken when retrying pending requests`);
+                    console.error(error);
+                    throw error;
                 });
         } else {
             console.info('Already refreshing token');
