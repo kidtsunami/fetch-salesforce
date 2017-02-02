@@ -195,7 +195,7 @@ export class Fetcher extends events.EventEmitter {
             retryPromises.push(this.fetchJSON(pendingRequest.requestURL, pendingRequest.requestOptions));
         }
         console.log('Promising all');
-        Promise.all(retryPromises)
+        return Promise.all(retryPromises)
             .then(responses => {
                 for(let requestIndex in responses){
                     let response = responses[requestIndex];
@@ -203,14 +203,17 @@ export class Fetcher extends events.EventEmitter {
                     console.log('Resolving!!!!');
                     pendingRequest.resolve(response);
                 }
-                console.info('PendingRequests have been retried, cleaning pendingRequests');
-                this.pendingRequests = [];
+                console.info('PendingRequests have been retried');
             })
             .catch(error => {
                 console.error(`Failed to retry the pending requests`);
                 console.error(error);
-                throw(error);
-            });;
+            })
+            .then(() => {
+                console.info('Re-initializing pendingRequests and isRefreshingAccessToken');
+                this.isRefreshingAccessToken = false;
+                this.pendingRequests = [];
+            });
     }
 
     revokeAccessToken(): Promise<any> {

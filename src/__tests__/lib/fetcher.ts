@@ -74,6 +74,7 @@ describe('fetcher', () => {
             return fetcher.getAccessToken()
                 .then((actualAccessToken) => {
                     expect(actualAccessToken).toEqual(expectedAccessToken);
+                    expect(fetcher.isRefreshingAccessToken).toBe(false);
                 });
         });
     });
