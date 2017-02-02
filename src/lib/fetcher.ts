@@ -140,7 +140,7 @@ export class Fetcher extends events.EventEmitter {
                             if(this.isInvalidSession(response)){
                                 console.info(`${ this.options.accessToken } is invalid, refreshing!`);
                                 this.pendingRequests.push(fetcherRequest);
-                                this.refreshAccessTokenAndRetryPendingRequests(fetcherRequest);
+                                return this.refreshAccessTokenAndRetryPendingRequests(fetcherRequest);
                             } else {
                                 resolve(this.handleGenericErrors(requestURL, requestOptions, response));
                             }
@@ -179,7 +179,7 @@ export class Fetcher extends events.EventEmitter {
         if(!this.isRefreshingAccessToken){
             this.isRefreshingAccessToken = true;
             console.info('Refreshing token and retrying pending requests');
-            this.refreshAccessToken()
+            return this.refreshAccessToken()
                 .then(() => {
                     return this.retryPendingRequests()
                 });
