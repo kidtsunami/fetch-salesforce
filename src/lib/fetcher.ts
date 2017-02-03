@@ -157,7 +157,6 @@ export class Fetcher extends events.EventEmitter {
                             return Promise.reject(error);
                         });
                 });
-
         });
     }
     
