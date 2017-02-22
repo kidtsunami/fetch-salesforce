@@ -18,7 +18,7 @@ export class FetchApexREST {
     }
 
     private getBaseApexRESTURL(){
-        return urlJoin(this.options.instanceURL, 'apexrest');
+        return urlJoin(this.options.instanceURL, 'services', 'apexrest');
     }
 
     get(endpointPath: string): Promise<any> {
