@@ -52,8 +52,9 @@ describe('fetchChatter', () => {
                 it('calls fetchJSON without headers', () => {
                     let expectedURL = 'https://instanceURL/test/services/data/v37.0/connect/communities/avalidcommunityid/chatter/feeds/news/me/feed-elements';
                     let expectedOptions = { method: 'GET', cache: 'no-cache' };
+                    let connectBearerUrls = false;
 
-                    return fetchChatter.retrieve('feeds/news/me/feed-elements', false)
+                    return fetchChatter.retrieve('feeds/news/me/feed-elements', connectBearerUrls)
                         .then((result) => {
                             expect(result).toBe('success');
 
@@ -72,8 +73,9 @@ describe('fetchChatter', () => {
                         method: 'GET',
                         cache: 'no-cache'
                     };
+                    let connectBearerUrls = true;
 
-                    return fetchChatter.retrieve('feeds/news/me/feed-elements', true)
+                    return fetchChatter.retrieve('feeds/news/me/feed-elements', connectBearerUrls)
                         .then((result) => {
                             expect(result).toBe('success');
 
@@ -177,27 +179,122 @@ describe('fetchChatter', () => {
 
         describe('retrieve', () => {
             it('calls fetchJSON', () => {
-                let expectedURL = 'https://instanceURL/test/services/data/v37.0/connect/communities/avalidcommunityid/chatter/feeds/news/me/feed-elements';
+                let expectedURL = 'https://instanceURL/test/services/data/v37.0/chatter/feeds/news/me/feed-elements';
                 let expectedOptions = { method: 'GET', cache: 'no-cache' };
 
-                expect(() => fetchChatter.retrieve('feeds/news/me/feed-elements'))
-                    .toThrowError('SFDC Community ID is required to fetch Chatter');
+                return fetchChatter.retrieve('feeds/news/me/feed-elements')
+                    .then((result) => {
+                        expect(result).toBe('success');
+
+                        expect(fetchJSONStub.calledOnce).toBeTruthy();
+                        expect(fetchJSONStub.getCall(0).args[0]).toEqual(expectedURL);
+                        expect(fetchJSONStub.getCall(0).args[1]).toEqual(expectedOptions);
+                    });
             });
+            
+            describe('with connectBearerUrls false', () => {
+                it('calls fetchJSON without headers', () => {
+                    let expectedURL = 'https://instanceURL/test/services/data/v37.0/chatter/feeds/news/me/feed-elements';
+                    let expectedOptions = { method: 'GET', cache: 'no-cache' };
+                    let connectBearerUrls = false;
+
+                    return fetchChatter.retrieve('feeds/news/me/feed-elements', connectBearerUrls)
+                        .then((result) => {
+                            expect(result).toBe('success');
+
+                            expect(fetchJSONStub.calledOnce).toBeTruthy();
+                            expect(fetchJSONStub.getCall(0).args[0]).toEqual(expectedURL);
+                            expect(fetchJSONStub.getCall(0).args[1]).toEqual(expectedOptions);
+                        });
+                });
+            });
+            
+            describe('with connectBearerUrls true', () => {
+                it('calls fetchJSON with headers', () => {
+                    let expectedURL = 'https://instanceURL/test/services/data/v37.0/chatter/feeds/news/me/feed-elements';
+                    let expectedOptions = {
+                        headers: { 'X-Connect-Bearer-Urls': 'true' },
+                        method: 'GET',
+                        cache: 'no-cache'
+                    };
+                    let connectBearerUrls = true;
+
+                    return fetchChatter.retrieve('feeds/news/me/feed-elements', connectBearerUrls)
+                        .then((result) => {
+                            expect(result).toBe('success');
+
+                            expect(fetchJSONStub.calledOnce).toBeTruthy();
+                            expect(fetchJSONStub.getCall(0).args[0]).toEqual(expectedURL);
+                            expect(fetchJSONStub.getCall(0).args[1]).toEqual(expectedOptions);
+                        });
+                });
+            });
+                
         });
 
         describe('create', () => {
             it('calls fetchJSON', () => {
                 let chatterPost = { aNumber: 5, aString: 'teststring' };
 
-                let expectedURL = 'https://instanceURL/test/services/data/v37.0/connect/communities/avalidcommunityid/chatter/feed-elements';
+                let expectedURL = 'https://instanceURL/test/services/data/v37.0/chatter/feed-elements';
                 let expectedOptions = {
                     headers: { 'Content-Type': 'application/json' },
                     method: 'POST',
                     body: '{"aNumber":5,"aString":"teststring"}'
+                }; 
+
+                return fetchChatter.create('feed-elements', chatterPost)
+                    .then((result) => {
+                        expect(result).toBe('success');
+
+                        expect(fetchJSONStub.calledOnce).toBeTruthy();
+                        expect(fetchJSONStub.getCall(0).args[0]).toEqual(expectedURL);
+                        expect(fetchJSONStub.getCall(0).args[1]).toEqual(expectedOptions);
+                    });
+            });
+        });
+
+        describe('update', () => {
+            it('calls fetchJSON', () => {
+                let id: string =  '1092310298';
+                let chatterPost = { aNumber: 5, aString: 'teststring' };
+
+                let expectedURL = 'https://instanceURL/test/services/data/v37.0/chatter/feed-elements/1092310298';
+                let expectedOptions = {
+                    headers: { 'Content-Type': 'application/json' },
+                    method: 'PATCH',
+                    body: '{"aNumber":5,"aString":"teststring"}'
+                }; 
+
+                return fetchChatter.update('feed-elements', id, chatterPost)
+                    .then((result) => {
+                        expect(result).toBe('success');
+
+                        expect(fetchJSONStub.calledOnce).toBeTruthy();
+                        expect(fetchJSONStub.getCall(0).args[0]).toEqual(expectedURL);
+                        expect(fetchJSONStub.getCall(0).args[1]).toEqual(expectedOptions);
+                    });
+            });
+        });
+
+        describe('delete', () => {
+            it('calls fetchJSON', () => {
+                let chatterPostId: string = '12091029';
+
+                let expectedURL = 'https://instanceURL/test/services/data/v37.0/chatter/feed-elements/some/url/12091029';
+                let expectedOptions = {
+                    headers: { 'Content-Type': 'application/json' },
+                    method: 'DELETE'
                 };
 
-                expect(() => fetchChatter.create('feed-elements', chatterPost))
-                    .toThrowError('SFDC Community ID is required to fetch Chatter');
+                return fetchChatter.delete('feed-elements/some/url', chatterPostId)
+                    .then((result) => {
+                        expect(result).toBe('success');
+
+                        expect(fetchJSONStub.calledOnce).toBeTruthy();
+                        expect(fetchJSONStub.getCall(0).args[0]).toEqual(expectedURL);
+                        expect(fetchJSONStub.getCall(0).args[1]).toEqual(expectedOptions);
+                    });
             });
         });
     });

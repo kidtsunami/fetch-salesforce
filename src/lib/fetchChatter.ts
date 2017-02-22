@@ -17,21 +17,20 @@ export class FetchChatter {
     constructor(fetcher: Fetcher, options: SalesforceOptions){
         this.fetcher = fetcher;
         this.options = options;
-
-        if(!this.options.sfdcCommunityID){
-            console.log('SFDC Community ID is required to fetch Chatter');
-        }
     }
 
     private getBaseChatterURL(){
         let apiVersion = formatApiVersion(this.options.apiVersion);
+        let communitiesPath = '';
+
+        if(this.options.sfdcCommunityID){
+            communitiesPath = urlJoin('connect/communities', this.options.sfdcCommunityID);
+        }
         return urlJoin(this.options.instanceURL, 'services/data',
-            apiVersion, 'connect/communities', this.options.sfdcCommunityID, 
-            'chatter');
+            apiVersion, communitiesPath, 'chatter');
     }
 
     retrieve(resource:string, connectBearerUrls?: boolean): Promise<any> {
-        this.confirmCommunityID();
         let fetchUrl = urlJoin(this.getBaseChatterURL(), resource);
 
         let fetchOptions: RequestInit = {
@@ -47,15 +46,8 @@ export class FetchChatter {
 
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
     }
-    
-    private confirmCommunityID(){
-        if(!this.options.sfdcCommunityID){
-            throw 'SFDC Community ID is required to fetch Chatter';
-        }
-    }
 
     create(resource:string, body:any): Promise<any> {
-        this.confirmCommunityID();
         let fetchUrl = urlJoin(this.getBaseChatterURL(), resource);
 
         let bodyJSON = JSON.stringify(body);
@@ -68,7 +60,6 @@ export class FetchChatter {
     }
 
     update(resource:string, id: string, body:any): Promise<any> {
-        this.confirmCommunityID();
         if(!id){
             throw 'Invalid body for update, missing id'
         }
@@ -84,7 +75,6 @@ export class FetchChatter {
     }
 
     delete(resource:string, id: string): Promise<any> {
-        this.confirmCommunityID();
         let fetchUrl = urlJoin(this.getBaseChatterURL(), resource, id);
 
         let fetchOptions = {

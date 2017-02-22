@@ -1,5 +1,7 @@
 import { SalesforceOptions } from './salesforceOptions'
 import { RequestOptions } from './requestOptions';
+import FailedToRevokeAccessToken from './errors/failedToRevokeAccessToken';
+import UnsuccessfulFetchRequest from './errors/unsuccessfulFetchRequest';
 
 import * as querystring from 'querystring';
 import events = require('events');
@@ -13,6 +15,7 @@ import Promise = require('bluebird');
 interface FetcherRequest {
     requestURL: string,
     requestOptions: RequestInit,
+    resolved: boolean,
     resolve: (thenableOrResult?: {} | Promise.Thenable<{}>) => void,
     reject: (thenableOrResult?: {} | Promise.Thenable<{}>) => void
 }
@@ -103,12 +106,13 @@ export class Fetcher extends events.EventEmitter {
 
     private handleGenericErrors(requestURL: string, requestOptions: RequestInit, response: any): any{
         if(!response || response.error){
-            let fetchJSONException = {
-                requestURL: requestURL,
-                requestOptions: requestOptions,
-                response: response
-            }
-            console.error(fetchJSONException);
+            let fetchJSONException = new UnsuccessfulFetchRequest(
+                'fetchJSON received a response error',
+                requestURL,
+                requestOptions,
+                response
+            );
+            console.warn(fetchJSONException);
             throw fetchJSONException;
         } else {
             return response;
@@ -123,12 +127,13 @@ export class Fetcher extends events.EventEmitter {
                     let fetcherRequest: FetcherRequest = {
                         requestURL: requestURL,
                         requestOptions: requestOptions,
+                        resolved: false,
                         resolve: resolve, 
                         reject: reject
                     };
                     let fetchPromise = fetch(requestURL, requestOptions);
 
-                    Promise.resolve(fetchPromise)
+                    return Promise.resolve(fetchPromise)
                         .then(response => {
                             if(response.status !== 204){
                                 return response.json()
@@ -140,19 +145,18 @@ export class Fetcher extends events.EventEmitter {
                             if(this.isInvalidSession(response)){
                                 console.info(`${ this.options.accessToken } is invalid, refreshing!`);
                                 this.pendingRequests.push(fetcherRequest);
-                                this.refreshAccessTokenAndRetryPendingRequests(fetcherRequest);
+                                return this.refreshAccessTokenAndRetryPendingRequests(fetcherRequest);
                             } else {
                                 resolve(this.handleGenericErrors(requestURL, requestOptions, response));
                             }
                         })
                         .catch((error) => {
-                            console.error('fetchJSON:\n\tWith:\n\t\trequestURL: ', requestURL, 
+                            console.warn('fetchJSON:\n\tWith:\n\t\trequestURL: ', requestURL, 
                                 '\n\t\trequestOptions: ', requestOptions,
                                 '\n\n\tHad Error: ', error);
                             return Promise.reject(error);
                         });
                 });
-
         });
     }
     
@@ -179,9 +183,15 @@ export class Fetcher extends events.EventEmitter {
         if(!this.isRefreshingAccessToken){
             this.isRefreshingAccessToken = true;
             console.info('Refreshing token and retrying pending requests');
-            this.refreshAccessToken()
+            return this.refreshAccessToken()
                 .then(() => {
                     return this.retryPendingRequests()
+                })
+                .catch((error) => {
+                    console.warn(error);
+                    for(let pendingRequest of this.pendingRequests){
+                        pendingRequest.reject(error);
+                    }
                 });
         } else {
             console.info('Already refreshing token');
@@ -195,27 +205,22 @@ export class Fetcher extends events.EventEmitter {
             retryPromises.push(this.fetchJSON(pendingRequest.requestURL, pendingRequest.requestOptions));
         }
         console.log('Promising all');
-        Promise.all(retryPromises)
+        return Promise.all(retryPromises)
             .then(responses => {
                 for(let requestIndex in responses){
                     let response = responses[requestIndex];
                     let pendingRequest = this.pendingRequests[requestIndex];
                     console.log('Resolving!!!!');
                     pendingRequest.resolve(response);
+                    pendingRequest.resolved = false;
                 }
-                console.info('PendingRequests have been retried, cleaning pendingRequests');
-                this.pendingRequests = [];
-            })
-            .catch(error => {
-                console.error(`Failed to retry the pending requests`);
-                console.error(error);
-                throw(error);
-            });;
+                console.info('PendingRequests have been retried');
+            });
     }
 
     revokeAccessToken(): Promise<any> {
         if(!this.options.accessToken){
-            throw 'No Access Token to Revoke';
+            throw new FailedToRevokeAccessToken('No Access Token to Revoke', this.options.accessToken);
         }
 
         this.emit('accessTokenRevoking');
@@ -237,12 +242,13 @@ export class Fetcher extends events.EventEmitter {
         return Promise.resolve(fetchPromise)
             .then(response => {
                 if(response.status && response.status !== 200){
-                    let revokeAccesTokenException = {
-                        requestURL: requestURL,
-                        requestOptions: requestOptions,
-                        response: response
-                    }
-                    console.error(revokeAccesTokenException);
+                    let revokeAccesTokenException = new UnsuccessfulFetchRequest(
+                        'revokeAccessToken received a response error',
+                        requestURL,
+                        requestOptions,
+                        response
+                    );
+                    console.warn(revokeAccesTokenException);
                     throw revokeAccesTokenException;
                 }
             })

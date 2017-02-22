@@ -10,9 +10,13 @@ import { SalesforceOptions, withDefaults } from './salesforceOptions'
 let urlJoin = require('url-join');
 import * as querystring from 'querystring';
 
-export interface ScopeAndState {
+export interface AuthorizationOptionalParameters {
     scope?: string,
-    state?: string
+    state?: string,
+    display?: string,
+    login_hint?: string,
+    nonce?: string,
+    prompt?: string
 }
 
 export class FetchSalesforce {
@@ -34,12 +38,12 @@ export class FetchSalesforce {
         this.fetchUserInfo = FetchUserInfo.Create(this.fetcher, this.options)
     }
 
-    buildAuthorizationURL(scopeAndState: ScopeAndState): string {
+    buildAuthorizationURL(authorizationOptionalParameters: AuthorizationOptionalParameters): string {
         let parameters = Object.assign({
             response_type: this.options.authorizationResponseType,
             client_id: this.options.clientID,
             redirect_uri: this.options.redirectUri
-        }, scopeAndState);
+        }, authorizationOptionalParameters);
         let encodedQuery = '?' + querystring.stringify(parameters);
 
         return urlJoin(this.getAuthorizationServiceURL(), encodedQuery);
