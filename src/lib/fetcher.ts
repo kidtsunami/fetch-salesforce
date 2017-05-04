@@ -106,6 +106,9 @@ export class Fetcher extends events.EventEmitter {
 
     private handleGenericErrors(requestURL: string, requestOptions: RequestInit, response: any): any{
         if(!response || response.error){
+            if (response.error_description === 'expired access/refresh token'){
+                this.emit('tokenExpired', response);
+            }
             let fetchJSONException = new UnsuccessfulFetchRequest(
                 'fetchJSON received a response error',
                 requestURL,
