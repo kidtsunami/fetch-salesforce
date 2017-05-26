@@ -14,6 +14,7 @@ export interface SalesforceOptions {
     tokenServiceURL?: string;
     revokeServiceURL?: string;
     redirectUri?: string;
+    logLevel?: string;
 }
 
 let defaultOptions = {
