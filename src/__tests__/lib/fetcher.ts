@@ -208,7 +208,7 @@ describe('fetcher', () => {
         let lastEmittedStatus: string;
         describe('with valid response', () => {
             function validateExpectedBody(url, options): any{
-                if(options.body == validRevokeBody){
+                if(options.body === validRevokeBody){
                     return Promise.delay(300).then(() => {
                         return {
                             status: 200
