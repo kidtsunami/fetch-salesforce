@@ -5,7 +5,7 @@ export interface SalesforceOptions {
     instanceURL: string;
     clientID: string;
     clientSecret?: string;
-    refreshToken: string;
+    refreshToken?: string;
     accessToken?: string;
     apiVersion?: number;
     sfdcCommunityID?: string;
