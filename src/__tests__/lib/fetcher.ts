@@ -1,4 +1,4 @@
-import sinon = require('sinon');
+import * as sinon from 'sinon';
 import { withRequiredSalesforceOptions } from './salesforceOptions';
 import fetchMock = require('fetch-mock');
 import Promise = require('bluebird');
@@ -22,7 +22,8 @@ describe('fetcher', () => {
     });
 
     describe('constructor', () => {
-        describe('withRequiredSalesforceOptions', () => {
+        
+        describe('without accessToken', () => {
             beforeEach(() => {
                 fetcher = Fetcher.Create(options);
             });
@@ -31,10 +32,12 @@ describe('fetcher', () => {
                 expect(fetcher).toBeDefined();
                 expect(fetcher.options).toEqual(options);
                 expect(fetcher.isRefreshingAccessToken).toBe(false);
+                expect(fetcher.logger).toBeDefined();
+                expect(fetcher.pendingRequests).toEqual([]);
             })
         });
 
-        describe('withRequiredSalesforceOptions and prepopulated accessToken', () => {
+        describe('with accessToken', () => {
             beforeEach(() => {
                 options.accessToken = 'populated accessToken';
                 fetcher = Fetcher.Create(options);
@@ -43,7 +46,7 @@ describe('fetcher', () => {
             it('initializes with undefined accessToken', () => {
                 expect(fetcher).toBeDefined();
                 expect(fetcher.options).toBeDefined();
-                expect(fetcher.options.accessToken).toBeUndefined();
+                expect(fetcher.options.accessToken).toBeDefined();
                 expect(fetcher.isRefreshingAccessToken).toBe(false);
             });
         });
@@ -54,10 +57,7 @@ describe('fetcher', () => {
             fetcher = Fetcher.Create(options);
         });
 
-        afterEach(() => {
-        });
-
-        it('returns accessToken if there', () => {
+        it('if it exists, it returns it', () => {
             let expectedAccessToken = 'existingAccessToken';
             fetcher.options.accessToken = expectedAccessToken;
 
@@ -67,7 +67,7 @@ describe('fetcher', () => {
                 });
         });
 
-        it('refreshes accessToken if not there', () => {
+        it('if it does not exist and we have a refresh token, it attempts to refresh it', () => {
             let expectedAccessToken = 'refreshedAccessToken';
             fetcher.options.accessToken = expectedAccessToken;
 
@@ -77,29 +77,32 @@ describe('fetcher', () => {
                     expect(fetcher.isRefreshingAccessToken).toBe(false);
                 });
         });
+
+        it('if it does not exist and we do not have a refresh token, the promise is rejected', () => {
+            fetcher.options.accessToken = null;
+            fetcher.options.refreshToken = null;
+
+            return fetcher.getAccessToken()
+                .catch((err: any) => {
+                    expect(err.message).toEqual('No access token');
+                });
+        });
     });
 
-    describe('fetchJSON', () => {
-        let fetchJSONValidResponse = {
-            json: () =>  {
-                return {
-                    allGood: true
-                };
-            }
-        }
-        let validRequestURL = 'https://validURL/testPath/toRequest';
-        let valid204RequestURL = 'https://validURL/testPath/toRequesta204';
+    describe.only('fetchJSON', () => {
+        let validRequestURL = 'https://some/request/url';
         let validRequestWithHeaders = 'validRequestWithHeaders';
-        let validRequestWithNoExistingHeaders = 'validRequestWithNoExistingHeaders';
-        let validRequestWith204Response = 'validRequestWithNoExistingHeaders';
+        let errorResponse = 'errorResponse';
+        let invalidSessionResponse = 'invalidSessionResponse';
 
         beforeEach(() => {
+            // options.logLevel = 'DEBUG';
             fetcher = Fetcher.Create(options);
             fetcher.options.accessToken = 'authorizedToken';
+        });
 
-            mockValidRequestWithHeaders();
-            mockValidRequestWithNoExistingHeaders();
-            mockValidRequestWith204Response();
+        afterEach(() => {
+            fetchMock.restore();
         });
 
         function mockValidRequestWithHeaders(){
@@ -107,89 +110,155 @@ describe('fetcher', () => {
                 name: validRequestWithHeaders,
                 headers: {
                     'Content-Type': 'application/json',
+                    'Some-Other-Header': 'cool!',
                     'Authorization': 'Authorization: Bearer authorizedToken'
                 },
                 method: 'PATCH'
             }
             fetchMock.mock(validRequestURL, {
-                    allGood: true
-                }, mockOptions);
+                allGood: true
+            }, mockOptions);
         }
 
-        function mockValidRequestWithNoExistingHeaders(){
+        function mockErrorResponse(){
             let mockOptions = {
-                name: validRequestWithNoExistingHeaders,
+                name: errorResponse,
                 headers: {
+                    'Content-Type': 'application/json',
                     'Authorization': 'Authorization: Bearer authorizedToken'
                 },
-                method: 'POST'
+                method: 'GET'
             }
+
             fetchMock.mock(validRequestURL, {
-                    allGoodWithNoExisting: true
-                }, mockOptions);
+                status: 500,
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: [
+                    {
+                        message: 'An error occurred'
+                    }   
+                ]
+            }, mockOptions);
         }
 
-        function mockValidRequestWith204Response(){
+        function mockInvalidSessionResponse(){
             let mockOptions = {
-                name: validRequestWith204Response,
+                name: invalidSessionResponse,
                 headers: {
+                    'Content-Type': 'application/json',
                     'Authorization': 'Authorization: Bearer authorizedToken'
                 },
-                method: 'POST'
+                method: 'GET'
             }
-            let response = {
-                status: 204
-            };
-            fetchMock.mock(valid204RequestURL, response, mockOptions);
+
+            fetchMock.mock(validRequestURL, {
+                status: 401,
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: [
+                    {
+                        message: 'Expired token',
+                        error: 'expired token',
+                        error_description: 'bad oauth'
+                    }
+                ]
+            }, mockOptions);
         }
 
-        afterEach(() => {
-        });
+        function getPostRequest() {
+            return {
+                Name: 'My Account',
+                ShippingCity: 'Springfield',
+            }
+        }
 
-        it('requestOptions adds authorizationHeaders for existing headers', () => {
-            let requestURL = validRequestURL;
-            let existingOptions = {
+        function getPostResponse() {
+            return {
+                id: 'some id',
+                success: true,
+            }
+        }
+
+        function getGetResponse() {
+            return {
+                totalSize: 1,
+                done: true,
+                records: [
+                    { id: 'someid', Name: 'some name' },
+                ]
+            }
+        }
+
+        function mockValidRequest(name: string, url: string, method:string = 'GET', response: any){
+            let mockOptions = {
+                name: name,
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                },
+                method: method
+            }
+            fetchMock.mock(url, response, mockOptions); 
+        }
+
+        it('attaches authorization header to request', () => {
+            mockValidRequestWithHeaders();
+
+            let requestURL = validRequestURL;
+            let requestOptions = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Some-Other-Header': 'cool!',
                 },
                 method: 'PATCH'
             };
            
-
-            return fetcher.fetchJSON(requestURL, existingOptions)
+            return fetcher.fetchJSON(requestURL, requestOptions)
                 .then((parsedResonse) => {
                     expect(parsedResonse.allGood).toBeTruthy();
                     expect(fetchMock.called(validRequestWithHeaders)).toBeTruthy();
-                    expect(fetchMock.called(validRequestWithNoExistingHeaders)).toBeFalsy();
                 });
         });
 
-        it('requestOptions adds authorizationHeaders for no headers', () => {
+        it('handles response errors', () => {
+            mockErrorResponse();
+
             let requestURL = validRequestURL;
-            let existingOptions = {
-                method: 'POST'
-            }
-           
-            return fetcher.fetchJSON(requestURL, existingOptions)
-                .then((parsedResonse) => {
-                    expect(parsedResonse.allGoodWithNoExisting).toBeTruthy();
-                    expect(fetchMock.called(validRequestWithNoExistingHeaders)).toBeTruthy();
-                    expect(fetchMock.called(validRequestWithHeaders)).toBeFalsy();
+            let requestOptions = {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                method: 'GET'
+            };
+
+            return fetcher.fetchJSON(requestURL, requestOptions)
+                .catch((err:any) => {
+                    expect(err.message).toBe('An error occurred');
                 });
         });
 
-        it('does not parse a 204', () => {
-            let requestURL = valid204RequestURL;
-            let existingOptions = {
-                method: 'POST'
-            }
-           
-            return fetcher.fetchJSON(requestURL, existingOptions)
-                .then((response) => {
-                    expect(response.bodyUsed).toBeFalsy();
-                    expect(response.status).toBe(204);
-                    expect(fetchMock.calls().matched.length).toBe(1);
-                    expect(fetchMock.called(validRequestWith204Response)).toBeTruthy();
+        it('attempts to refresh token on invalid session and retries request', () => {
+            mockValidRequest('get', validRequestURL, 'GET', {
+                status: 200,
+                body: getGetResponse(),
+            });
+            mockInvalidSessionResponse();
+
+            let requestURL = validRequestURL;
+            let requestOptions = {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                method: 'GET'
+            };
+
+            return fetcher.fetchJSON(requestURL, requestOptions)
+                .then((res: any) => {
+                    expect(res.totalSize).toBe(1);
+                    expect(res.done).toBe(true);
+                    expect(res.records).toHaveLength(1);
                 });
         });
     });
