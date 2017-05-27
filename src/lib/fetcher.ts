@@ -1,7 +1,10 @@
 import { SalesforceOptions } from './salesforceOptions'
 import { RequestOptions } from './requestOptions';
-import FailedToRevokeAccessToken from './errors/failedToRevokeAccessToken';
-import { FetchSalesforceRequestError, FetchSalesforceRequestErrorContext } from './errors/unsuccessfulFetchRequest';
+import { 
+    FetchSalesforceRequestError, 
+    FetchSalesforceRequestErrorContext,
+    RevokeAccessTokenError
+} from './errors';
 import Logger from './logger';
 import * as querystring from 'querystring';
 import events = require('events');
@@ -14,10 +17,9 @@ if (global['fetch'] === undefined) {
 import Promise = require('bluebird');
 /* tslint:enable */
 
-interface FetcherRequest {
+export interface FetcherRequest {
     requestURL: string,
     requestOptions: RequestInit,
-    resolved: boolean,
     resolve: (thenableOrResult?: {} | Promise.Thenable<{}>) => void,
     reject: (thenableOrResult?: {} | Promise.Thenable<{}>) => void
 }
@@ -34,8 +36,7 @@ export class Fetcher extends events.EventEmitter {
     options: SalesforceOptions;
     isRefreshingAccessToken: boolean;
     logger: Logger;
-    
-    private pendingRequests: FetcherRequest[];
+    pendingRequests: FetcherRequest[];
 
     static Create(options: SalesforceOptions){
         return new Fetcher(options);
@@ -44,7 +45,6 @@ export class Fetcher extends events.EventEmitter {
     constructor(options: SalesforceOptions){
         super();
         this.options = options;
-        this.options.accessToken = undefined;
         this.isRefreshingAccessToken = false;
         this.pendingRequests = [];
         this.logger = new Logger(this.options.logLevel);
@@ -53,16 +53,25 @@ export class Fetcher extends events.EventEmitter {
     getAccessToken(): Promise<string> {
         if(this.options.accessToken){
             return Promise.resolve(this.options.accessToken);
-        } else {
+        } else if (this.options.refreshToken) {
             this.logger.info('No AccessToken, Refreshing Access Token');
             return this.refreshAccessToken()
                 .then((response) => {
                     return this.options.accessToken;
+                })
+                .catch((err: any) => {
+                    return Promise.reject(err);
                 });
+        } else {
+            return Promise.reject(new Error('No access token'));
         }
     }
     
     private refreshAccessToken(): Promise<any> {
+        if(!this.options.refreshToken) {
+            return Promise.reject(new Error('Could not refresh access token, no refresh token provided'));
+        }
+
         this.emit('accessTokenRefreshing');
         let requestURL = this.getTokenServiceURL();
         let accessToken: string;
@@ -98,7 +107,7 @@ export class Fetcher extends events.EventEmitter {
                 if (this.isErrorResponse(fetchResponse)) {
                     this.throwError(requestURL, requestOptions, fetchResponse, responseBody);
                 }
-                this.logger.info('fooooooo', responseBody);
+                this.logger.info('access token refreshed', responseBody);
                 this.options.accessToken = responseBody.access_token;
                 this.emit('accessTokenRefreshed', responseBody.access_token);
                 return Promise.resolve(responseBody.access_token);
@@ -116,17 +125,24 @@ export class Fetcher extends events.EventEmitter {
         return tokenServiceURL;
     }
 
+    private addAuthorizationHeader(headers: any = {}): any {
+        return this.getAccessToken()
+            .then((accessTokenResponse) => {
+                const Authorization = 'Authorization: Bearer ' + this.options.accessToken;
+                return { ...headers, Authorization };
+            });
+    }
+
     fetchJSON(requestURL: string, requestOptions: RequestInit): Promise<any>{
         return new Promise((resolve, reject) => {
             let fetcherRequest: FetcherRequest;
             let fetchResponse: any;
-            this.addAuthorizationHeaders(requestOptions.headers)
+            this.addAuthorizationHeader(requestOptions.headers)
                 .then(headers => {
                     requestOptions.headers = headers;
                     fetcherRequest = {
                         requestURL: requestURL,
                         requestOptions: requestOptions,
-                        resolved: false,
                         resolve: resolve, 
                         reject: reject
                     };
@@ -155,19 +171,6 @@ export class Fetcher extends events.EventEmitter {
         });
     }
     
-    private addAuthorizationHeaders(headers?: any): any {
-        return this.getAccessToken()
-            .then((accessTokenResponse) => {
-                if(headers === undefined){
-                    headers = {};
-                }
-                let authorizedHeader = {
-                    'Authorization': 'Authorization: Bearer ' + this.options.accessToken
-                }
-                return Object.assign(headers, authorizedHeader);
-            });
-    }
-
     private isErrorResponse(response: Response): boolean{
         return response.status >= 400;
     }
@@ -239,28 +242,27 @@ export class Fetcher extends events.EventEmitter {
         }
     }
 
-    private retryPendingRequests(){
+    private retryPendingRequests(): Promise<any>{
         let retryPromises: Promise<any>[] = [];
         this.logger.info(`Attempting to retry ${ this.pendingRequests.length } pendingRequests`);
         for(let pendingRequest of this.pendingRequests){
             retryPromises.push(this.fetchJSON(pendingRequest.requestURL, pendingRequest.requestOptions));
         }
-        this.logger.info('retrying all pending requests');
         return Promise.all(retryPromises)
-            .then(responses => {
-                for(let requestIndex in responses){
-                    let response = responses[requestIndex];
+            .then(retriedRequestResponses => {
+                this.logger.debug('pending requests have been retried', retriedRequestResponses);
+                for (let requestIndex in retriedRequestResponses){
+                    let response = retriedRequestResponses[requestIndex];
                     let pendingRequest = this.pendingRequests[requestIndex];
                     pendingRequest.resolve(response);
-                    pendingRequest.resolved = false;
                 }
-                this.logger.info('PendingRequests have been retried');
+                this.pendingRequests = [];
             });
     }
 
     revokeAccessToken(): Promise<any> {
         if(!this.options.accessToken){
-            throw new FailedToRevokeAccessToken('No Access Token to Revoke', this.options.accessToken);
+            throw new RevokeAccessTokenError('No Access Token to Revoke', this.options.accessToken);
         }
 
         this.emit('accessTokenRevoking');
