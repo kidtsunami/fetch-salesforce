@@ -49,7 +49,7 @@ export class FetchSObject {
 
     update(sobjectName: string, id: string, body: any): Promise<any> {
         if(!id){
-            throw 'Invalid body for update, missing id'
+            return Promise.reject(new Error('Invalid body for update, missing id'));
         }
         let bodyJSON = JSON.stringify(body);
         let fetchUrl = urlJoin(this.getSObjectUrl(sobjectName), id);
