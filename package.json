@@ -1,6 +1,6 @@
 {
   "name": "fetch-salesforce",
-  "version": "1.0.1-beta.1",
+  "version": "1.0.1-beta.2",
   "description": "A client for Salesforce using React Native friendly Fetch requests.",
   "main": "build/index.js",
   "files": [
