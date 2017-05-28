@@ -1,0 +1,13 @@
+sudo: required
+os:
+  - osx
+language: node_js
+node_js:
+  - '7'
+install:
+  - yarn
+  - yarn test
+cache:
+  yarn: true
+  directories:
+    - node_modules

@@ -61,7 +61,7 @@ export class FetchChatter {
 
     update(resource:string, id: string, body:any): Promise<any> {
         if(!id){
-            throw 'Invalid body for update, missing id'
+            return Promise.reject(new Error('Invalid body for update, missing id'));
         }
         let fetchUrl = urlJoin(this.getBaseChatterURL(), resource, id);
 

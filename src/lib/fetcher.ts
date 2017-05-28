@@ -1,21 +1,25 @@
 import { SalesforceOptions } from './salesforceOptions'
 import { RequestOptions } from './requestOptions';
-import FailedToRevokeAccessToken from './errors/failedToRevokeAccessToken';
-import UnsuccessfulFetchRequest from './errors/unsuccessfulFetchRequest';
-
+import { 
+    FetchSalesforceRequestError, 
+    FetchSalesforceRequestErrorContext,
+    RevokeAccessTokenError
+} from './errors';
+import Logger from './logger';
 import * as querystring from 'querystring';
 import events = require('events');
 import urlJoin = require('url-join');
 
+/* tslint:disable */
 if (global['fetch'] === undefined) {
     fetch = require('isomorphic-fetch');
 }
 import Promise = require('bluebird');
+/* tslint:enable */
 
-interface FetcherRequest {
+export interface FetcherRequest {
     requestURL: string,
     requestOptions: RequestInit,
-    resolved: boolean,
     resolve: (thenableOrResult?: {} | Promise.Thenable<{}>) => void,
     reject: (thenableOrResult?: {} | Promise.Thenable<{}>) => void
 }
@@ -31,8 +35,8 @@ interface RefreshAccessTokenBody {
 export class Fetcher extends events.EventEmitter {
     options: SalesforceOptions;
     isRefreshingAccessToken: boolean;
-    
-    private pendingRequests: FetcherRequest[];
+    logger: Logger;
+    pendingRequests: FetcherRequest[];
 
     static Create(options: SalesforceOptions){
         return new Fetcher(options);
@@ -41,24 +45,33 @@ export class Fetcher extends events.EventEmitter {
     constructor(options: SalesforceOptions){
         super();
         this.options = options;
-        this.options.accessToken = undefined;
         this.isRefreshingAccessToken = false;
         this.pendingRequests = [];
+        this.logger = new Logger(this.options.logLevel);
     }
 
     getAccessToken(): Promise<string> {
         if(this.options.accessToken){
             return Promise.resolve(this.options.accessToken);
-        } else {
-            console.info('No AccessToken, Refreshing Access Token');
+        } else if (this.options.refreshToken) {
+            this.logger.info('No AccessToken, Refreshing Access Token');
             return this.refreshAccessToken()
                 .then((response) => {
                     return this.options.accessToken;
+                })
+                .catch((err: any) => {
+                    return Promise.reject(err);
                 });
+        } else {
+            return Promise.reject(new Error('No access token'));
         }
     }
     
-    private refreshAccessToken(): Promise<string> {
+    private refreshAccessToken(): Promise<any> {
+        if(!this.options.refreshToken) {
+            return Promise.reject(new Error('Could not refresh access token, no refresh token provided'));
+        }
+
         this.emit('accessTokenRefreshing');
         let requestURL = this.getTokenServiceURL();
         let accessToken: string;
@@ -84,15 +97,23 @@ export class Fetcher extends events.EventEmitter {
         };
 
         let fetchPromise = fetch(requestURL, requestOptions);
-
+        let fetchResponse: any;
         return Promise.resolve(fetchPromise)
-            .then(response => response.json())
-            .then(response => this.handleGenericErrors(requestURL, requestOptions, response))
-            .then((response) => {
-                console.info(`New accessToken retrieved`);
-                this.options.accessToken = response.access_token;
-                this.emit('accessTokenRefreshed', response.access_token);
-                return response;
+            .then((response: any) => {
+                fetchResponse = response;
+                return this.parseResponseBody(fetchResponse);
+            })
+            .then((responseBody: any) => {
+                if (this.isErrorResponse(fetchResponse)) {
+                    this.throwError(requestURL, requestOptions, fetchResponse, responseBody);
+                }
+                this.logger.info('access token refreshed', responseBody);
+                this.options.accessToken = responseBody.access_token;
+                this.emit('accessTokenRefreshed', responseBody.access_token);
+                return Promise.resolve(responseBody.access_token);
+            })
+            .catch((err:any) => {
+                return Promise.reject(err);
             });
     }
 
@@ -104,126 +125,144 @@ export class Fetcher extends events.EventEmitter {
         return tokenServiceURL;
     }
 
-    private handleGenericErrors(requestURL: string, requestOptions: RequestInit, response: any): any{
-        if(!response || response.error){
-            if (response.error_description === 'expired access/refresh token'){
-                this.emit('tokenExpired', response);
-            }
-            let fetchJSONException = new UnsuccessfulFetchRequest(
-                'fetchJSON received a response error',
-                requestURL,
-                requestOptions,
-                response
-            );
-            console.warn(fetchJSONException);
-            throw fetchJSONException;
-        } else {
-            return response;
-        }
+    private addAuthorizationHeader(headers: any = {}): any {
+        return this.getAccessToken()
+            .then((accessTokenResponse) => {
+                const Authorization = 'Authorization: Bearer ' + this.options.accessToken;
+                return { ...headers, Authorization };
+            });
     }
 
     fetchJSON(requestURL: string, requestOptions: RequestInit): Promise<any>{
         return new Promise((resolve, reject) => {
-            this.addAuthorizationHeaders(requestOptions.headers)
+            let fetcherRequest: FetcherRequest;
+            let fetchResponse: any;
+            this.addAuthorizationHeader(requestOptions.headers)
                 .then(headers => {
                     requestOptions.headers = headers;
-                    let fetcherRequest: FetcherRequest = {
+                    fetcherRequest = {
                         requestURL: requestURL,
                         requestOptions: requestOptions,
-                        resolved: false,
                         resolve: resolve, 
                         reject: reject
                     };
-                    let fetchPromise = fetch(requestURL, requestOptions);
+                    return fetch(requestURL, requestOptions);
+                })
+                .then(response => {
+                    fetchResponse = response;
+                    this.logger.debug('fetchJSON response', fetchResponse);
+                    return this.parseResponseBody(fetchResponse);
+                })
+                .then((responseBody: any) => {
+                    if (this.isInvalidSession(fetchResponse)) {
+                        this.pendingRequests.push(fetcherRequest);
+                        return this.refreshAccessTokenAndRetryPendingRequests(fetcherRequest);
+                    }
 
-                    return Promise.resolve(fetchPromise)
-                        .then(response => {
-                            if(response.status !== 204){
-                                return response.json()
-                            } else {
-                                return response;
-                            }
-                        })
-                        .then(response => {
-                            if(this.isInvalidSession(response)){
-                                console.info(`${ this.options.accessToken } is invalid, refreshing!`);
-                                this.pendingRequests.push(fetcherRequest);
-                                return this.refreshAccessTokenAndRetryPendingRequests(fetcherRequest);
-                            } else {
-                                resolve(this.handleGenericErrors(requestURL, requestOptions, response));
-                            }
-                        })
-                        .catch((error) => {
-                            console.warn('fetchJSON:\n\tWith:\n\t\trequestURL: ', requestURL, 
-                                '\n\t\trequestOptions: ', requestOptions,
-                                '\n\n\tHad Error: ', error);
-                            return Promise.reject(error);
-                        });
+                    if (this.isErrorResponse(fetchResponse)) {
+                        this.throwError(requestURL, requestOptions, fetchResponse, responseBody)
+                    }
+
+                    resolve(responseBody);
+                })
+                .catch((error: Error) => {
+                    reject(error);
                 });
         });
     }
     
-    private addAuthorizationHeaders(headers?: any): any {
-        return this.getAccessToken()
-            .then((accessTokenResponse) => {
-                if(headers === undefined){
-                    headers = {};
-                }
-                let authorizedHeader = {
-                    'Authorization': 'Authorization: Bearer ' + this.options.accessToken
-                }
-                return Object.assign(headers, authorizedHeader);
-            });
+    private isErrorResponse(response: Response): boolean{
+        return response.status >= 400;
     }
 
-    private isInvalidSession(response: any): boolean{
-        return Array.isArray(response) 
-            && response.length > 0 
-            && response[0].errorCode === 'INVALID_SESSION_ID'; 
+    private isInvalidSession(response: any): boolean {
+        return response.status === 401 || response.status === 403;
+    }
+
+    private throwError(requestUrl: string, requestOptions: RequestInit, response: Response, responseBody: any): void{
+        if (Array.isArray(responseBody) && responseBody.length > 0) {
+            responseBody = responseBody[0];
+        }
+
+        if (responseBody.error_description === 'expired access/refresh token') {
+            this.emit('tokenExpired', response);
+        }
+
+        if (responseBody.error_description === 'inactive user') {
+            this.emit('inactiveUser', response);
+        }
+
+        const errorContext: FetchSalesforceRequestErrorContext = {
+            requestURL: requestUrl,
+            requestOptions: requestOptions,
+            responseBody: responseBody,
+            errorCode: responseBody.error,
+            errorDescription: responseBody.error_description,
+        }
+
+        this.logger.debug('error', responseBody);
+
+        throw new FetchSalesforceRequestError(responseBody.message, errorContext)
+    }
+
+    private parseResponseBody(response: any): Promise<any>{
+      return response.text()
+        .then((text: string) => {
+            if (text === 'Bad_OAuth_Token') {
+                return Promise.resolve({
+                    error: 'Bad_OAuth_Token'
+                });
+            } else if (text) {
+                return Promise.resolve(JSON.parse(text));
+            } else {
+                return Promise.resolve({});
+            }
+        })
+        .catch((err: any) => {
+          return Promise.reject(err);
+        });
     }
 
     private refreshAccessTokenAndRetryPendingRequests(fetcherRequest: FetcherRequest){
         if(!this.isRefreshingAccessToken){
             this.isRefreshingAccessToken = true;
-            console.info('Refreshing token and retrying pending requests');
+            this.logger.info('Refreshing token and retrying pending requests');
             return this.refreshAccessToken()
                 .then(() => {
-                    return this.retryPendingRequests()
+                    return this.retryPendingRequests();
                 })
                 .catch((error) => {
-                    console.warn(error);
+                    this.logger.warn(error);
                     for(let pendingRequest of this.pendingRequests){
                         pendingRequest.reject(error);
                     }
                 });
         } else {
-            console.info('Already refreshing token');
+            this.logger.info('Already refreshing token');
         }
     }
 
-    private retryPendingRequests(){
+    private retryPendingRequests(): Promise<any>{
         let retryPromises: Promise<any>[] = [];
-        console.info(`Attempting to retry ${ this.pendingRequests.length } pendingRequests`);
+        this.logger.info(`Attempting to retry ${ this.pendingRequests.length } pendingRequests`);
         for(let pendingRequest of this.pendingRequests){
             retryPromises.push(this.fetchJSON(pendingRequest.requestURL, pendingRequest.requestOptions));
         }
-        console.log('Promising all');
         return Promise.all(retryPromises)
-            .then(responses => {
-                for(let requestIndex in responses){
-                    let response = responses[requestIndex];
+            .then(retriedRequestResponses => {
+                this.logger.debug('pending requests have been retried', retriedRequestResponses);
+                for (let requestIndex in retriedRequestResponses){
+                    let response = retriedRequestResponses[requestIndex];
                     let pendingRequest = this.pendingRequests[requestIndex];
-                    console.log('Resolving!!!!');
                     pendingRequest.resolve(response);
-                    pendingRequest.resolved = false;
                 }
-                console.info('PendingRequests have been retried');
+                this.pendingRequests = [];
             });
     }
 
     revokeAccessToken(): Promise<any> {
         if(!this.options.accessToken){
-            throw new FailedToRevokeAccessToken('No Access Token to Revoke', this.options.accessToken);
+            throw new RevokeAccessTokenError('No Access Token to Revoke', this.options.accessToken);
         }
 
         this.emit('accessTokenRevoking');
@@ -242,23 +281,24 @@ export class Fetcher extends events.EventEmitter {
         };
 
         let fetchPromise = fetch(requestURL, requestOptions); 
+        let fetchResponse: any;
         return Promise.resolve(fetchPromise)
-            .then(response => {
-                if(response.status && response.status !== 200){
-                    let revokeAccesTokenException = new UnsuccessfulFetchRequest(
-                        'revokeAccessToken received a response error',
-                        requestURL,
-                        requestOptions,
-                        response
-                    );
-                    console.warn(revokeAccesTokenException);
-                    throw revokeAccesTokenException;
-                }
+            .then((response: any) => {  
+                fetchResponse = response;
+                return this.parseResponseBody(response);
             })
-            .then(response => {
+            .then((responseBody: any) => {  
+                if (this.isErrorResponse(fetchResponse)) {
+                    this.throwError(requestURL, requestOptions, fetchResponse, responseBody);
+                }
+
                 this.options.accessToken = undefined;
-                console.info('Access Token revoked');
+                this.logger.info('Access Token revoked');
                 this.emit('accessTokenRevoked');
+                return Promise.resolve();
+            })
+            .catch((err: any) => {
+                return Promise.reject(err);
             });
     }
 
