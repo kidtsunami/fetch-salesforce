@@ -96,10 +96,6 @@ describe('fetchSObject', () => {
         });
 
         describe('with id', () => {
-            beforeEach(() => {
-                id = 'a0Ga000000awuHe';
-            });
-
             it('calls fetchJSON', () => {
                 let expectedURL = 'https://instanceURL/test/services/data/v37.0/sobjects/Case/a0Ga000000awuHe';
                 let expectedOptions = {
@@ -108,7 +104,7 @@ describe('fetchSObject', () => {
                         body: '{"Name":"test case name","Subject":"what"}'
                     };
 
-                return fetchSObject.update(sObjectName, id, sObjectBody)
+                return fetchSObject.update(sObjectName, 'a0Ga000000awuHe', sObjectBody)
                     .then((result) => {
                         expect(result).toBe('success');
                         expect(fetchJSONStub.calledOnce).toBeTruthy();
@@ -119,6 +115,7 @@ describe('fetchSObject', () => {
         });
 
         describe('without id', () => {
+            
             it('calls fetchJSON and an exception is thrown', () => {
                 let expectedURL = 'https://instanceURL/test/services/data/v37.0/sobjects/Case/a0Ga000000awuHe';
                 let expectedOptions = {
@@ -126,29 +123,17 @@ describe('fetchSObject', () => {
                         method: 'PATCH',
                         body: '{"Name":"test case name","Subject":"what","id":"a0Ga000000awuHe"}'
                     };
-
-                try {
-                    fetchSObject.update(sObjectName, id, sObjectBody)
-                        .then(fail);
-                } catch(reason) {
-                    let expectedReason = {
-                        error: 'Invalid body for update, missing id',
-                        body: sObjectBody
-                    }
-                    expect(reason).toEqual(expectedReason);
-                }
+                fetchSObject.update(sObjectName, null, sObjectBody)
+                    .catch((err: any) => {
+                        expect(err[0]).toEqual('Invalid body for update, missing id');
+                    });
             });
         });
     });
 
     describe('delete', () => {
-        let sObjectName: string;
-        let id: string;
-
-        beforeEach(() => {
-            sObjectName = 'Case';
-            id = 'a0Ga000000awuHe';
-        });
+        let sObjectName : string = 'Case';
+        let id: string = 'a0Ga000000awuHe';
 
         it('calls fetchJSON', () => {
             let expectedURL = 'https://instanceURL/test/services/data/v37.0/sobjects/Case/a0Ga000000awuHe';

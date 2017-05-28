@@ -4,3 +4,4 @@ build/
 npm-debug.log
 
 scratch.js
+tslint.json
