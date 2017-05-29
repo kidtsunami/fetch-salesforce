@@ -41,7 +41,7 @@ describe('fetchSalesforce', () => {
         });
 
         it('sets options withDefaults', () => {
-            expect(fetchSalesforce.options.apiVersion).toBe(33);
+            expect(fetchSalesforce.options.apiVersion).toBe(38);
             expect(fetchSalesforce.options.instanceURL).toBe('https://instanceURL/requiredtest/');
         });
 

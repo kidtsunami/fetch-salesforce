@@ -69,9 +69,9 @@ describe('withDefaults', () => {
 });
 
 describe('formatApiVersion', () => {
-    it('formats 33 as v33.0', () => {
-        let formattedApiVersion = formatApiVersion(33);
+    it('formats 38 as v38.0', () => {
+        let formattedApiVersion = formatApiVersion(38);
 
-        expect(formattedApiVersion).toBe('v33.0');
+        expect(formattedApiVersion).toBe('v38.0');
     });
 });
