@@ -57,7 +57,7 @@ describe('withDefaults', () => {
             expect(testOptions.apiVersion).toBeUndefined();
             let testOptionsWithDefaults = withDefaults(testOptions);
 
-            expect(testOptionsWithDefaults.apiVersion).toBe(33);
+            expect(testOptionsWithDefaults.apiVersion).toBe(38);
         });
 
         it('sets default authorizationResponseType', () => {
