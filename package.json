@@ -11,6 +11,7 @@
   "license": "MIT",
   "scripts": {
     "prebuild": "rm -rf build",
+    "prepublish": "tsc",
     "build": "tsc",
     "test": "jest --coverage"
   },
