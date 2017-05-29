@@ -2,8 +2,8 @@ var numeral = require('numeral');
 let urlJoin = require('url-join');
 
 export interface SalesforceOptions {
-    instanceURL: string;
-    clientID: string;
+    instanceURL?: string;
+    clientID?: string;
     clientSecret?: string;
     refreshToken?: string;
     accessToken?: string;
@@ -18,7 +18,7 @@ export interface SalesforceOptions {
 }
 
 let defaultOptions = {
-    apiVersion: 33,
+    apiVersion: 38,
     authorizationResponseType: 'token'
 }
 
