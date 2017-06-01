@@ -49,7 +49,6 @@ describe('fetchSObject', () => {
             fetchSObject.insert(sObjectName, sObjectBody)
                 .then((result) => {
                     expect(result).toBe('success');
-
                     expect(fetchJSONStub.calledWithExactly(expectedURL, expectedOptions)).toBeTruthy();
                     testDone();
                 });
@@ -125,7 +124,7 @@ describe('fetchSObject', () => {
                     };
                 fetchSObject.update(sObjectName, null, sObjectBody)
                     .catch((err: any) => {
-                        expect(err[0]).toEqual('Invalid body for update, missing id');
+                        expect(err.message).toEqual('Invalid body for update, missing id');
                     });
             });
         });
