@@ -130,6 +130,37 @@ describe('fetchSObject', () => {
         });
     });
 
+    describe('upsert', () => {
+        let sObjectName: string;
+        let sObjectBody: any;
+        let id: string;
+
+        beforeEach(() => {
+            sObjectName = 'Case';
+            sObjectBody = {
+                Name: 'test case name',
+                Subject: 'what'
+            }
+        });
+
+        it('calls fetchJSON', () => {
+            let expectedURL = 'https://instanceURL/test/services/data/v37.0/sobjects/Case/myfield/123';
+            let expectedOptions = {
+                headers: { 'Content-Type': 'application/json' },
+                method: 'PATCH',
+                body: '{"Name":"test case name","Subject":"what"}'
+            };
+
+            return fetchSObject.upsert(sObjectName, 'myfield', '123', sObjectBody)
+                .then((result) => {
+                    expect(result).toBe('success');
+                    expect(fetchJSONStub.calledOnce).toBeTruthy();
+                    expect(fetchJSONStub.getCall(0).args[0]).toEqual(expectedURL);
+                    expect(fetchJSONStub.getCall(0).args[1]).toEqual(expectedOptions);
+                });
+        });
+    });
+
     describe('delete', () => {
         let sObjectName : string = 'Case';
         let id: string = 'a0Ga000000awuHe';

@@ -62,6 +62,21 @@ export class FetchSObject {
         return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
     }
 
+    upsert(sobjectName: string, idFieldApiName: string, id: string, body: any): Promise<any> {
+        if (!id || !idFieldApiName) {
+            return Promise.reject(new Error('Invalid body for upsert, missing id/idFieldApiName'));
+        }
+        let bodyJSON = JSON.stringify(body);
+        let fetchUrl = urlJoin(this.getSObjectUrl(sobjectName), idFieldApiName, id);
+
+        let fetchOptions = {
+            headers: { 'Content-Type': 'application/json' },
+            method: 'PATCH',
+            body: bodyJSON
+        };
+        return this.fetcher.fetchJSON(fetchUrl, fetchOptions);
+    }
+
     delete(sobjectName: string, id: string): Promise<any> {
         let fetchUrl = urlJoin(this.getSObjectUrl(sobjectName), id);
 
