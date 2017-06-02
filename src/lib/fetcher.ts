@@ -24,6 +24,16 @@ export interface FetcherRequest {
     reject: (thenableOrResult?: {} | Promise.Thenable<{}>) => void
 }
 
+export interface FetcherEvent {
+    on(event: 'accessTokenRefreshing', listener: Function): this;
+    on(event: 'accessTokenRevoking', listener: Function): this;
+    on(event: 'accessTokenRevoked', listener: Function): this;
+    on(event: 'accessTokenRefreshed', listener: (accessToken: string) => void): this;
+    on(event: 'tokenExpired', listener: (response: any) => void): this;
+    on(event: 'inactiveUser', listener: (response: any) => void): this;
+    on(event: string, listener: Function): this;
+}
+
 interface RefreshAccessTokenBody {
     grant_type: string,
     refresh_token: string,
@@ -32,7 +42,7 @@ interface RefreshAccessTokenBody {
     client_secret?: string
 }
 
-export class Fetcher extends events.EventEmitter {
+export class Fetcher extends events.EventEmitter implements FetcherEvent{
     options: SalesforceOptions;
     isRefreshingAccessToken: boolean;
     logger: Logger;
