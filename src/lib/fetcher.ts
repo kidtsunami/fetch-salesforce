@@ -125,6 +125,8 @@ export class Fetcher extends events.EventEmitter implements FetcherEvent{
             .catch((err:any) => {
                 return Promise.reject(err);
             });
+    private clearPendingRequests(): void {
+        this.pendingRequests = [];
     }
 
     private getTokenServiceURL(){
@@ -246,6 +248,7 @@ export class Fetcher extends events.EventEmitter implements FetcherEvent{
                     for(let pendingRequest of this.pendingRequests){
                         pendingRequest.reject(error);
                     }
+                    this.clearPendingRequests();
                 });
         } else {
             this.logger.info('Already refreshing token');
@@ -266,7 +269,7 @@ export class Fetcher extends events.EventEmitter implements FetcherEvent{
                     let pendingRequest = this.pendingRequests[requestIndex];
                     pendingRequest.resolve(response);
                 }
-                this.pendingRequests = [];
+                this.clearPendingRequests();
             });
     }
 
@@ -305,6 +308,7 @@ export class Fetcher extends events.EventEmitter implements FetcherEvent{
                 this.options.accessToken = undefined;
                 this.logger.info('Access Token revoked');
                 this.emit('accessTokenRevoked');
+                this.clearPendingRequests();
                 return Promise.resolve();
             })
             .catch((err: any) => {
