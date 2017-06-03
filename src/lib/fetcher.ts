@@ -76,12 +76,12 @@ export class Fetcher extends events.EventEmitter implements FetcherEvent{
             return Promise.reject(new Error('No access token'));
         }
     }
-    
+
     private refreshAccessToken(): Promise<any> {
         if(!this.options.refreshToken) {
             return Promise.reject(new Error('Could not refresh access token, no refresh token provided'));
         }
-
+        this.isRefreshingAccessToken = true;
         this.emit('accessTokenRefreshing');
         let requestURL = this.getTokenServiceURL();
         let accessToken: string;
@@ -124,7 +124,10 @@ export class Fetcher extends events.EventEmitter implements FetcherEvent{
             })
             .catch((err:any) => {
                 return Promise.reject(err);
-            });
+            })
+            .then(() => this.isRefreshingAccessToken = false);
+    }
+
     private clearPendingRequests(): void {
         this.pendingRequests = [];
     }
@@ -237,7 +240,6 @@ export class Fetcher extends events.EventEmitter implements FetcherEvent{
 
     private refreshAccessTokenAndRetryPendingRequests(fetcherRequest: FetcherRequest){
         if(!this.isRefreshingAccessToken){
-            this.isRefreshingAccessToken = true;
             this.logger.info('Refreshing token and retrying pending requests');
             return this.refreshAccessToken()
                 .then(() => {
