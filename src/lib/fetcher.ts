@@ -223,6 +223,7 @@ export class Fetcher extends events.EventEmitter implements FetcherEvent{
     private parseResponseBody(response: any): Promise<any>{
       return response.text()
         .then((text: string) => {
+            this.logger.debug('response body text ==>', text);
             if (text === 'Bad_OAuth_Token') {
                 return Promise.resolve({
                     error: 'Bad_OAuth_Token'
