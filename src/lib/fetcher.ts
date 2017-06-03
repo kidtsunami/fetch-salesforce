@@ -217,7 +217,9 @@ export class Fetcher extends events.EventEmitter implements FetcherEvent{
 
         this.logger.debug('error', responseBody);
 
-        throw new FetchSalesforceRequestError(responseBody.message, errorContext)
+        const errorMessage = responseBody.message || responseBody.error;
+
+        throw new FetchSalesforceRequestError(errorMessage, errorContext)
     }
 
     private parseResponseBody(response: any): Promise<any>{
