@@ -120,12 +120,13 @@ export class Fetcher extends events.EventEmitter implements FetcherEvent{
                 this.logger.info('access token refreshed', responseBody);
                 this.options.accessToken = responseBody.access_token;
                 this.emit('accessTokenRefreshed', responseBody.access_token);
+                this.isRefreshingAccessToken = false
                 return Promise.resolve(responseBody.access_token);
             })
             .catch((err:any) => {
+                this.isRefreshingAccessToken = false
                 return Promise.reject(err);
-            })
-            .then(() => this.isRefreshingAccessToken = false);
+            });
     }
 
     private clearPendingRequests(): void {
@@ -314,6 +315,7 @@ export class Fetcher extends events.EventEmitter implements FetcherEvent{
                 this.logger.info('Access Token revoked');
                 this.emit('accessTokenRevoked');
                 this.clearPendingRequests();
+                this.isRefreshingAccessToken = false;
                 return Promise.resolve();
             })
             .catch((err: any) => {
