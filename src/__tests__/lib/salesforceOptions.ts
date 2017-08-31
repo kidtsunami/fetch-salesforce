@@ -1,4 +1,5 @@
 import { SalesforceOptions, withDefaults, formatApiVersion } from '../../lib/salesforceOptions'
+import { assert, expect, should } from "chai";
 
 export function withValidSalesforceOptions(): SalesforceOptions{
     let testOptions: SalesforceOptions = {
@@ -37,33 +38,33 @@ describe('withDefaults', () => {
         it('does not override existing api version', () => {
             let testOptionsWithDefaults = withDefaults(testOptions);
 
-            expect(testOptionsWithDefaults.apiVersion).toBe(37);
+            expect(testOptionsWithDefaults.apiVersion).to.equal(37);
         });
 
         it('does not override existing authorizationResponseType', () => {
             let testOptionsWithDefaults = withDefaults(testOptions);
 
-            expect(testOptionsWithDefaults.authorizationResponseType).toBe('code');
+            expect(testOptionsWithDefaults.authorizationResponseType).to.equal('code');
         });
     });
 
     describe('withRequiredOptions', () => {
         beforeEach(() => {
             testOptions = withRequiredSalesforceOptions();
-            expect(testOptions.apiVersion).toBeUndefined();
+            expect(testOptions.apiVersion).is.undefined;
         });
 
         it('sets default api version', () => {
-            expect(testOptions.apiVersion).toBeUndefined();
+            expect(testOptions.apiVersion).is.undefined;
             let testOptionsWithDefaults = withDefaults(testOptions);
 
-            expect(testOptionsWithDefaults.apiVersion).toBe(38);
+            expect(testOptionsWithDefaults.apiVersion).to.equal(38);
         });
 
         it('sets default authorizationResponseType', () => {
             let testOptionsWithDefaults = withDefaults(testOptions);
 
-            expect(testOptionsWithDefaults.authorizationResponseType).toBe('token');
+            expect(testOptionsWithDefaults.authorizationResponseType).to.equal('token');
         });
     });
 });
@@ -72,6 +73,6 @@ describe('formatApiVersion', () => {
     it('formats 38 as v38.0', () => {
         let formattedApiVersion = formatApiVersion(38);
 
-        expect(formattedApiVersion).toBe('v38.0');
+        expect(formattedApiVersion).to.equal('v38.0');
     });
 });
