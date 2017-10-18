@@ -12,10 +12,11 @@ import urlJoin = require('url-join');
 
 /* tslint:disable */
 if (global['fetch'] === undefined) {
-    fetch = require('isomorphic-fetch');
+    require('isomorphic-fetch');
 }
-import Promise = require('bluebird');
 /* tslint:enable */
+
+import Promise = require('bluebird');
 
 export interface FetcherRequest {
     requestURL: string,
