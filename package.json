@@ -1,23 +1,24 @@
 {
   "name": "fetch-salesforce",
-  "version": "1.0.1-beta.14",
-  "description": "A client for Salesforce using React Native friendly Fetch requests.",
+  "version": "1.0.1-beta.15",
+  "description":
+    "A client for Salesforce using React Native friendly Fetch requests.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
-  "files": [
-    "build/"
-  ],
+  "files": ["build/"],
   "author": "David Helmer",
+  "contributors": ["Jean-Philippe Monette <contact@jpmonette.net>"],
   "license": "MIT",
   "scripts": {
     "prebuild": "rm -rf build",
+    "precommit": "lint-staged",
     "build": "tsc",
+    "prepublish": "yarn build",
     "test": "jest --coverage"
   },
   "dependencies": {
     "chai": "^4.1.2",
     "events": "^1.1.1",
-    "isomorphic-fetch": "^2.2.1",
     "querystring": "^0.2.0",
     "url-join": "^1.1.0"
   },
@@ -25,28 +26,23 @@
     "@types/jest": "^19.2.3",
     "@types/node": "^6.0.46",
     "@types/sinon": "^1.16.31",
+    "coveralls": "^3.0.0",
     "fetch-mock": "^5.5.0",
-    "jest": "20.0.4",
+    "jest": "^21.2.1",
     "sinon": "2.1.0",
-    "ts-jest": "^20.0.4",
+    "ts-jest": "^21.2.3",
     "typescript": "^2.1.4",
     "typings": "^2.1.0"
+  },
+  "lint-staged": {
+    "*.{js,json,css,md}": ["prettier --write", "git add"]
   },
   "jest": {
     "coverageDirectory": "coverage",
     "transform": {
-      "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+      "^.+\\.tsx?$": "ts-jest"
     },
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/build/"
-    ],
-    "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "json"
-    ]
+    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json"],
+    "testRegex": "(/src/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$"
   }
 }
