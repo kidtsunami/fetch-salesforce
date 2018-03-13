@@ -17,7 +17,6 @@
     "test": "jest --coverage"
   },
   "dependencies": {
-    "chai": "^4.1.2",
     "events": "^1.1.1",
     "querystring": "^0.2.0",
     "url-join": "^1.1.0"
