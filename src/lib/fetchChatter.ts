@@ -1,10 +1,7 @@
-import { Fetcher } from './fetcher';
-import Promise = require('bluebird');
-let urlJoin = require('url-join');
-import { SalesforceOptions, formatApiVersion } from './salesforceOptions'
-import { RequestOptions } from './requestOptions';
-import * as querystring from 'querystring';
+import * as urlJoin from 'url-join';
 
+import { Fetcher } from './fetcher';
+import { formatApiVersion, SalesforceOptions } from './salesforceOptions';
 
 export class FetchChatter {
     fetcher: Fetcher;

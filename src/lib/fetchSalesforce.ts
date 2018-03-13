@@ -1,14 +1,13 @@
-
-import { Fetcher } from './fetcher';
-import { FetchSObject } from './fetchSObject';
-import { FetchQuery } from './fetchQuery';
-import { FetchChatter } from './fetchChatter';
-import { FetchApexREST } from './fetchApexREST';
-import { FetchUserInfo } from './fetchUserInfo';
-import { SalesforceOptions, withDefaults } from './salesforceOptions'
-
-let urlJoin = require('url-join');
 import * as querystring from 'querystring';
+import * as urlJoin from 'url-join';
+
+import { FetchApexREST } from './fetchApexREST';
+import { FetchChatter } from './fetchChatter';
+import { Fetcher } from './fetcher';
+import { FetchQuery } from './fetchQuery';
+import { FetchSObject } from './fetchSObject';
+import { FetchUserInfo } from './fetchUserInfo';
+import { SalesforceOptions, withDefaults } from './salesforceOptions';
 
 export interface AuthorizationOptionalParameters {
     scope?: string,

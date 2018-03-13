@@ -1,27 +1,18 @@
-import { SalesforceOptions } from './salesforceOptions'
-import { RequestOptions } from './requestOptions';
-import { 
-    FetchSalesforceRequestError, 
-    FetchSalesforceRequestErrorContext,
-    RevokeAccessTokenError
-} from './errors';
-import Logger from './logger';
-import * as querystring from 'querystring';
-import events = require('events');
-import urlJoin = require('url-join');
+import 'isomorphic-fetch';
 
-/* tslint:disable */
-if (global['fetch'] === undefined) {
-    fetch = require('isomorphic-fetch');
-}
-import Promise = require('bluebird');
-/* tslint:enable */
+import * as events from 'events';
+import * as querystring from 'querystring';
+import urlJoin from 'url-join';
+
+import { FetchSalesforceRequestError, FetchSalesforceRequestErrorContext, RevokeAccessTokenError } from './errors';
+import Logger from './logger';
+import { SalesforceOptions } from './salesforceOptions';
 
 export interface FetcherRequest {
     requestURL: string,
     requestOptions: RequestInit,
-    resolve: (thenableOrResult?: {} | Promise.Thenable<{}>) => void,
-    reject: (thenableOrResult?: {} | Promise.Thenable<{}>) => void
+    resolve: (thenableOrResult?: {} | Promise<{}>) => void,
+    reject: (thenableOrResult?: {} | Promise<{}>) => void
 }
 
 export interface FetcherEvent {

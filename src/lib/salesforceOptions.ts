@@ -1,6 +1,3 @@
-var numeral = require('numeral');
-let urlJoin = require('url-join');
-
 export interface SalesforceOptions {
     instanceURL?: string;
     clientID?: string;
@@ -27,6 +24,6 @@ export function withDefaults(options: SalesforceOptions): SalesforceOptions {
     return Object.assign(defaultOptionsCopy, options);
 }
 
-export function formatApiVersion(apiVersion: number){
-    return 'v' + numeral(apiVersion).format('0.0');
+export function formatApiVersion(apiVersion: number) :string {
+    return 'v' + Number(apiVersion).toFixed(1);
 }
