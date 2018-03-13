@@ -1,13 +1,12 @@
 export class Logger {
-
   private level: number;
-  private levels:any = {
-    "DEBUG": 1,
-    "INFO": 2,
-    "WARN": 3,
-    "ERROR": 4,
-    "FATAL": 5,
-  }
+  private levels: any = {
+    DEBUG: 1,
+    INFO: 2,
+    WARN: 3,
+    ERROR: 4,
+    FATAL: 5,
+  };
 
   constructor(level: string) {
     this.level = this.levels[level];

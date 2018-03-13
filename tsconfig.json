@@ -1,10 +1,12 @@
 {
-    "compilerOptions": {
-        "target": "es6",
-        "module": "commonjs",
-        "sourceMap": true,
-        "outDir": "build",
-        "sourceRoot": "src",
-        "declaration": true
-    }
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "lib": ["es6", "dom"],
+    "sourceMap": true,
+    "outDir": "build",
+    "sourceRoot": "src",
+    "declaration": true
+  },
+  "exclude": ["src/__tests__/*/**"]
 }

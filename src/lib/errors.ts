@@ -5,11 +5,11 @@ class RevokeAccessTokenError extends Error {
 }
 
 interface FetchSalesforceRequestErrorContext {
-  requestURL: string,
-  requestOptions: RequestInit,
-  responseBody: string,
-  errorCode?: string,
-  errorDescription?: string,
+  requestURL: string;
+  requestOptions: RequestInit;
+  responseBody: string;
+  errorCode?: string;
+  errorDescription?: string;
 }
 
 class FetchSalesforceRequestError extends Error {
@@ -21,8 +21,8 @@ class FetchSalesforceRequestError extends Error {
   }
 }
 
-export { 
-  FetchSalesforceRequestErrorContext, 
-  FetchSalesforceRequestError, 
+export {
+  FetchSalesforceRequestErrorContext,
+  FetchSalesforceRequestError,
   RevokeAccessTokenError,
 };
