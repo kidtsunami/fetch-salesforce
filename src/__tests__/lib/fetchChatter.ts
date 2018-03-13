@@ -1,8 +1,7 @@
-import sinon = require("sinon");
-import Promise = require("bluebird");
-import { Fetcher } from "../../lib/fetcher";
-import { FetchChatter } from "../../lib/fetchChatter";
+import * as sinon from "sinon";
 
+import { FetchChatter } from "../../lib/fetchChatter";
+import { Fetcher } from "../../lib/fetcher";
 import { SalesforceOptions } from "../../lib/salesforceOptions";
 import { withValidSalesforceOptions } from "./salesforceOptions";
 

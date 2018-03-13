@@ -1,7 +1,7 @@
 import {
+  formatApiVersion,
   SalesforceOptions,
   withDefaults,
-  formatApiVersion,
 } from "../../lib/salesforceOptions";
 
 export function withValidSalesforceOptions(): SalesforceOptions {
