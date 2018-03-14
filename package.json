@@ -1,16 +1,13 @@
 {
   "name": "fetch-salesforce",
-  "version": "1.1.0",
-  "description": "A client for Salesforce using React Native friendly Fetch requests.",
+  "version": "2.0.0",
+  "description":
+    "A client for Salesforce using React Native friendly Fetch requests.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
-  "files": [
-    "build/"
-  ],
+  "files": ["build/"],
   "author": "David Helmer",
-  "contributors": [
-    "Jean-Philippe Monette <contact@jpmonette.net>"
-  ],
+  "contributors": ["Jean-Philippe Monette <contact@jpmonette.net>"],
   "license": "MIT",
   "scripts": {
     "prebuild": "rm -rf build",
@@ -38,23 +35,13 @@
     "typescript": "^2.1.4"
   },
   "lint-staged": {
-    "*.{js,json,css,md}": [
-      "prettier --write",
-      "git add"
-    ]
+    "*.{js,json,css,md}": ["prettier --write", "git add"]
   },
   "jest": {
-    "coverageDirectory": "coverage",
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json"
-    ],
-    "testRegex": "(/src/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$"
+    "moduleFileExtensions": ["ts", "tsx", "js", "jsx", "json"],
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$"
   }
 }
