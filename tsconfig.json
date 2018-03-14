@@ -5,8 +5,9 @@
     "lib": ["es6", "dom"],
     "sourceMap": true,
     "outDir": "build",
-    "sourceRoot": "src",
+    "rootDir": "src",
     "declaration": true
   },
+  "include": ["src/**/*"],
   "exclude": ["src/__tests__/*/**"]
 }
