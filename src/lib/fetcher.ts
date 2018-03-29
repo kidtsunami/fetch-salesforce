@@ -1,6 +1,6 @@
 import * as events from "events";
 import * as querystring from "querystring";
-import urlJoin from "url-join";
+import * as urlJoin from "url-join";
 
 import {
   FetchSalesforceRequestError,
